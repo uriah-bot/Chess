@@ -1,0 +1,16 @@
+﻿<Application
+    x:Class="ChessView.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ChessView"
+    StartupUri="/Views/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/BoolToVisConverter/ConverterDictionary.xaml" />
+                <ResourceDictionary Source="Assets/Themes/Colors.xaml" />
+                <ResourceDictionary Source="Assets/Themes/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\CursorB.cur" />
+    <None Remove="Assets\CursorW.cur" />
+    <None Remove="Assets\Default\black_bishop.png" />
+    <None Remove="Assets\Default\black_king.png" />
+    <None Remove="Assets\Default\black_knight.png" />
+    <None Remove="Assets\Default\black_pawn.png" />
+    <None Remove="Assets\Default\black_queen.png" />
+    <None Remove="Assets\Default\black_rook.png" />
+    <None Remove="Assets\Default\Board.png" />
+    <None Remove="Assets\Default\white_bishop.png" />
+    <None Remove="Assets\Default\white_king.png" />
+    <None Remove="Assets\Default\white_knight.png" />
+    <None Remove="Assets\Default\white_pawn.png" />
+    <None Remove="Assets\Default\white_queen.png" />
+    <None Remove="Assets\Default\white_rook.png" />
+    <None Remove="Assets\icon.ico" />
+    <None Remove="Assets\Stockfish_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chess.Model\Chess.Model.csproj" />
+    <ProjectReference Include="..\Chess.ViewModel\Chess.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\CursorB.cur" />
+    <Resource Include="Assets\CursorW.cur" />
+    <Resource Include="Assets\Default\black_bishop.png" />
+    <Resource Include="Assets\Default\black_king.png" />
+    <Resource Include="Assets\Default\black_knight.png" />
+    <Resource Include="Assets\Default\black_pawn.png" />
+    <Resource Include="Assets\Default\black_queen.png" />
+    <Resource Include="Assets\Default\black_rook.png" />
+    <Resource Include="Assets\Default\Board.png" />
+    <Resource Include="Assets\Default\white_bishop.png" />
+    <Resource Include="Assets\Default\white_king.png" />
+    <Resource Include="Assets\Default\white_knight.png" />
+    <Resource Include="Assets\Default\white_pawn.png" />
+    <Resource Include="Assets\Default\white_queen.png" />
+    <Resource Include="Assets\Default\white_rook.png" />
+    <Resource Include="Assets\icon.ico" />
+    <Resource Include="Assets\Stockfish_icon.png" />
+  </ItemGroup>
+
+</Project>

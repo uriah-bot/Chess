@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO.Pipelines;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace Chess.Model
+{
+    public class Poof : IModifier
+    {
+        private Game _game; // so Result can be set
+        private readonly Random rnd = new Random();
+
+        public void Apply(Game game)
+        {
+            _game = game;
+
+            _game.OnPieceMoved += PoofPiece;
+        }
+
+        public void Remove(Game game)
+        {
+            _game = game;
+
+            _game.OnPieceMoved -= PoofPiece;
+        }
+
+        public void PoofPiece(Move move)
+        {
+            if (_game.halfMoves % 10 != 9 &&  _game.halfMoves % 10 != 0)
+            {
+                return;
+            }
+
+            if (CheckForNoPieces(move, _game.CurrentPlayer))
+            {
+                _game.Result = Result.ModifiedWin(_game.CurrentPlayer.Opponent(), EndReason.NotEnoughPoofPieces);
+                return;
+            }
+
+            List<Position> playerPiecePositions =
+                _game.Board.GetPiecesPositionForPlayer(_game.CurrentPlayer).Where(pos => CanPoof(move, _game.Board[pos])).ToList();
+
+            int posIndex = rnd.Next(playerPiecePositions.Count());
+            Position positionToPoof = playerPiecePositions[posIndex];
+
+            _game.Board[positionToPoof] = null;
+        }
+
+        private bool CheckForNoPieces(Move move, PlayerColor currentPlayer)
+        {
+            return !_game.Board.GetPiecesPositionForPlayer(currentPlayer).Where(pos => CanPoof(move, _game.Board[pos])).Any();
+        }
+
+        private bool CanPoof(Move lastMove, Piece piece)
+        {
+            if (piece == null)
+            {
+                return false;
+            }
+
+            return piece.Type != PieceType.King && piece.Type != PieceType.Pawn &&
+                    piece.Type != PieceType.Queen && piece.Color == _game.CurrentPlayer && piece != _game.Board[lastMove.ToPosition]; // must be b4 changing player
+            // must be a piece of type: Bishop/Knight/Rook
+        }
+    }
+}

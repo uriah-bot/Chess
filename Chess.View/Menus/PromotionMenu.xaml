@@ -1,0 +1,51 @@
+﻿<UserControl
+    x:Class="Chess.View.PromotionMenu"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Chess.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Border
+        x:Name="PromotionBorder"
+        Width="275"
+        Height="125"
+        RenderOptions.BitmapScalingMode="HighQuality"
+        Style="{StaticResource ResourceKey=MenuBorderStyle}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1.5*" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                x:Name="SelectionText"
+                FontSize="28"
+                Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
+                Text="SELECT A PIECE" />
+            <UniformGrid
+                Grid.Row="1"
+                Columns="4"
+                Cursor="Hand"
+                Rows="1">
+                <Image
+                    Name="QueenImage"
+                    MouseDown="QueenImage_MouseDown"
+                    Source="Assets/Default/white_queen.png" />
+                <Image
+                    Name="RookImage"
+                    MouseDown="RookImage_MouseDown"
+                    Source="Assets/Default/white_rook.png" />
+                <Image
+                    Name="BishopImage"
+                    MouseDown="BishopImage_MouseDown"
+                    Source="Assets/Default/white_bishop.png" />
+                <Image
+                    Name="KnightImage"
+                    MouseDown="KnightImage_MouseDown"
+                    Source="Assets/Default/white_knight.png" />
+            </UniformGrid>
+        </Grid>
+    </Border>
+</UserControl>
+<!--  Add Binding to Background if player is black change to white  -->
