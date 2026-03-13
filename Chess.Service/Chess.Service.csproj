@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repos\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Chess.Model\Chess.Model.csproj" />
   </ItemGroup>
 
