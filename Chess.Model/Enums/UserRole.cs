@@ -1,4 +1,4 @@
-﻿namespace Chess.Data
+﻿namespace Chess.Model
 {
     public enum UserRole
     {

@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Chess.Service
 {
     public class AuthService
     {
-        EmailService _emailService;
-        public AuthService(EmailService emailService)
-        {
-            _emailService = emailService;
-        }
-
         //public async Task<> SendVerificationCode(string Id)
         //{
         //    // Send Email
