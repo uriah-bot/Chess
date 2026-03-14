@@ -22,7 +22,9 @@
             Grid.Row="1"
             Width="600"
             Height="600"
-            MouseDown="BoardGrid_MouseDown">
+            MouseLeftButtonDown="BoardGrid_MouseDown"
+            MouseRightButtonDown="BoardGrid_MouseRightButtonDown"
+            MouseRightButtonUp="BoardGrid_MouseRightButtonUp">
             <Grid.Background>
                 <ImageBrush ImageSource="/Assets/Default/Board.png" />
             </Grid.Background>
@@ -30,12 +32,12 @@
                 x:Name="HighlightGrid"
                 Columns="8"
                 Rows="8" />
+            <Canvas x:Name="DrawingCanvas" IsHitTestVisible="False" />
             <UniformGrid
                 x:Name="PieceGrid"
                 Columns="8"
                 RenderOptions.BitmapScalingMode="HighQuality"
                 Rows="8" />
-
             <UserControl Name="MenuContainer" />
         </Grid>
 

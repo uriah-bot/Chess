@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -25,6 +26,10 @@ namespace Chess.View
         private readonly Image[,] PieceImages = new Image[8, 8];
         private readonly Rectangle[,] highlights = new Rectangle[8, 8];
         private readonly Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
+
+        private Position rightClickStart = null;
+        private List<Position> markedSquares = new List<Position>();
+        private List<(Position From, Position To)> plannedArrows = new List<(Position, Position)>();
 
         private Game Game;
         private Position selectedPosition = null;
@@ -86,6 +91,13 @@ namespace Chess.View
                 return; // Ignore chess board clicks when a menu is open
             }
 
+            if (markedSquares.Any() || plannedArrows.Any())
+            {
+                markedSquares.Clear();
+                plannedArrows.Clear();
+                DrawingCanvas.Children.Clear();
+            }
+
             Point point = e.GetPosition(BoardGrid);
             Position pos = PointToCoordinates(point);
 
@@ -95,13 +107,13 @@ namespace Chess.View
             }
             else
             {
+                HideHighlightSelectedPosition(selectedPosition);
                 OnToPositionSelected(pos);
             }
         }
 
         private void OnFromPositionSelected(Position position) // helper
         {
-            HideLastMoveHighlight();
             IEnumerable<Move> moves = Game.LegalMovesForPiece(position);
             if (moves.Any())
             {
@@ -109,6 +121,7 @@ namespace Chess.View
                 CacheMoves(moves);
                 ShowHighlights();
             }
+            HighlightSelectedPosition(selectedPosition);
         }
 
         private void OnToPositionSelected(Position toPosition) // helper
@@ -118,6 +131,8 @@ namespace Chess.View
 
             if (moveCache.TryGetValue(toPosition, out Move move))
             {
+                HideLastMoveHighlight();
+
                 if (move.Type == MoveType.Promotion)
                 {
                     HandlePromotion(move.FromPosition, move.ToPosition);
@@ -193,6 +208,28 @@ namespace Chess.View
             }
         }
 
+        private void HighlightSelectedPosition(Position pos)
+        {
+            if (pos == null)
+            {
+                return;
+            }
+
+            Color color = Color.FromArgb(150, 170, 94, 220);
+
+            highlights[pos.Row, pos.Column].Fill = new SolidColorBrush(color);
+        }
+
+        private void HideHighlightSelectedPosition(Position pos)
+        {
+            if (pos == null)
+            {
+                return;
+            }
+
+            highlights[pos.Row, pos.Column].Fill = Brushes.Transparent;
+        }
+
         private void ShowLastMoveHighlight(Move move)
         {
             if (move == null)
@@ -200,7 +237,7 @@ namespace Chess.View
                 return;
             }
 
-            Color color = Color.FromArgb(50, 91, 59, 252);
+            Color color = Color.FromArgb(150, 84, 198, 247);
 
             highlights[move.FromPosition.Row, move.FromPosition.Column].Fill = new SolidColorBrush(color);
             highlights[move.ToPosition.Row, move.ToPosition.Column].Fill = new SolidColorBrush(color);
@@ -294,6 +331,108 @@ namespace Chess.View
                     ShowGameOver();
                 }
             };
+        }
+
+        private void BoardGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (IsMenuOpen() || rightClickStart == null) return;
+
+            Point point = e.GetPosition(BoardGrid);
+            Position rightClickEnd = PointToCoordinates(point);
+
+            if (rightClickStart.Row == rightClickEnd.Row && rightClickStart.Column == rightClickEnd.Column)
+            {
+                // 1. THEY CLICKED A SINGLE SQUARE: Toggle the mark
+                bool removed = markedSquares.RemoveAll(p => p.Row == rightClickEnd.Row && p.Column == rightClickEnd.Column) > 0;
+                if (!removed)
+                {
+                    markedSquares.Add(rightClickEnd);
+                }
+            }
+            else
+            {
+                // 2. THEY DRAGGED BETWEEN SQUARES: Toggle the arrow
+                bool removed = plannedArrows.RemoveAll(a => a.From.Row == rightClickStart.Row && a.From.Column == rightClickStart.Column &&
+                                                            a.To.Row == rightClickEnd.Row && a.To.Column == rightClickEnd.Column) > 0;
+                if (!removed)
+                {
+                    plannedArrows.Add((rightClickStart, rightClickEnd));
+                }
+            }
+
+            rightClickStart = null;
+            DrawRightClickDrawings();
+        }
+
+        private void DrawRightClickDrawings()
+        {
+            // Wipe the canvas clean before redrawing
+            DrawingCanvas.Children.Clear();
+            double squareSize = BoardGrid.ActualWidth / 8;
+
+            // 1. DRAW THE RED MARKED SQUARES
+            SolidColorBrush markedBrush = new SolidColorBrush(Color.FromArgb(180, 235, 97, 80));
+            foreach (Position pos in markedSquares)
+            {
+                Rectangle rect = new Rectangle
+                {
+                    Width = squareSize,
+                    Height = squareSize,
+                    Fill = markedBrush
+                };
+                // Position the rectangle exactly over the square
+                Canvas.SetLeft(rect, pos.Column * squareSize);
+                Canvas.SetTop(rect, pos.Row * squareSize);
+                DrawingCanvas.Children.Add(rect);
+            }
+
+            // 2. DRAW THE ORANGE ARROWS
+            SolidColorBrush arrowBrush = new SolidColorBrush(Color.FromArgb(180, 255, 170, 0));
+            foreach (var arrow in plannedArrows)
+            {
+                double startX = (arrow.From.Column * squareSize) + (squareSize / 2);
+                double startY = (arrow.From.Row * squareSize) + (squareSize / 2);
+                double endX = (arrow.To.Column * squareSize) + (squareSize / 2);
+                double endY = (arrow.To.Row * squareSize) + (squareSize / 2);
+
+                // Draw the Triangle Arrowhead
+                double angle = Math.Atan2(endY - startY, endX - startX);
+                double headLength = 25;
+                double headAngle = Math.PI / 6;
+
+                // Draw the main line
+                Line line = new Line
+                {
+                    X1 = startX,
+                    Y1 = startY,
+                    X2 = endX - 0.8 * headLength * Math.Cos(angle),
+                    Y2 = endY - 0.8 * headLength * Math.Sin(angle),
+                    Stroke = arrowBrush,
+                    StrokeThickness = 12,
+                    StrokeEndLineCap = PenLineCap.Flat,
+                    StrokeStartLineCap = PenLineCap.Round
+                };
+                DrawingCanvas.Children.Add(line);
+
+                Point p1 = new Point(endX, endY);
+                Point p2 = new Point(endX - headLength * Math.Cos(angle - headAngle), endY - headLength * Math.Sin(angle - headAngle));
+                Point p3 = new Point(endX - headLength * Math.Cos(angle + headAngle), endY - headLength * Math.Sin(angle + headAngle));
+
+                Polygon arrowhead = new Polygon
+                {
+                    Points = new PointCollection { p1, p2, p3 },
+                    Fill = arrowBrush
+                };
+                DrawingCanvas.Children.Add(arrowhead);
+            }
+        }
+
+        private void BoardGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (IsMenuOpen()) return;
+
+            Point point = e.GetPosition(BoardGrid);
+            rightClickStart = PointToCoordinates(point);
         }
     }
 }
