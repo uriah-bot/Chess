@@ -1,24 +1,18 @@
 ﻿using Chess.Model;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Chess.Data.Repositories;
 
 namespace Chess.Data
 {
     public class UserRepo : IUserRepository
     {
-        public UserRepo() { }
 
-        public async Task<UserEntity> GetUserByEmailAsync(string email)
+        public async Task<UserEntity> GetUserByUsernameAndPasswordAsync(string username, string HashedPassword)
         {
-            string sql = "SELECT Id, Username, Password, Elo, Role FROM Users WHERE Email=?";
+            string sql = "SELECT Id, Email ,Elo, Role FROM Users WHERE Username=? AND PasswordHash=?";
 
-            DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter(@email, "email"));
+            DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter(@username, "username"), new OleDbParameter(@HashedPassword, "passwordHash"));
 
             if (dt.Rows.Count != 0)
             {
@@ -27,7 +21,8 @@ namespace Chess.Data
                 {
                     Id = (int)userRow["Id"],
                     Username = userRow["Username"].ToString()!,
-                    PasswordHash = userRow["Password"].ToString()!,
+                    PasswordHash = userRow["PasswordHash"].ToString()!,
+                    PasswordSalt = userRow["PasswordSalt"].ToString()!,
                     Email = userRow["Email"].ToString()!,
                     Elo = (int)userRow["Elo"],
                     Role = (UserRole)userRow["Role"]

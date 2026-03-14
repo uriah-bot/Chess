@@ -11,12 +11,12 @@
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
         public string Email { get; set; }
-        public int Elo { get; set; }
+        public int Elo { get; set; } = 100;
         public int Wins { get; set; } = 0;
         public int Draws { get; set; } = 0;
         public int Losses { get; set; } = 0;
         public int PeakElo { get; set; }
-        public UserRole Role { get; set; } // Role.ToString() for db
+        public UserRole Role { get; set; } = UserRole.Guest; // Role.ToString() for db
     }
 
     public class GameEntity : DBEntity

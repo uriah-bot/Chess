@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace Chess.View.BoolToVisConverter
+namespace Chess.View.Converters
 {
     public class InverseBooleanToVisibilityConverter : IValueConverter
     {

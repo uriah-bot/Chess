@@ -7,7 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/BoolToVisConverter/ConverterDictionary.xaml" />
+                <ResourceDictionary Source="/Converters/ConvertersDictionary.xaml" />
                 <ResourceDictionary Source="Assets/Themes/Colors.xaml" />
                 <ResourceDictionary Source="Assets/Themes/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>

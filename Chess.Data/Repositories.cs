@@ -6,7 +6,7 @@ namespace Chess.Data
     {
         public interface IUserRepository
         {
-            Task<UserEntity> GetUserByEmailAsync(string email);
+            Task<UserEntity> GetUserByUsernameAndPasswordAsync(string username, string HashedPassword);
             Task AddUserAsync(UserEntity newUser);
             Task UpdateRoleAsync(string email, UserRole newRole);
         }
