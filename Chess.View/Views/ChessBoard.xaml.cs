@@ -129,19 +129,23 @@ namespace Chess.View
             selectedPosition = null;
             HideHighlights();
 
-            if (moveCache.TryGetValue(toPosition, out Move move))
+            if (!moveCache.TryGetValue(toPosition, out Move move))
             {
-                HideLastMoveHighlight();
-
-                if (move.Type == MoveType.Promotion)
-                {
-                    HandlePromotion(move.FromPosition, move.ToPosition);
-                }
-                else
-                {
-                    HandleMove(move);
-                }
+                OnFromPositionSelected(toPosition);
+                return;
             }
+
+            HideLastMoveHighlight();
+
+            if (move.Type == MoveType.Promotion)
+            {
+                HandlePromotion(move.FromPosition, move.ToPosition);
+            }
+            else
+            {
+                HandleMove(move);
+            }
+
             ShowLastMoveHighlight(move);
         }
 
@@ -371,7 +375,7 @@ namespace Chess.View
             double squareSize = BoardGrid.ActualWidth / 8;
 
             // 1. DRAW THE RED MARKED SQUARES
-            SolidColorBrush markedBrush = new SolidColorBrush(Color.FromArgb(180, 235, 97, 80));
+            SolidColorBrush markedBrush = new SolidColorBrush(Color.FromArgb(130, 246, 31, 31));
             foreach (Position pos in markedSquares)
             {
                 Rectangle rect = new Rectangle
