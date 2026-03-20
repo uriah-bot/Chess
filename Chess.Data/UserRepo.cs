@@ -8,11 +8,11 @@ namespace Chess.Data
     public class UserRepo : IUserRepository
     {
 
-        public async Task<UserEntity> GetUserByUsernameAndPasswordAsync(string username, string HashedPassword)
+        public async Task<UserEntity> GetUserByUsernameAsync(string username)
         {
-            string sql = "SELECT Id, Email ,Elo, Role FROM Users WHERE Username=? AND PasswordHash=?";
+            string sql = "SELECT Id, Username, PasswordHash, PasswordSalt, Email ,Elo, Role FROM Users WHERE Username=?";
 
-            DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter(@username, "username"), new OleDbParameter(@HashedPassword, "passwordHash"));
+            DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter(@username, "username"));
 
             if (dt.Rows.Count != 0)
             {
@@ -34,24 +34,34 @@ namespace Chess.Data
 
         public async Task AddUserAsync(UserEntity newUser)
         {
-            string sql = "INSERT INTO Users (Username, Password, Email, Elo, Role) VALUES (?, ?, ?, ?, ?)";
+            string sql = "INSERT INTO Users (Username, PasswordHash, PasswordSalt, Email, Elo, Role) VALUES (?, ?, ?, ?, ?, ?)";
 
             await DbConnectionProvider.ExecuteCommandAsync(sql,
                 new OleDbParameter("@username", newUser.Username),
-                new OleDbParameter("@password", newUser.PasswordHash),
+                new OleDbParameter("@passwordHash", newUser.PasswordHash),
                 new OleDbParameter("@email", newUser.Email),
                 new OleDbParameter("@elo", newUser.Elo),
                 new OleDbParameter("@role", newUser.Role.ToString())
             );
         }
 
-        public async Task UpdateRoleAsync(string email, UserRole newRole)
+        public async Task UpdateRoleAsync(string username, UserRole newRole)
         {
             string sql = "UPDATE Users SET Role = ? WHERE Email = ?";
 
             await DbConnectionProvider.ExecuteCommandAsync(sql,
-                new OleDbParameter("@role", (int)newRole),
-                new OleDbParameter("@email", email)
+                new OleDbParameter("@role", newRole.ToString()),
+                new OleDbParameter("@username", username)
+            );
+        }
+
+        public async Task UpdateEloAsync(string username, int updatedElo)
+        {
+            string sql = "UPDATE Users SET Role = ? WHERE Email = ?";
+
+            await DbConnectionProvider.ExecuteCommandAsync(sql,
+                new OleDbParameter("@elo", updatedElo),
+                new OleDbParameter("@username", username)
             );
         }
     }

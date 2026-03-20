@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="600"
     d:DesignWidth="700"
-    Background="#181818"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="SelectionCard" TargetType="RadioButton">
@@ -21,14 +20,12 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
                         <Grid>
-
                             <Border
                                 x:Name="BaseBorder"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="8" />
-
                             <Border
                                 x:Name="HighlightOverlay"
                                 Margin="2"
@@ -106,9 +103,8 @@
             </Button>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" Background="#181818">
             <StackPanel>
-
                 <TextBlock
                     Margin="5,0,0,10"
                     FontSize="16"

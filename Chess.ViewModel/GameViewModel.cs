@@ -11,7 +11,7 @@ namespace Chess.ViewModel
 {
     public partial class GameViewModel : ViewModelBase
     {
-		private string _username = "uriahmor".ToUpper(); // TODO: Remove (test)
+		private string _username; // TODO: Remove (test)
         public string Username
 		{
 			get

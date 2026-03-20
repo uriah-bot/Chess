@@ -1,0 +1,252 @@
+﻿<UserControl
+    x:Class="Chess.View.Views.Help"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Chess.View.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="HelpCard" TargetType="Border">
+            <Setter Property="Background" Value="#252526" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
+    </UserControl.Resources>
+    <ScrollViewer Padding="20" VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="700">
+            <TextBlock
+                Margin="0,0,0,25"
+                HorizontalAlignment="Left"
+                FontSize="32"
+                Style="{StaticResource TitleTextStyle}"
+                Text="Help &amp; Resources" />
+            <Border Style="{StaticResource HelpCard}">
+                <StackPanel>
+                    <DockPanel>
+                        <TextBlock Style="{StaticResource SectionHeader}" Text="Video Tutorial For Contributors" />
+                        <Button
+                            Width="20"
+                            Height="20"
+                            Margin="0,0,0,15"
+                            Content="&#xE768;"
+                            FontFamily="Segoe Fluent Icons"
+                            Style="{StaticResource DefaultButton}" />
+                    </DockPanel>
+                    <Grid Panel.ZIndex="100" Visibility="Collapsed">
+                        <StackPanel Margin="0,15,0,0">
+                            <MediaElement
+                                x:Name="TutorialVideo"
+                                Width="600"
+                                Height="340"
+                                LoadedBehavior="Manual"
+                                Stretch="Uniform" />
+                            <StackPanel
+                                Margin="0,15,0,0"
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Button
+                                    Width="50"
+                                    Height="30"
+                                    Margin="5"
+                                    Background="#333333"
+                                    BorderThickness="0"
+                                    Click="PlayVideo_Click"
+                                    Content="&#xE768;"
+                                    Cursor="Hand"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="18"
+                                    Foreground="White"
+                                    ToolTip="Play" />
+                                <Button
+                                    Width="50"
+                                    Height="30"
+                                    Margin="5"
+                                    Background="#333333"
+                                    BorderThickness="0"
+                                    Click="PauseVideo_Click"
+                                    Content="&#xE769;"
+                                    Cursor="Hand"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="18"
+                                    Foreground="White"
+                                    ToolTip="Pause" />
+                                <Button
+                                    Width="50"
+                                    Height="30"
+                                    Margin="5"
+                                    Background="#333333"
+                                    BorderThickness="0"
+                                    Click="StopVideo_Click"
+                                    Content="&#xE71A;"
+                                    Cursor="Hand"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="18"
+                                    Foreground="White"
+                                    ToolTip="Stop" />
+                            </StackPanel>
+                            <Border
+                                Width="400"
+                                Padding="25"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="#1E1E1E"
+                                BorderBrush="#333"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                                <Border.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="30"
+                                        Opacity="0.8"
+                                        ShadowDepth="5"
+                                        Color="Black" />
+                                </Border.Effect>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource HelpCard}">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SectionHeader}" Text="Mouse Controls" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Width="120"
+                            FontWeight="Bold"
+                            Foreground="#84C6F7"
+                            Text="Left Click" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Foreground="#CCCCCC"
+                            Text="Select a piece to move. Clears arrows/marks." />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            FontWeight="Bold"
+                            Foreground="#EB6150"
+                            Text="Right Click" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Foreground="#CCCCCC"
+                            Text="Mark a square in red." />
+
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            FontWeight="Bold"
+                            Foreground="#FFAA00"
+                            Text="Right Click + Drag" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Foreground="#CCCCCC"
+                            Text="Draw an arrow to plan your moves." />
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource HelpCard}">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SectionHeader}" Text="Frequently Asked Questions" />
+                    <Expander
+                        Margin="0,0,0,5"
+                        Foreground="White"
+                        Header="What do the custom rules do?">
+                        <TextBlock
+                            Margin="30,10,0,10"
+                            Foreground="#CCCCCC"
+                            Text="You can hover over or click the modifier cards in the Game Setup menu to read exactly what each hazard or rule changes about the game."
+                            TextWrapping="Wrap" />
+                    </Expander>
+                    <Expander
+                        Margin="0,0,0,5"
+                        Foreground="White"
+                        Header="How does the AI work?">
+                        <TextBlock
+                            Margin="30,10,0,10"
+                            Foreground="#CCCCCC"
+                            Text="The AI analyzes thousands of moves ahead using Minimax algorithms. It calculates piece value, board control, and active hazards to determine the best move."
+                            TextWrapping="Wrap" />
+                    </Expander>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource HelpCard}">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SectionHeader}" Text="Send Feedback or Report a Bug" />
+                    <TextBlock
+                        Margin="0,0,0,15"
+                        Foreground="#CCCCCC"
+                        Text="Send an email directly to the developer (without leaving the game)."
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="Subject" />
+                    <Border
+                        Margin="0,0,0,15"
+                        Background="#1E1E1E"
+                        BorderBrush="#444"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBox
+                            x:Name="EmailSubject"
+                            Padding="8"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Foreground="White" />
+                    </Border>
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="Message" />
+                    <Border
+                        Margin="0,0,0,15"
+                        Background="#1E1E1E"
+                        BorderBrush="#444"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBox
+                            x:Name="EmailBody"
+                            Height="100"
+                            Padding="8"
+                            AcceptsReturn="True"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Foreground="White"
+                            TextWrapping="Wrap" />
+                    </Border>
+                    <Button
+                        Width="120"
+                        Height="30"
+                        HorizontalAlignment="Left"
+                        Click="SendEmailToDeveloper_Click"
+                        Content="Send Message"
+                        Style="{StaticResource DefaultButton}" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Chess.Model;
 using Chess.Data;
 
 namespace Chess.Service
 {
+    public interface IAuthService
+    {
+        Task<UserEntity> LoginAsync(string username, string password);
+        Task<bool> RegisterAsync(string username, string email, string password);
+        //Task LogoutAsync();
+        //Task<bool> ChangeUserPropertyAsync(string username, string password, string propertyName = "");
+    }
+
     public class AuthService : IAuthService
     {
         readonly UserRepo _userRepo = new UserRepo();
@@ -24,28 +28,40 @@ namespace Chess.Service
 
         public async Task<UserEntity> LoginAsync(string username, string password)
         {
-            var hash = HashPassword(password);
+            var user = await _userRepo.GetUserByUsernameAsync(username);
+            
+            if (user == null)
+            {
+                return null;
+            }
 
-            var user = await _userRepo.GetUserByUsernameAndPasswordAsync(username, hash);
+            var hash = HashPassword(password, user.PasswordSalt);
 
-            return user;
+            if (user.PasswordHash == hash)
+            {
+                return user;
+            }
+
+            return null;
         }
 
         public async Task<bool> RegisterAsync(string username, string email, string password)
         {
-            var hash = HashPassword(password);
+            var copycat = await _userRepo.GetUserByUsernameAsync(username);
 
-            var copy = await _userRepo.GetUserByUsernameAndPasswordAsync(username, password);
-
-            if (copy != null || copy.Email.Equals(email))
+            if (copycat != null || copycat.Email.Equals(email))
             {
                 return false;
             }
-            
+
+            string salt = GenerateSalt();
+            var hash = HashPassword(password, salt);
+
             var newUser = new UserEntity
             {
                 Username = username,
                 Email = email,
+                PasswordSalt = salt,
                 PasswordHash = hash
             };
 
@@ -54,11 +70,22 @@ namespace Chess.Service
             return true;
         }
 
-        private string HashPassword(string password)
+        private static string GenerateSalt()
+        {
+            // Create a 128-bit random salt
+            byte[] saltBytes = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(saltBytes);
+            }
+            return Convert.ToBase64String(saltBytes);
+        }
+
+        private static string HashPassword(string password, string salt)
         {
             using (SHA256 sha = SHA256.Create())
             {
-                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password + salt));
                 return Convert.ToHexString(bytes);
             }
         }

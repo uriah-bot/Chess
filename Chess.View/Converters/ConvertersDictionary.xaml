@@ -4,4 +4,5 @@
     xmlns:conv="clr-namespace:Chess.View.Converters">
     <BooleanToVisibilityConverter x:Key="BoolToVis" />
     <conv:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis" />
+    <conv:RoleToVisibilityConverter x:Key="RoleToVis" />
 </ResourceDictionary>

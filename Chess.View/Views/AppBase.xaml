@@ -62,18 +62,6 @@
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE7FC;" />
                     <RadioButton
-                        Uid="Classical"
-                        Click="Navigate_Click"
-                        Content="Classical"
-                        Style="{StaticResource NavButtonStyle}"
-                        Tag="&#xEA18;" />
-                    <RadioButton
-                        Uid="Adventure"
-                        Click="Navigate_Click"
-                        Content="Adventure"
-                        Style="{StaticResource NavButtonStyle}"
-                        Tag="&#xE819;" />
-                    <RadioButton
                         Uid="Statistics"
                         Click="Navigate_Click"
                         Content="Statistics"
@@ -86,8 +74,14 @@
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE713;" />
                     <RadioButton
+                        Uid="AdvancedSettings"
+                        Click="Navigate_Click"
+                        Content="Advanced Settings"
+                        Style="{StaticResource NavButtonStyle}"
+                        Tag="&#xE7BA;"
+                        Visibility="{Binding Role, Converter={StaticResource RoleToVis}, ConverterParameter=Admin|Moderator}" />
+                    <RadioButton
                         Uid="Help"
-                        Margin="0,50,0,0"
                         Click="Navigate_Click"
                         Content="Help"
                         Style="{StaticResource NavButtonStyle}"

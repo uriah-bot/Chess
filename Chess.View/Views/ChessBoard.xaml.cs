@@ -40,12 +40,10 @@ namespace Chess.View
         };
 
         private Move lastMove = null; // only for UI
-        private GameViewModel GameViewModel = new GameViewModel();
 
         public ChessBoard()
         {
             InitializeComponent();
-            DataContext = GameViewModel;
             InitializeBoard();
 
             Game = new Game(PlayerColor.White, Board.Initial());

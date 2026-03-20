@@ -6,9 +6,10 @@ namespace Chess.Data
     {
         public interface IUserRepository
         {
-            Task<UserEntity> GetUserByUsernameAndPasswordAsync(string username, string HashedPassword);
+            Task<UserEntity> GetUserByUsernameAsync(string username);
             Task AddUserAsync(UserEntity newUser);
             Task UpdateRoleAsync(string email, UserRole newRole);
+            Task UpdateEloAsync(string username, int updatedElo);
         }
         public interface IGameRepository
         {
@@ -17,18 +18,18 @@ namespace Chess.Data
         }
         public interface IThemeRepository
         {
-            Task<GameEntity> GetThemesByUserIdAsync(int Id);
+            Task<IEnumerable<ThemeEntity>> GetThemesByUserIdAsync(int Id);
             Task AddThemeAsync(ThemeEntity newTheme);
         }
         public interface IPieceThemeRepository
         {
-            Task<GameEntity> GetThemesByUserIdAsync(int Id);
-            Task AddThemeAsync(ThemeEntity newTheme);
+            Task<IEnumerable<PieceThemeEntity>> GetThemesByUserIdAsync(int Id);
+            Task AddThemeAsync(PieceThemeEntity newTheme);
         }
         public interface IRadioChannelRepository
         {
-            Task<GameEntity> GetChannelsByUserIdAsync(int Id);
-            Task AddChannelAsync(ThemeEntity newTheme);
+            Task<IEnumerable<RadioChannelEntity>> GetChannelsByUserIdAsync(int Id);
+            Task AddChannelAsync(RadioChannelEntity newChannel);
         }
     }
 }

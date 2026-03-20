@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Chess.View.Views;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Chess.View
@@ -9,10 +10,9 @@ namespace Chess.View
     public partial class AppBase : Window
     {
         private Home _homeView;
-        private Classical _classicalView;
-        private Adventure _adventureView;
         private Stats _statsView;
         private Settings _settingsView;
+        private Help _helpView;
         //private Infp _infoView;
 
         public AppBase()
@@ -35,16 +35,6 @@ namespace Chess.View
                         MainContentArea.Content = _homeView;
                         break;
 
-                    case "Classical":
-                        if (_adventureView == null) _classicalView = new Classical();
-                        MainContentArea.Content = _classicalView;
-                        break;
-
-                    case "Adventure":
-                        if (_adventureView == null) _adventureView = new Adventure();
-                        MainContentArea.Content = _adventureView;
-                        break;
-
                     case "Statistics":
                         if (_statsView == null) _statsView = new Stats();
                         MainContentArea.Content = _statsView;
@@ -55,10 +45,15 @@ namespace Chess.View
                         MainContentArea.Content = _settingsView;
                         break;
 
-                    //case "Info":
-                    //    if (_settingsView == null) _infoView = new Info();
-                    //    MainContentArea.Content = _infoView;
+                    //case "AdvancedSettings":
+                    //    if (_advancedSettingsView == null) _advancdSettingsView = new AdvancedSettings();
+                    //    MainContentArea.Content = _advancdSettingsView;
                     //    break;
+
+                    case "Help":
+                        if (_helpView == null) _helpView = new Help();
+                        MainContentArea.Content = _helpView;
+                        break;
                 }
             }
         }
