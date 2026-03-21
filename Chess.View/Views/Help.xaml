@@ -36,17 +36,22 @@
                             Width="20"
                             Height="20"
                             Margin="0,0,0,15"
+                            Click="WatchVideo_Click"
                             Content="&#xE768;"
                             FontFamily="Segoe Fluent Icons"
                             Style="{StaticResource DefaultButton}" />
                     </DockPanel>
-                    <Grid Panel.ZIndex="100" Visibility="Collapsed">
+                    <Grid
+                        x:Name="VideoGrid"
+                        Panel.ZIndex="100"
+                        Visibility="Collapsed">
                         <StackPanel Margin="0,15,0,0">
                             <MediaElement
                                 x:Name="TutorialVideo"
                                 Width="600"
                                 Height="340"
                                 LoadedBehavior="Manual"
+                                Source=""
                                 Stretch="Uniform" />
                             <StackPanel
                                 Margin="0,15,0,0"
@@ -63,8 +68,7 @@
                                     Cursor="Hand"
                                     FontFamily="Segoe MDL2 Assets"
                                     FontSize="18"
-                                    Foreground="White"
-                                    ToolTip="Play" />
+                                    Foreground="White" />
                                 <Button
                                     Width="50"
                                     Height="30"
@@ -76,8 +80,7 @@
                                     Cursor="Hand"
                                     FontFamily="Segoe MDL2 Assets"
                                     FontSize="18"
-                                    Foreground="White"
-                                    ToolTip="Pause" />
+                                    Foreground="White" />
                                 <Button
                                     Width="50"
                                     Height="30"
@@ -89,33 +92,15 @@
                                     Cursor="Hand"
                                     FontFamily="Segoe MDL2 Assets"
                                     FontSize="18"
-                                    Foreground="White"
-                                    ToolTip="Stop" />
+                                    Foreground="White" />
                             </StackPanel>
-                            <Border
-                                Width="400"
-                                Padding="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Background="#1E1E1E"
-                                BorderBrush="#333"
-                                BorderThickness="1"
-                                CornerRadius="12">
-                                <Border.Effect>
-                                    <DropShadowEffect
-                                        BlurRadius="30"
-                                        Opacity="0.8"
-                                        ShadowDepth="5"
-                                        Color="Black" />
-                                </Border.Effect>
-                            </Border>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
             </Border>
             <Border Style="{StaticResource HelpCard}">
                 <StackPanel>
-                    <TextBlock Style="{StaticResource SectionHeader}" Text="Mouse Controls" />
+                    <TextBlock Style="{StaticResource SectionHeader}" Text="Mouse &amp; Keyboard Controls" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -172,11 +157,11 @@
                     <Expander
                         Margin="0,0,0,5"
                         Foreground="White"
-                        Header="What do the custom rules do?">
+                        Header="What do the custom modifiers do?">
                         <TextBlock
                             Margin="30,10,0,10"
                             Foreground="#CCCCCC"
-                            Text="You can hover over or click the modifier cards in the Game Setup menu to read exactly what each hazard or rule changes about the game."
+                            Text="You can hover over or click the modifier cards in the Adventure Selection menu to read exactly what each modifier changes about the game. I encourage subbmitting more ideas for modifiers and helping!"
                             TextWrapping="Wrap" />
                     </Expander>
                     <Expander
@@ -186,7 +171,7 @@
                         <TextBlock
                             Margin="30,10,0,10"
                             Foreground="#CCCCCC"
-                            Text="The AI analyzes thousands of moves ahead using Minimax algorithms. It calculates piece value, board control, and active hazards to determine the best move."
+                            Text="The AI acts in 2 ways: Stockfish AI uses a neural network, existing databases including millions of positions in the start and endgame, and uses thousands of efficiancy improving code, involving complex neural network algorithms. The local AI uses only the base of stockfish and all other Chess AIs, it uses a method called minimax, and another named alpha-beta pruning. I encourage research on these amazing revolutions in the world of AI in board games."
                             TextWrapping="Wrap" />
                     </Expander>
                 </StackPanel>

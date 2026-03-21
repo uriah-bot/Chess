@@ -11,7 +11,8 @@
 
 
         // Email
-        public const string APP_RECEIVER_EMAIL = "uribitmap2010@gmail.com";
+        public const string APP_EMAIL = "uribitmap2010@gmail.com";
+        public const string APP_KEY = "upbz xvsd rike fspc";
 
         // Domain
         public const int BOARD_SIZE = 8; // 8*8

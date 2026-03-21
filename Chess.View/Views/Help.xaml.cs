@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,48 +28,57 @@ namespace Chess.View.Views
         {
             InitializeComponent();
         }
-        private void StartTutorial_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Trigger your interactive tutorial overlay or navigate to a Tutorial view
-            MessageBox.Show("Tutorial starting soon!", "Tutorial");
-        }
 
         private void WatchVideo_Click(object sender, RoutedEventArgs e)
         {
-            // Opens a YouTube video link in the user's default web browser
-            string videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-
-            try
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = videoUrl,
-                    UseShellExecute = true
-                });
-            }
-            catch
-            {
-                MessageBox.Show("Could not open the browser. Please visit: " + videoUrl);
-            }
+            VideoGrid.Visibility = Visibility.Visible;
         }
 
-        private void SendEmailToDeveloper_Click(object sender, RoutedEventArgs e)
+        private async void SendEmailToDeveloper_Click(object sender, RoutedEventArgs e)
         {
-            // Opens the default email client with a pre-filled subject line
-            string subject = "Feedback/Bug Report - Custom Chess";
+            string subject = EmailSubject.Text;
+            string body = EmailBody.Text;
 
+            if (string.IsNullOrWhiteSpace(subject) || string.IsNullOrWhiteSpace(body))
+            {
+                MessageBox.Show("Please fill out both the subject and the message before sending.", "Missing Info");
+                return;
+            }
+
+            // TODO: remove ts and connect to SendEmail() from servicw when in vm
             try
             {
-                Process.Start(new ProcessStartInfo
+                var smtpClient = new SmtpClient("smtp.gmail.com")
                 {
-                    FileName = $"mailto:{AppConstants.APP_RECEIVER_EMAIL}?subject={subject}",
-                    UseShellExecute = true
-                });
+                    Port = 587,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(AppConstants.APP_EMAIL, AppConstants.APP_KEY),
+                    EnableSsl = true
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(AppConstants.APP_EMAIL),
+                    Subject = $"[Custom Chess Feedback] {subject}",
+                    Body = $"Message from User:\n\n{body}",
+                };
+
+                mailMessage.To.Add(AppConstants.APP_EMAIL);
+                await smtpClient.SendMailAsync(mailMessage);
+
+                EmailSubject.Clear();
+                EmailBody.Clear();
+
+                MessageBox.Show("Message sent successfully! Thank you for your feedback.", "Success");
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Could not open email client. Please email us at: " + AppConstants.APP_RECEIVER_EMAIL);
+                MessageBox.Show($"Could not send message. Check your internet connection.\n\nError: {ex.Message}", "Failed to Send");
             }
         }
+
+        private void PlayVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Play();
+        private void PauseVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Pause();
+        private void StopVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Stop();
     }
 }
