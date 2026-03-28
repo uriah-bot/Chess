@@ -11,7 +11,6 @@ namespace Chess.View
         public Login()
         {
             InitializeComponent();
-            DataContext = new LoginViewModel();
         }
     }
 }

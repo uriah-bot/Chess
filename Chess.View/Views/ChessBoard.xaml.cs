@@ -298,10 +298,21 @@ namespace Chess.View
 
         private void RestartGame()
         {
+            // simple highlights
             selectedPosition = null;
             HideHighlights();
             HideLastMoveHighlight();
+
+            // planned highlights or arrows
+            markedSquares.Clear();
+            plannedArrows.Clear();
+            DrawingCanvas.Children.Clear();
+
             moveCache.Clear();
+            
+            // selected position after restart
+            foreach (var rec in highlights) rec.Fill = Brushes.Transparent;
+
             // needed to happen before new game is made (for updated highlights & logic)
 
             Game = new Game(PlayerColor.White, Board.Initial());
@@ -342,10 +353,10 @@ namespace Chess.View
             Point point = e.GetPosition(BoardGrid);
             Position rightClickEnd = PointToCoordinates(point);
 
-            if (rightClickStart.Row == rightClickEnd.Row && rightClickStart.Column == rightClickEnd.Column)
+            if (rightClickStart == rightClickEnd)
             {
-                // 1. THEY CLICKED A SINGLE SQUARE: Toggle the mark
-                bool removed = markedSquares.RemoveAll(p => p.Row == rightClickEnd.Row && p.Column == rightClickEnd.Column) > 0;
+                // CLICKED A SINGLE SQUARE now mark it
+                bool removed = markedSquares.RemoveAll(p => p == rightClickEnd) > 0;
                 if (!removed)
                 {
                     markedSquares.Add(rightClickEnd);
@@ -353,9 +364,8 @@ namespace Chess.View
             }
             else
             {
-                // 2. THEY DRAGGED BETWEEN SQUARES: Toggle the arrow
-                bool removed = plannedArrows.RemoveAll(a => a.From.Row == rightClickStart.Row && a.From.Column == rightClickStart.Column &&
-                                                            a.To.Row == rightClickEnd.Row && a.To.Column == rightClickEnd.Column) > 0;
+                // DRAGGED BETWEEN SQUARES = arrow
+                bool removed = plannedArrows.RemoveAll(a => a.From == rightClickStart && a.To == rightClickEnd) > 0;
                 if (!removed)
                 {
                     plannedArrows.Add((rightClickStart, rightClickEnd));
@@ -372,7 +382,7 @@ namespace Chess.View
             DrawingCanvas.Children.Clear();
             double squareSize = BoardGrid.ActualWidth / 8;
 
-            // 1. DRAW THE RED MARKED SQUARES
+            // DRAW RED SQUARES
             SolidColorBrush markedBrush = new SolidColorBrush(Color.FromArgb(130, 246, 31, 31));
             foreach (Position pos in markedSquares)
             {
@@ -382,13 +392,13 @@ namespace Chess.View
                     Height = squareSize,
                     Fill = markedBrush
                 };
-                // Position the rectangle exactly over the square
+                // Position rectangle over the square
                 Canvas.SetLeft(rect, pos.Column * squareSize);
                 Canvas.SetTop(rect, pos.Row * squareSize);
                 DrawingCanvas.Children.Add(rect);
             }
 
-            // 2. DRAW THE ORANGE ARROWS
+            // DRAW THE ARROWS
             SolidColorBrush arrowBrush = new SolidColorBrush(Color.FromArgb(180, 255, 170, 0));
             foreach (var arrow in plannedArrows)
             {
