@@ -13,12 +13,16 @@ namespace Chess.View
         private Stats _statsView;
         private Settings _settingsView;
         private Help _helpView;
-        //private Infp _infoView;
+
+        private Adventure _adventureView;
+        private Classical _classicalView;
 
         public AppBase()
         {
             InitializeComponent();
             _homeView = new Home();
+            _homeView.AdventureRequested += AdventureRequested;
+            _homeView.ClassicalRequested += ClassicalRequested;
             MainContentArea.Content = _homeView;
         }
 
@@ -56,6 +60,31 @@ namespace Chess.View
                         break;
                 }
             }
+        }
+
+        public void AdventureRequested(object sender, EventArgs e)
+        {
+            if (_adventureView == null) _adventureView = new Adventure();
+            MainContentArea.Content = _adventureView;
+        }
+
+        public void ClassicalRequested(object sender, EventArgs e)
+        {
+            if (_classicalView == null)
+            {
+                _classicalView = new Classical();
+                _classicalView.SettingsRequested += SettingsRequested;
+            }
+
+            MainContentArea.Content = _classicalView;
+        }
+
+        public void SettingsRequested(object sender, EventArgs e)
+        {
+            if (_settingsView == null) _settingsView = new Settings();
+
+            SettingsRadioButton.IsChecked = true;
+            MainContentArea.Content = _settingsView;
         }
     }
 }

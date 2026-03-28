@@ -20,9 +20,17 @@ namespace Chess.View
     /// </summary>
     public partial class Classical : UserControl
     {
+        public event EventHandler SettingsRequested;
+
         public Classical()
         {
             InitializeComponent();
+            SettingsRequested += SettingsRequested;
+        }
+
+        private void SettingNav_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 }

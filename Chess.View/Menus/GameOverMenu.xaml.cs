@@ -41,6 +41,7 @@ namespace Chess.View
                 EndReason.FiftyMoveRule => "DRAW BY FIFTY-MOVE RULE",
                 EndReason.Resignation => "YOU LOST BY RESIGNATION",
                 EndReason.KingPromotion => $"{PlayerString(currentPlayer.Opponent()).ToUpper()} PROMOTED THE KING",
+                EndReason.NotEnoughPoofPieces => $"{PlayerString(currentPlayer).ToUpper()} RAN OUT OF POOF-ABLES",
                 _ => ""
             };
         }

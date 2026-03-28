@@ -8,12 +8,12 @@ namespace Chess.Data
         {
             Task<UserEntity> GetUserByUsernameAsync(string username);
             Task AddUserAsync(UserEntity newUser);
-            Task UpdateRoleAsync(string email, UserRole newRole);
+            Task UpdateRoleAsync(string username, UserRole newRole);
             Task UpdateEloAsync(string username, int updatedElo);
         }
         public interface IGameRepository
         {
-            Task<GameEntity> GetGameByIdAsync(int Id);
+            Task<List<GameEntity>> GetGamesByUsernameAsync(string username);
             Task AddGameAsync(GameEntity newGame);
         }
         public interface IThemeRepository

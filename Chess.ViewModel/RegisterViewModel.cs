@@ -1,16 +1,39 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Chess.Service;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
 {
     public class RegisterViewModel : ViewModelBase
     {
-		private string _username;
+        private readonly IAuthService _authService;
+        private readonly IUserStore _userStore;
+
+        public ICommand RegisterCommand;
+
+        public RegisterViewModel(IAuthService authService, IUserStore userStore)
+        {
+            _authService = authService;
+            _userStore = userStore;
+            RegisterCommand = new RelayCommand(o => Register(), o => CanRegister());
+        }
+
+        private async void Register()
+        {
+            var success = await _authService.RegisterAsync(Username, Password);
+
+            if (success)
+            {
+                var user = await _authService.LoginAsync(Username, Password);
+                _userStore.CurrentUser = user;
+            }
+        }
+
+        private bool CanRegister()
+        {
+            return _authService.CanUserRegister(Username, Password);
+        }
+
+        private string _username;
 		public string Username
 		{
 			get
@@ -35,20 +58,6 @@ namespace Chess.ViewModel
 			{
 				_password = value;
 				OnPropertyChanged(nameof(Password));
-			}
-		}
-
-		private string _email;
-		public string Email
-		{
-			get
-			{
-				return _email;
-			}
-			set
-			{
-				_email = value;
-				OnPropertyChanged(nameof(Email));
 			}
 		}
 
@@ -90,9 +99,7 @@ namespace Chess.ViewModel
         //        OnPropertyChanged(nameof(IsLoading));
         //    }
         //}
-        // for preventing double clicks when requesting registration
-
-        private ICommand RegisterCommand { get; }
+        // for preventing double clicks when requesting registration and nice UI
 
         //public RegisterViewModel()
         //{

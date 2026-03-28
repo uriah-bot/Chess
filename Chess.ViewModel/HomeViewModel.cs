@@ -8,5 +8,6 @@ namespace Chess.ViewModel
 {
     public class HomeViewModel
     {
+        
     }
 }

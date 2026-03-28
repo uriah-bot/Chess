@@ -10,8 +10,7 @@
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
-        public string Email { get; set; }
-        public int Elo { get; set; } = 100;
+        public int Elo { get; set; } = 500;
         public int Wins { get; set; } = 0;
         public int Draws { get; set; } = 0;
         public int Losses { get; set; } = 0;
@@ -21,11 +20,12 @@
 
     public class GameEntity : DBEntity
     {
-        public int UserId { get; set; }
+        public string Username { get; set; }
+        public List<string> GameFENs { get; set; }
         public GameMode GameMode { get; set; }
         public PlayerColor? UserPlayedAs { get; set; }
         public int? BotRating { get; set; }
-        public PlayerColor Result { get; set; } // string -> User
+        public string Result { get; set; } // playercolor -> User
         public DateTime DatePlayed { get; set; }
     }
 

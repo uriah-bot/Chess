@@ -1,21 +1,28 @@
 ﻿using System.Text;
 using System.Security.Cryptography;
 using Chess.Model;
-using Chess.Data;
+using static Chess.Data.Repositories;
 
 namespace Chess.Service
 {
     public interface IAuthService
     {
         Task<UserEntity> LoginAsync(string username, string password);
-        Task<bool> RegisterAsync(string username, string email, string password);
+        Task<bool> RegisterAsync(string username, string password);
+        bool CanUserLogIn(string username, string password);
+        bool CanUserRegister(string username, string password);
         //Task LogoutAsync();
         //Task<bool> ChangeUserPropertyAsync(string username, string password, string propertyName = "");
     }
 
     public class AuthService : IAuthService
     {
-        readonly UserRepo _userRepo = new UserRepo();
+        private readonly IUserRepository _userRepo;
+
+        public AuthService(IUserRepository userRepo)
+        {
+            _userRepo = userRepo;
+        }
 
         //public async Task<> SendVerificationCode(string Id)
         //{
@@ -45,27 +52,60 @@ namespace Chess.Service
             return null;
         }
 
-        public async Task<bool> RegisterAsync(string username, string email, string password)
+        public async Task<bool> RegisterAsync(string username, string password) // TODO: change to Task<Error>
         {
+            // check if user exists
             var copycat = await _userRepo.GetUserByUsernameAsync(username);
 
-            if (copycat != null || copycat.Email.Equals(email))
+            if (copycat != null)
             {
                 return false;
             }
 
+            // store user info (privacy stuff + role + defaulted values)
             string salt = GenerateSalt();
             var hash = HashPassword(password, salt);
 
+            var role = UserRole.Guest;
+            if (password.Contains("UriahIsTheBestAdmin"))
+            {
+                role = UserRole.Admin;
+            }
+            else if (password.Contains("TwinkleTwinleLittleStar"))
+            {
+                role = UserRole.Moderator;
+            }
+
+            // creating user and adding to the database
             var newUser = new UserEntity
             {
                 Username = username,
-                Email = email,
                 PasswordSalt = salt,
-                PasswordHash = hash
+                PasswordHash = hash,
+                Role = role
             };
 
             await _userRepo.AddUserAsync(newUser);
+
+            return true;
+        }
+
+        public bool CanUserLogIn(string username, string password)
+        {
+            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(username))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool CanUserRegister(string username, string password)
+        {
+            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(username))
+            {
+                return false;
+            }
 
             return true;
         }

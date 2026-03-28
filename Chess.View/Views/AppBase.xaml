@@ -68,6 +68,7 @@
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE9D2;" />
                     <RadioButton
+                        x:Name="SettingsRadioButton"
                         Uid="Settings"
                         Click="Navigate_Click"
                         Content="Settings"

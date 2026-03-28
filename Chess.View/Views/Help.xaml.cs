@@ -77,8 +77,39 @@ namespace Chess.View.Views
             }
         }
 
+        private void CollapseVideo_Click(object sender, RoutedEventArgs e)
+        {
+            TutorialVideo.Stop();
+            VideoGrid.Visibility = Visibility.Collapsed;
+        }
+
+        private void Forwards5Sec_Click(object sender, RoutedEventArgs e)
+        {
+            var duration = TutorialVideo.NaturalDuration.TimeSpan;
+            var nextPosition = TutorialVideo.Position.Add(TimeSpan.FromSeconds(5));
+
+            if (nextPosition > duration)
+            {
+                nextPosition = duration;
+            }
+
+            TutorialVideo.Position = nextPosition;
+        }
+
+        private void Backwards5Sec_Click(object sender, RoutedEventArgs e)
+        {
+            var zero = TimeSpan.FromSeconds(0);
+            var nextPosition = TutorialVideo.Position.Subtract(TimeSpan.FromSeconds(5));
+
+            if (nextPosition < zero)
+            {
+                nextPosition = zero;
+            }
+
+            TutorialVideo.Position = nextPosition;
+        }
+
         private void PlayVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Play();
         private void PauseVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Pause();
-        private void StopVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Stop();
     }
 }

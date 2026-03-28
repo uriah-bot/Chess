@@ -20,7 +20,7 @@
             <Setter Property="Margin" Value="0,0,0,15" />
         </Style>
     </UserControl.Resources>
-    <ScrollViewer Padding="20" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Padding="20" VerticalScrollBarVisibility="Hidden">
         <StackPanel MaxWidth="700">
             <TextBlock
                 Margin="0,0,0,25"
@@ -30,15 +30,21 @@
                 Text="Help &amp; Resources" />
             <Border Style="{StaticResource HelpCard}">
                 <StackPanel>
-                    <DockPanel>
+                    <DockPanel LastChildFill="False">
                         <TextBlock Style="{StaticResource SectionHeader}" Text="Video Tutorial For Contributors" />
                         <Button
-                            Width="20"
+                            Width="40"
                             Height="20"
-                            Margin="0,0,0,15"
+                            Margin="230,0,0,12"
                             Click="WatchVideo_Click"
-                            Content="&#xE768;"
-                            FontFamily="Segoe Fluent Icons"
+                            Content="Show"
+                            Style="{StaticResource DefaultButton}" />
+                        <Button
+                            Width="40"
+                            Height="20"
+                            Margin="5,0,0,12"
+                            Click="CollapseVideo_Click"
+                            Content="Hide"
                             Style="{StaticResource DefaultButton}" />
                     </DockPanel>
                     <Grid
@@ -57,6 +63,17 @@
                                 Margin="0,15,0,0"
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal">
+                                <Button
+                                    Width="50"
+                                    Height="30"
+                                    Margin="5"
+                                    Background="#333333"
+                                    BorderThickness="0"
+                                    Click="Backwards5Sec_Click"
+                                    Content="-5s"
+                                    Cursor="Hand"
+                                    FontSize="18"
+                                    Foreground="White" />
                                 <Button
                                     Width="50"
                                     Height="30"
@@ -87,10 +104,9 @@
                                     Margin="5"
                                     Background="#333333"
                                     BorderThickness="0"
-                                    Click="StopVideo_Click"
-                                    Content="&#xE71A;"
+                                    Click="Forwards5Sec_Click"
+                                    Content="+5s"
                                     Cursor="Hand"
-                                    FontFamily="Segoe MDL2 Assets"
                                     FontSize="18"
                                     Foreground="White" />
                             </StackPanel>

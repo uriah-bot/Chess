@@ -83,18 +83,27 @@
             <Button
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Background="Transparent"
-                BorderThickness="0"
+                Click="SettingNav_Click"
                 Cursor="Hand">
                 <TextBlock
                     FontFamily="Segoe MDL2 Assets"
                     FontSize="24"
-                    Foreground="#888"
                     Text="&#xE713;" />
                 <Button.Style>
                     <Style TargetType="Button">
+                        <Setter Property="Foreground" Value="#888" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="Transparent">
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource Brush.AccentHover}" />
                                 <Setter Property="Opacity" Value="0.7" />
                             </Trigger>
                         </Style.Triggers>
@@ -103,163 +112,168 @@
             </Button>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" Background="#181818">
-            <StackPanel>
-                <TextBlock
-                    Margin="5,0,0,10"
-                    FontSize="16"
-                    FontWeight="SemiBold"
-                    Foreground="White"
-                    Text="I want to play as:" />
-                <UniformGrid Margin="0,0,0,30" Columns="3">
-                    <RadioButton GroupName="ColorGroup" Style="{StaticResource SelectionCard}">
-                        <StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+            <Border
+                Margin="0,0,0,20"
+                Padding="15"
+                Background="#252526"
+                CornerRadius="8">
+                <StackPanel>
+                    <TextBlock
+                        Margin="5,0,0,10"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="I want to play as:" />
+                    <UniformGrid Margin="0,0,0,30" Columns="3">
+                        <RadioButton GroupName="ColorGroup" Style="{StaticResource SelectionCard}">
+                            <StackPanel>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="36"
+                                    Foreground="White"
+                                    Text="♙" />
+                                <TextBlock
+                                    Margin="0,5,0,0"
+                                    HorizontalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="White" />
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton
+                            GroupName="ColorGroup"
+                            IsChecked="True"
+                            Style="{StaticResource SelectionCard}">
+                            <StackPanel>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontFamily="Segoe UI Emoji"
+                                    FontSize="36"
+                                    Text="🌗" />
+                                <TextBlock
+                                    Margin="0,5,0,0"
+                                    HorizontalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="Random" />
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton GroupName="ColorGroup" Style="{StaticResource SelectionCard}">
+                            <StackPanel>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="36"
+                                    Foreground="#888"
+                                    Text="♟" />
+                                <TextBlock
+                                    Margin="0,5,0,0"
+                                    HorizontalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="Black" />
+                            </StackPanel>
+                        </RadioButton>
+                    </UniformGrid>
+
+                    <TextBlock
+                        Margin="5,0,0,10"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="Stockfish Difficulty:" />
+                    <UniformGrid Margin="0,0,0,30" Columns="2">
+                        <RadioButton
+                            GroupName="EloGroup"
+                            Style="{StaticResource SelectionCard}"
+                            Tag="800">
                             <TextBlock
-                                HorizontalAlignment="Center"
-                                FontSize="36"
-                                Foreground="White"
-                                Text="♙" />
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
+                                FontSize="14"
                                 FontWeight="Bold"
-                                Text="White" />
-                        </StackPanel>
-                    </RadioButton>
-
-                    <RadioButton
-                        GroupName="ColorGroup"
-                        IsChecked="True"
-                        Style="{StaticResource SelectionCard}">
-                        <StackPanel>
+                                Text="Beginner (800)" />
+                        </RadioButton>
+                        <RadioButton
+                            GroupName="EloGroup"
+                            IsChecked="True"
+                            Style="{StaticResource SelectionCard}"
+                            Tag="1200">
                             <TextBlock
-                                HorizontalAlignment="Center"
-                                FontFamily="Segoe UI Emoji"
-                                FontSize="36"
-                                Text="🌗" />
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
+                                FontSize="14"
                                 FontWeight="Bold"
-                                Text="Random" />
-                        </StackPanel>
-                    </RadioButton>
-
-                    <RadioButton GroupName="ColorGroup" Style="{StaticResource SelectionCard}">
-                        <StackPanel>
+                                Text="Amateur (1200)" />
+                        </RadioButton>
+                        <RadioButton
+                            GroupName="EloGroup"
+                            Style="{StaticResource SelectionCard}"
+                            Tag="1600">
                             <TextBlock
-                                HorizontalAlignment="Center"
-                                FontSize="36"
-                                Foreground="#888"
-                                Text="♟" />
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
+                                FontSize="14"
                                 FontWeight="Bold"
-                                Text="Black" />
-                        </StackPanel>
-                    </RadioButton>
-                </UniformGrid>
+                                Text="Intermediate (1600)" />
+                        </RadioButton>
+                        <RadioButton
+                            GroupName="EloGroup"
+                            Style="{StaticResource SelectionCard}"
+                            Tag="2000">
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="Advanced (2000)" />
+                        </RadioButton>
+                        <RadioButton
+                            GroupName="EloGroup"
+                            Style="{StaticResource SelectionCard}"
+                            Tag="2500">
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="Master (2500)" />
+                        </RadioButton>
+                        <RadioButton
+                            GroupName="EloGroup"
+                            Style="{StaticResource SelectionCard}"
+                            Tag="3200">
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Foreground="#FF5555"
+                                Text="Grandmaster (3200)" />
+                        </RadioButton>
+                    </UniformGrid>
 
-                <TextBlock
-                    Margin="5,0,0,10"
-                    FontSize="16"
-                    FontWeight="SemiBold"
-                    Foreground="White"
-                    Text="Stockfish Difficulty:" />
-                <UniformGrid Margin="0,0,0,30" Columns="2">
-                    <RadioButton
-                        GroupName="EloGroup"
-                        Style="{StaticResource SelectionCard}"
-                        Tag="800">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="Beginner (800)" />
-                    </RadioButton>
-                    <RadioButton
-                        GroupName="EloGroup"
-                        IsChecked="True"
-                        Style="{StaticResource SelectionCard}"
-                        Tag="1200">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="Amateur (1200)" />
-                    </RadioButton>
-                    <RadioButton
-                        GroupName="EloGroup"
-                        Style="{StaticResource SelectionCard}"
-                        Tag="1600">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="Intermediate (1600)" />
-                    </RadioButton>
-                    <RadioButton
-                        GroupName="EloGroup"
-                        Style="{StaticResource SelectionCard}"
-                        Tag="2000">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="Advanced (2000)" />
-                    </RadioButton>
-                    <RadioButton
-                        GroupName="EloGroup"
-                        Style="{StaticResource SelectionCard}"
-                        Tag="2500">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="Master (2500)" />
-                    </RadioButton>
-                    <RadioButton
-                        GroupName="EloGroup"
-                        Style="{StaticResource SelectionCard}"
-                        Tag="3200">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Foreground="#FF5555"
-                            Text="Grandmaster (3200)" />
-                    </RadioButton>
-                </UniformGrid>
-
-                <TextBlock
-                    Margin="5,0,0,10"
-                    FontSize="16"
-                    FontWeight="SemiBold"
-                    Foreground="White"
-                    Text="Time Control:" />
-                <UniformGrid Margin="0,0,0,20" Columns="3">
-                    <RadioButton GroupName="TimeGroup" Style="{StaticResource SelectionCard}">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="10 min" />
-                    </RadioButton>
-                    <RadioButton
-                        GroupName="TimeGroup"
-                        IsChecked="True"
-                        Style="{StaticResource SelectionCard}">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="15 | 10" />
-                    </RadioButton>
-                    <RadioButton GroupName="TimeGroup" Style="{StaticResource SelectionCard}">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Text="30 min" />
-                    </RadioButton>
-                </UniformGrid>
-
-            </StackPanel>
+                    <TextBlock
+                        Margin="5,0,0,10"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="Time Control:" />
+                    <UniformGrid Margin="0,0,0,20" Columns="3">
+                        <RadioButton GroupName="TimeGroup" Style="{StaticResource SelectionCard}">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="10 min" />
+                        </RadioButton>
+                        <RadioButton
+                            GroupName="TimeGroup"
+                            IsChecked="True"
+                            Style="{StaticResource SelectionCard}">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="15 | 10" />
+                        </RadioButton>
+                        <RadioButton GroupName="TimeGroup" Style="{StaticResource SelectionCard}">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="30 min" />
+                        </RadioButton>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
         </ScrollViewer>
 
         <Button

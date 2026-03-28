@@ -9,9 +9,6 @@
     Background="#000000"
     Cursor="{Binding CurrentPlayer}"
     mc:Ignorable="d">
-    <UserControl.DataContext>
-        <external:GameViewModel />
-    </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -73,20 +70,13 @@
                         VerticalAlignment="Top"
                         FontSize="16"
                         Foreground="White"
-                        Text="Username" />
-                    <TextBlock
-                        Margin="10,-4,10,0"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        Foreground="White"
-                        Text="Facing against" />
+                        Text="{Binding Username}" />
                     <TextBlock
                         Margin="5,3,0,0"
                         VerticalAlignment="Top"
                         FontSize="16"
                         Foreground="White"
-                        Text="Stickfish (3200)" />
+                        Text="{Binding AIName}" />
                 </DockPanel>
                 <TextBlock
                     Margin="473,-30,0,0"

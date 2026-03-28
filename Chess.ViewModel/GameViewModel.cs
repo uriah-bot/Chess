@@ -1,27 +1,33 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Chess.Model;
+using Chess.Service;
 
 namespace Chess.ViewModel
 {
     public partial class GameViewModel : ViewModelBase
     {
-		private string _username; // TODO: Remove (test)
-        public string Username
+		private readonly IUserStore _userStore;
+		public GameViewModel(IUserStore userStore)
+		{
+			_userStore = userStore;
+		}
+        public string Username => _userStore.CurrentUser?.Username ?? "Stranger";
+
+		private string _AIName = string.Empty;
+		public string AIName
 		{
 			get
 			{
-				return _username;
+				return AIName;
 			}
 			set
 			{
-				_username = value;
-				OnPropertyChanged(nameof(Username));
+				_AIName = value;
+				OnPropertyChanged(nameof(AIName));
 			}
 		}
 
@@ -38,5 +44,5 @@ namespace Chess.ViewModel
 				OnPropertyChanged(nameof(IsClassicalGame));
 			}
 		}
-	}
+    }
 }

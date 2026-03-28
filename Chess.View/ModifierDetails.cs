@@ -10,7 +10,6 @@ using System.Windows.Media.Imaging;
 
 namespace Chess.View
 {
-    // TODO: Add all modifiers
     public class ModifierDisplayInfo
     {
         public string Icon { get; set; }

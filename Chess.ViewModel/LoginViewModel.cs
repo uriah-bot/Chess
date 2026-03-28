@@ -1,15 +1,37 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Chess.Service;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
 {
     public class LoginViewModel : ViewModelBase
     {
+        private readonly IAuthService _authService;
+        private readonly IUserStore _userStore;
+
+        public ICommand LoginCommand { get; }
+        
+        public LoginViewModel(IAuthService authService, IUserStore userStore)
+        {
+            _authService = authService;
+            _userStore = userStore;
+            LoginCommand = new RelayCommand(o => Login(), o => CanUserLogIn());
+        }
+
+        private async void Login()
+        {
+            var user = await _authService.LoginAsync(Username, Password);
+
+            if (user != null)
+            {
+                _userStore.CurrentUser = user;
+            }
+        }
+
+        private bool CanUserLogIn()
+        {
+            return _authService.CanUserLogIn(Username, Password);
+        }
+
         private string _username;
         public string Username
         {
@@ -63,8 +85,6 @@ namespace Chess.ViewModel
         //    }
         //}
         // for preventing double clicks when requesting login
-
-        private ICommand LoginCommand { get; }
 
         //public LoginViewModel()
         //{

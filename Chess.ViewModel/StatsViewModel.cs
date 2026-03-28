@@ -1,67 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Chess.Service;
 
 namespace Chess.ViewModel
 {
     public class StatsViewModel : ViewModelBase
     {
-		private int _wins;
-		public int Wins
+		private readonly IUserStore _userStore;
+		public StatsViewModel(IUserStore userStore)
 		{
-			get
-			{
-				return _wins;
-			}
-			set
-			{
-				_wins = value;
-				OnPropertyChanged(nameof(Wins));
-			}
+			_userStore = userStore;
 		}
 
-		private int _draws;
-		public int Draws
-		{
-			get
-			{
-				return _draws;
-			}
-			set
-			{
-				_draws = value;
-				OnPropertyChanged(nameof(Draws));
-			}
-		}
+		public int Wins => _userStore.CurrentUser?.Wins ?? -1;
+		public int Draws => _userStore.CurrentUser?.Draws ?? -1;
+		public int Losses => _userStore.CurrentUser?.Losses ?? -1;
 
-		private int _losses;
-		public int Losses
-		{
-			get
-			{
-				return _losses;
-			}
-			set
-			{
-				_losses = value;
-				OnPropertyChanged(nameof(Losses));
-			}
-		}
+        public int TotalMatches => Wins == -1 ? -1 : Wins + Draws + Losses;
 
-		private int _totalMatches;
-		public int TotalMatches
-		{
-			get
-			{
-				return _totalMatches;
-			}
-			set
-			{
-				_totalMatches = value;
-				OnPropertyChanged(nameof(TotalMatches));
-			}
-		}
-	}
+		public double WinRate => Wins == -1 ? -1 : (double) Wins / TotalMatches;
+		public int WinRateBar => (int) WinRate;
+		public int Elo => _userStore.CurrentUser?.Elo ?? -1;
+		public int PeakElo => _userStore.CurrentUser?.PeakElo ?? -1;
+    }
 }

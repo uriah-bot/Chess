@@ -75,6 +75,7 @@
                                 Width="120"
                                 Height="40"
                                 HorizontalAlignment="Left"
+                                Click="ClassicalStart_Click"
                                 Content="Start Match"
                                 Style="{StaticResource DefaultButton}" />
                             <TextBlock
@@ -128,6 +129,7 @@
 
                     <Button
                         Height="20"
+                        Click="Temp"
                         Content="Modifier Selection"
                         FontFamily="Segoe UI"
                         Style="{StaticResource DefaultButton}" />
