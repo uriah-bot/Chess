@@ -13,7 +13,7 @@
             x:Key="InfoBtn"
             BasedOn="{StaticResource ModifierInfo}"
             TargetType="Button">
-            <EventSetter Event="Click" Handler="OpenInfo_Click" />
+            <Setter Property="Command" Value="{Binding ShowModifierInfoCommand}" />
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -306,7 +306,8 @@
                     HorizontalAlignment="Right"
                     Background="{StaticResource Brush.Accent}"
                     BorderThickness="0"
-                    Content="BEGIN RUN"
+                    Command="{Binding StartModifiedGameCommand}"
+                    Content="INITIATE GAME"
                     FontSize="16"
                     FontWeight="Bold"
                     Foreground="White">

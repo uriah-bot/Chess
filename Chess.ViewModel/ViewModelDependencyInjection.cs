@@ -17,8 +17,9 @@ namespace Chess.ViewModel
 
             // ViewModels
             services.AddTransient<MainViewModel>();
-            services.AddTransient<AdventureViewModel>();
             services.AddTransient<AppBaseViewModel>();
+            services.AddTransient<AdventureViewModel>();
+            services.AddTransient<ClassicalViewModel>();
             services.AddTransient<GameViewModel>();
             services.AddTransient<HomeViewModel>();
             services.AddTransient<LoginViewModel>();

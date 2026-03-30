@@ -26,5 +26,8 @@
     <DataTemplate DataType="{x:Type vm:StatsViewModel}">
         <views:Stats />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:ClassicalViewModel}">
+        <views:Classical />
+    </DataTemplate>
 
 </ResourceDictionary>

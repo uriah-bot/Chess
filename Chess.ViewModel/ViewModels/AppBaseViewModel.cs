@@ -1,5 +1,8 @@
 ﻿using Chess.ViewModel.Stores;
+using Chess.ViewModel.ViewModelHelper;
 using System.ComponentModel;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace Chess.ViewModel
 {
@@ -7,13 +10,26 @@ namespace Chess.ViewModel
     {
         private readonly IUserStore _userStore;
         private readonly INavigationStore _navigationStore;
-        public AppBaseViewModel(IUserStore userStore, INavigationStore navigationStore)
+        private readonly INavigationService _navigationService;
+        public AppBaseViewModel(IUserStore userStore, INavigationService navigationService, INavigationStore navigationStore)
         {
+            _navigationService = navigationService;
             _userStore = userStore;
             _userStore.CurrentUserChanged += OnUserChanged;
             _navigationStore = navigationStore;
             _navigationStore.PropertyChanged += NavigationStore_PropertyChanged;
+            NavigateToHomeCommand = new NavigateCommand<HomeViewModel>(_navigationService);
+            NavigateToStatsCommand = new NavigateCommand<StatsViewModel>(_navigationService);
+            //NavigateToAdvancedSettingsCommand = new NavigateCommand(_navigationService, typeof(AdvancedSettingsViewModel));
+            NavigateToSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigationService);
+            //NavigateToHelpCommand = new NavigateCommand(_navigationService, typeof(HelpViewModel));
         }
+
+        public ICommand NavigateToHomeCommand { get; }
+        public ICommand NavigateToStatsCommand { get; }
+        public ICommand NavigateToAdvancedSettingsCommand { get; }
+        public ICommand NavigateToSettingsCommand { get; }
+        public ICommand NavigateToHelpCommand { get; }
 
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 
@@ -34,12 +50,14 @@ namespace Chess.ViewModel
         public void Dispose() // might stay in memory even when in a different view
         {
             _userStore.CurrentUserChanged -= OnUserChanged;
+            _navigationStore.PropertyChanged -= NavigationStore_PropertyChanged;
         }
 
         private void OnUserChanged()
         {
             OnPropertyChanged(nameof(Username));
             OnPropertyChanged(nameof(Elo));
+            OnPropertyChanged(nameof(EloText));
         }
     }
 }

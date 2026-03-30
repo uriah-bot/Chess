@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Chess.View"
+    xmlns:vm="clr-namespace:Chess.ViewModel;assembly=Chess.ViewModel"
     Title="Chess Master"
     Width="1080"
     Height="720"
@@ -12,25 +13,21 @@
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized">
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
         <Border
             Grid.Column="0"
             Background="{StaticResource Brush.Surface}"
             BorderBrush="#2A2A2A"
             BorderThickness="0,0,1,0">
-
             <Grid Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-
                 <StackPanel Grid.Row="0">
                     <StackPanel Margin="0,20,0,40" Orientation="Horizontal">
                         <Border
@@ -53,42 +50,42 @@
                             Foreground="{StaticResource Brush.TextPrimary}"
                             Text="CHESS MASTER" />
                     </StackPanel>
-
                     <RadioButton
                         Uid="Home"
-                        Click="Navigate_Click"
+                        Command="{Binding NavigateToHomeCommand}"
                         Content="Home"
-                        IsChecked="True"
+                        IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:HomeViewModel}, Mode=OneWay}"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE7FC;" />
                     <RadioButton
-                        Uid="Statistics"
-                        Click="Navigate_Click"
+                        Uid="Stats"
+                        Command="{Binding NavigateToStatsCommand}"
                         Content="Statistics"
+                        IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:StatsViewModel}, Mode=OneWay}"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE9D2;" />
                     <RadioButton
                         x:Name="SettingsRadioButton"
                         Uid="Settings"
-                        Click="Navigate_Click"
+                        Command="{Binding NavigateToSettingsCommand}"
                         Content="Settings"
+                        IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:SettingsViewModel}, Mode=OneWay}"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE713;" />
                     <RadioButton
                         Uid="AdvancedSettings"
-                        Click="Navigate_Click"
+                        Command="{Binding NavigateToAdvancedSettingsCommand}"
                         Content="Advanced Settings"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE7BA;"
                         Visibility="{Binding Role, Converter={StaticResource RoleToVis}, ConverterParameter=Admin|Moderator}" />
                     <RadioButton
                         Uid="Help"
-                        Click="Navigate_Click"
+                        Command="{Binding NavigateToHelpCommand}"
                         Content="Help"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE783;" />
                 </StackPanel>
-
                 <Border
                     Grid.Row="1"
                     Padding="10"
@@ -99,20 +96,17 @@
                             Width="35"
                             Height="35"
                             Fill="{StaticResource Brush.Accent}" />
-
                         <TextBlock
                             Margin="-24,6,0,0"
                             FontFamily="Segoe Emoji"
                             FontSize="20"
                             Foreground="White"
                             Text="𝕏" />
-
                         <StackPanel Margin="10,0,0,0">
                             <TextBlock
                                 FontWeight="SemiBold"
                                 Foreground="{StaticResource Brush.TextPrimary}"
                                 Text="{Binding Username}" />
-
                             <TextBlock
                                 FontSize="12"
                                 Foreground="{StaticResource Brush.TextSecondary}"
@@ -122,11 +116,9 @@
                 </Border>
             </Grid>
         </Border>
-
         <ContentControl
             x:Name="MainContentArea"
             Grid.Column="1"
             Margin="30" />
-
     </Grid>
 </Window>
