@@ -1,4 +1,4 @@
-﻿using Chess.Service;
+﻿using Chess.ViewModel.Stores;
 
 namespace Chess.ViewModel
 {

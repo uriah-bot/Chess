@@ -12,12 +12,12 @@ namespace Chess.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ChessBoard _ChessBoard;
+        //private ChessBoard _ChessBoard;
         public MainWindow()
         {
             InitializeComponent();
-            _ChessBoard = new ChessBoard();
-            MainContentArea.Content = _ChessBoard;
+            //_ChessBoard = new ChessBoard();
+            //MainContentArea.Content = _ChessBoard;
         }
     }
 }

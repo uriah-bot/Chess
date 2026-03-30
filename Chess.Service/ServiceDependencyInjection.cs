@@ -7,10 +7,7 @@ namespace Chess.Service
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             // Auth
-            services.AddSingleton<AuthService>();
-
-            // Stores
-            services.AddSingleton<UserStore>();
+            services.AddSingleton<IAuthService, AuthService>();
 
             return services;
         }

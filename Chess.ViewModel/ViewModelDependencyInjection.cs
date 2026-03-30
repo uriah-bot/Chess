@@ -1,10 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Chess.ViewModel.Stores;
+using Chess.ViewModel.ViewModelHelper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Chess.ViewModel
 {
@@ -12,8 +8,17 @@ namespace Chess.ViewModel
     {
         public static IServiceCollection AddViewModels(this IServiceCollection services)
         {
+            // Stores
+            services.AddSingleton<IUserStore, UserStore>();
+            services.AddSingleton<INavigationStore, NavigationStore>();
+
+            // ViewModel Helpers
+            services.AddTransient<INavigationService, NavigationService>();
+
+            // ViewModels
+            services.AddTransient<MainViewModel>();
             services.AddTransient<AdventureViewModel>();
-            services.AddTransient<AppBaseSidebarViewModel>();
+            services.AddTransient<AppBaseViewModel>();
             services.AddTransient<GameViewModel>();
             services.AddTransient<HomeViewModel>();
             services.AddTransient<LoginViewModel>();

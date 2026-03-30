@@ -8,103 +8,70 @@
     Background="{StaticResource Brush.Background}"
     FontFamily="Segoe UI"
     mc:Ignorable="d">
-    <Viewbox>
-        <Grid Width="420" Height="580">
-
-            <Border
-                Width="420"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Style="{StaticResource CardStyle}">
-
-                <StackPanel Margin="0,-20,0,0">
-
-                    <!--  Icon  -->
-                    <TextBlock
-                        Margin="0,0,0,10"
-                        HorizontalAlignment="Center"
-                        FontSize="40"
-                        Foreground="{StaticResource Brush.TextPrimary}"
-                        Text="♟" />
-
-                    <!--  Title  -->
-                    <TextBlock Style="{StaticResource TitleTextStyle}" Text="Create Account" />
-
-                    <TextBlock
-                        Margin="0,0,0,10"
-                        Style="{StaticResource SubtitleTextStyle}"
-                        Text="Start your chess journey" />
-
-                    <!--  ===== ACCOUNT SECTION =====  -->
-                    <TextBlock
-                        Margin="0,0,0,10"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource InputLabelStyle}"
-                        Text="--ACCOUNT--" />
-
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        Style="{StaticResource InputLabelStyle}"
-                        Text="USERNAME" />
-
-                    <TextBox
-                        Margin="0,0,0,10"
-                        FontSize="18"
-                        Style="{StaticResource InfoInputTextBoxStyle}" />
-
-                    <!--  ===== SECURITY SECTION =====  -->
-                    <TextBlock
-                        Margin="0,0,0,10"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource InputLabelStyle}"
-                        Text="--SECURITY--" />
-
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        Style="{StaticResource InputLabelStyle}"
-                        Text="EMAIL (IT'S SECURE TRUST ME PLS)" />
-
-                    <TextBox
-                        Margin="0,0,0,10"
-                        FontSize="18"
-                        Style="{StaticResource InfoInputTextBoxStyle}" />
-
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        Style="{StaticResource InputLabelStyle}"
-                        Text="PASSWORD" />
-
-                    <PasswordBox
-                        Margin="0,0,0,5"
-                        FontSize="18"
-                        Style="{StaticResource PasswordBoxStyle}" />
-                    <CheckBox
-                        x:Name="PasswordVisibilityCheckBox"
-                        Margin="0,0,0,25"
-                        Content="Show Password"
-                        Foreground="White" />
-
-                    <!--  Action  -->
+    <Grid Width="420" Height="460">
+        <Border
+            Width="420"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Style="{StaticResource CardStyle}">
+            <StackPanel Margin="0,-20,0,0">
+                <TextBlock
+                    Margin="0,0,0,10"
+                    HorizontalAlignment="Center"
+                    FontSize="40"
+                    Foreground="{StaticResource Brush.TextPrimary}"
+                    Text="♟" />
+                <TextBlock Style="{StaticResource TitleTextStyle}" Text="Create Account" />
+                <TextBlock
+                    Margin="0,0,0,10"
+                    Style="{StaticResource SubtitleTextStyle}"
+                    Text="Start your chess journey" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Style="{StaticResource InputLabelStyle}"
+                    Text="USERNAME" />
+                <TextBox
+                    Margin="0,0,0,10"
+                    FontSize="18"
+                    Style="{StaticResource InfoInputTextBoxStyle}" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Style="{StaticResource InputLabelStyle}"
+                    Text="PASSWORD" />
+                <PasswordBox
+                    Margin="0,0,0,5"
+                    FontSize="18"
+                    Style="{StaticResource PasswordBoxStyle}" />
+                <CheckBox
+                    x:Name="PasswordVisibilityCheckBox"
+                    Margin="0,0,0,25"
+                    Content="Show Password"
+                    Foreground="White" />
+                <Button
+                    Command="{Binding RegisterCommand}"
+                    Content="CREATE ACCOUNT"
+                    Style="{StaticResource DefaultButton}" />
+                <StackPanel
+                    Margin="0,20,0,0"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Foreground="{StaticResource Brush.TextSecondary}" Text="Already have an account? " />
                     <Button
-                        Command="{Binding RegisterCommand}"
-                        Content="CREATE ACCOUNT"
-                        Style="{StaticResource DefaultButton}" />
-
-                    <!--  Footer  -->
-                    <StackPanel
-                        Margin="0,20,0,0"
-                        HorizontalAlignment="Center"
-                        Orientation="Horizontal">
-
-                        <TextBlock Foreground="{StaticResource Brush.TextSecondary}" Text="Already have an account? " />
-
-                        <TextBlock Style="{StaticResource LinkTextStyle}" Text="Log In" />
-                    </StackPanel>
-
+                        Padding="0"
+                        BorderThickness="0"
+                        Command="{Binding NavigateToLoginCommand}"
+                        Content="Sign Up"
+                        Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="Transparent">
+                                    <TextBlock Style="{StaticResource LinkTextStyle}" Text="Log In" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                 </StackPanel>
-
-            </Border>
-
-        </Grid>
-    </Viewbox>
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>

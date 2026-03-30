@@ -1,4 +1,6 @@
 ﻿using Chess.Service;
+using Chess.ViewModel.Stores;
+using Chess.ViewModel.ViewModelHelper;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
@@ -7,14 +9,20 @@ namespace Chess.ViewModel
     {
         private readonly IAuthService _authService;
         private readonly IUserStore _userStore;
+        private readonly IWindowService _windowService;
+        private readonly INavigationService _navigationService;
 
         public ICommand LoginCommand { get; }
+        public ICommand NavigateToRegisterCommand { get; }
         
-        public LoginViewModel(IAuthService authService, IUserStore userStore)
+        public LoginViewModel(IAuthService authService, IUserStore userStore, IWindowService windowService, INavigationService navigationService)
         {
             _authService = authService;
             _userStore = userStore;
+            _windowService = windowService;
+            _navigationService = navigationService;
             LoginCommand = new RelayCommand(o => Login(), o => CanUserLogIn());
+            NavigateToRegisterCommand = new NavigateCommand<RegisterViewModel>(_navigationService);
         }
 
         private async void Login()
@@ -24,6 +32,9 @@ namespace Chess.ViewModel
             if (user != null)
             {
                 _userStore.CurrentUser = user;
+
+                _windowService.ShowWindow<AppBaseViewModel>();
+                _windowService.CloseCurrentWindow();
             }
         }
 

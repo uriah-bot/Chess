@@ -8,88 +8,81 @@
     Background="{StaticResource Brush.Background}"
     FontFamily="Segoe UI"
     mc:Ignorable="d">
-    <Viewbox>
-        <Grid Width="420" Height="515">
+    <Grid Width="420" Height="515">
+        <Border
+            Width="420"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Style="{StaticResource CardStyle}">
 
-            <Border
-                Width="420"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Style="{StaticResource CardStyle}">
+            <StackPanel Margin="0,-20,0,0">
 
-                <StackPanel Margin="0,-20,0,0">
+                <!--  Icon  -->
+                <TextBlock
+                    Margin="0,0,0,15"
+                    HorizontalAlignment="Center"
+                    FontSize="40"
+                    Foreground="{StaticResource Brush.TextPrimary}"
+                    Text="♟" />
 
-                    <!--  Icon  -->
-                    <TextBlock
-                        Margin="0,0,0,15"
-                        HorizontalAlignment="Center"
-                        FontSize="40"
-                        Foreground="{StaticResource Brush.TextPrimary}"
-                        Text="♟" />
+                <!--  Title  -->
+                <TextBlock Style="{StaticResource TitleTextStyle}" Text="Welcome Back" />
 
-                    <!--  Title  -->
-                    <TextBlock Style="{StaticResource TitleTextStyle}" Text="Welcome Back" />
-
-                    <TextBlock
-                        Margin="0,5,0,25"
-                        Style="{StaticResource SubtitleTextStyle}"
-                        Text="Enter your details to log in" />
-
-                    <!--  Username  -->
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        Style="{StaticResource InputLabelStyle}"
-                        Text="USERNAME" />
-
-                    <TextBox
-                        Margin="0,0,0,20"
-                        FontSize="18"
-                        Style="{StaticResource InfoInputTextBoxStyle}"
-                        Text="{Binding Username}" />
-
-                    <!--  Password  -->
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        Style="{StaticResource InputLabelStyle}"
-                        Text="PASSWORD" />
-
-                    <PasswordBox
-                        Margin="0,0,0,5"
-                        FontSize="18"
-                        Style="{StaticResource PasswordBoxStyle}" />
-                    <CheckBox
-                        x:Name="PasswordVisibilityCheckBox"
-                        Margin="0,0,0,5"
-                        Content="Show Password"
-                        Foreground="White" />
-
-                    <TextBlock
-                        Margin="0,0,0,20"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource LinkTextStyle}"
-                        Text="Forgot Password?" />
-
-                    <!--  Login Button  -->
+                <TextBlock
+                    Margin="0,5,0,25"
+                    Style="{StaticResource SubtitleTextStyle}"
+                    Text="Enter your details to log in" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Style="{StaticResource InputLabelStyle}"
+                    Text="USERNAME" />
+                <TextBox
+                    Margin="0,0,0,20"
+                    FontSize="18"
+                    Style="{StaticResource InfoInputTextBoxStyle}" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Style="{StaticResource InputLabelStyle}"
+                    Text="PASSWORD" />
+                <PasswordBox
+                    Margin="0,0,0,5"
+                    FontSize="18"
+                    Style="{StaticResource PasswordBoxStyle}" />
+                <CheckBox
+                    x:Name="PasswordVisibilityCheckBox"
+                    Margin="0,0,0,5"
+                    Content="Show Password"
+                    Foreground="White" />
+                <TextBlock
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource LinkTextStyle}"
+                    Text="Forgot Password?" />
+                <Button
+                    Command="{Binding LoginCommand}"
+                    Content="LOGIN"
+                    Style="{StaticResource DefaultButton}" />
+                <StackPanel
+                    Margin="0,20,0,0"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Foreground="{StaticResource Brush.TextSecondary}" Text="Don't have an account? " />
                     <Button
-                        Command="{Binding LoginCommand}"
-                        Content="LOGIN"
-                        Style="{StaticResource DefaultButton}" />
-
-                    <!--  Sign Up  -->
-                    <StackPanel
-                        Margin="0,20,0,0"
-                        HorizontalAlignment="Center"
-                        Orientation="Horizontal">
-
-                        <TextBlock Foreground="{StaticResource Brush.TextSecondary}" Text="Don't have an account? " />
-
-                        <TextBlock Style="{StaticResource LinkTextStyle}" Text="Sign Up" />
-                    </StackPanel>
-
+                        Padding="0"
+                        BorderThickness="0"
+                        Command="{Binding NavigateToRegisterCommand}"
+                        Content="Sign Up"
+                        Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="Transparent">
+                                    <TextBlock Style="{StaticResource LinkTextStyle}" Text="Register" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                 </StackPanel>
-
-            </Border>
-
-        </Grid>
-    </Viewbox>
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>
