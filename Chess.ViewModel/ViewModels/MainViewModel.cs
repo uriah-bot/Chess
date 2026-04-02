@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Chess.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDisposable
     {
         private readonly INavigationStore _navigationStore;
         public MainViewModel(INavigationStore navigationStore, LoginViewModel lvm)
@@ -16,6 +16,11 @@ namespace Chess.ViewModel
         }
 
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+
+        public void Dispose()
+        {
+            _navigationStore.PropertyChanged -= NavigationStore_PropertyChanged;
+        }
 
         private void NavigationStore_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

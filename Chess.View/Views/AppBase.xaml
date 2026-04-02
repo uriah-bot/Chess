@@ -119,6 +119,7 @@
         <ContentControl
             x:Name="MainContentArea"
             Grid.Column="1"
-            Margin="30" />
+            Margin="30"
+            Content="{Binding CurrentViewModel}" />
     </Grid>
 </Window>

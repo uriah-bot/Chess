@@ -7,7 +7,6 @@
         public const int MIN_USERNAME_LENGTH = 5;
         public const int MAX_ELO = 3300;
         public const int DEFAULT_ELO = 500;
-        public const UserRole DEFAULT_ROLE = UserRole.Guest;
 
 
         // Email

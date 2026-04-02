@@ -8,9 +8,10 @@ namespace Chess.ViewModel
 		public StatsViewModel(IUserStore userStore)
 		{
 			_userStore = userStore;
-		}
+			_userStore.CurrentUserChanged += OnUserChanged;
+        }
 
-		public int Wins => _userStore.CurrentUser?.Wins ?? -1;
+        public int Wins => _userStore.CurrentUser?.Wins ?? -1;
 		public int Draws => _userStore.CurrentUser?.Draws ?? -1;
 		public int Losses => _userStore.CurrentUser?.Losses ?? -1;
 
@@ -20,5 +21,18 @@ namespace Chess.ViewModel
 		public int WinRateBar => (int) WinRate;
 		public int Elo => _userStore.CurrentUser?.Elo ?? -1;
 		public int PeakElo => _userStore.CurrentUser?.PeakElo ?? -1;
+
+        private void OnUserChanged()
+        {
+            OnPropertyChanged(nameof(Wins));
+            OnPropertyChanged(nameof(Draws));
+            OnPropertyChanged(nameof(Losses));
+            OnPropertyChanged(nameof(TotalMatches));
+            OnPropertyChanged(nameof(WinRate));
+            OnPropertyChanged(nameof(WinRateBar));
+            OnPropertyChanged(nameof(Elo));
+            OnPropertyChanged(nameof(PeakElo));
+        }
+        // TODO: How will it know when user is changed
     }
 }

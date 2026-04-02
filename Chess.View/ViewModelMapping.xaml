@@ -29,5 +29,8 @@
     <DataTemplate DataType="{x:Type vm:ClassicalViewModel}">
         <views:Classical />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:AdventureViewModel}">
+        <views:Adventure />
+    </DataTemplate>
 
 </ResourceDictionary>

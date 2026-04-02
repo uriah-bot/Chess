@@ -11,12 +11,13 @@ namespace Chess.ViewModel
     public class AdventureViewModel : ViewModelBase
     {
         private readonly IWindowService _windowService;
-        public ICommand ShowModifierInfoCommand { get; }
-        public ICommand HideModifierInfoCommand { get; }
-        public ICommand StartModifiedGameCommand { get; }
         public AdventureViewModel(IWindowService windowService)
         {
             _windowService = windowService;
         }
+
+        public ICommand ShowModifierInfoCommand { get; }
+        public ICommand HideModifierInfoCommand { get; }
+        public ICommand StartModifiedGameCommand { get; }
     }
 }

@@ -8,8 +8,8 @@ namespace Chess.Model
 {
     public class Game
     {
+        public GameMode Mode;
         private List<ModifierType> selectedModifiers = new List<ModifierType>();
-
         private List<IModifier> _activeModifiers = new List<IModifier>();
 
         public delegate void PieceMovedHandler(Move move);
@@ -29,7 +29,7 @@ namespace Chess.Model
 
         private readonly Dictionary<string, int> stateHistory = new Dictionary<string, int>();
 
-        // white always starts yet, this constructor helps with testing
+        // white always starts, this constructor helps with testing
         public Game(PlayerColor player, Board board)
         {
             Board = board;

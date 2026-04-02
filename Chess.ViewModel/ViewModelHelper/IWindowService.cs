@@ -2,7 +2,6 @@
 {
     public interface IWindowService
     {
-        void ShowWindow<TViewModel>() where TViewModel : ViewModelBase;
-        void CloseCurrentWindow();
+        void SwitchWindow<TViewModel>() where TViewModel : ViewModelBase;
     }
 }

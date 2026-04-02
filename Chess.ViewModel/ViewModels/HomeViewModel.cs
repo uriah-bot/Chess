@@ -11,8 +11,6 @@ namespace Chess.ViewModel
     public class HomeViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        public ICommand NavigateToAdventureCommand { get; }
-        public ICommand NavigateToClassicalCommand { get; }
 
         public HomeViewModel(INavigationService navigationService)
         {
@@ -20,5 +18,7 @@ namespace Chess.ViewModel
             NavigateToAdventureCommand = new NavigateCommand<AdventureViewModel>(_navigationService);
             NavigateToClassicalCommand = new NavigateCommand<ClassicalViewModel>(_navigationService);
         }
+        public ICommand NavigateToAdventureCommand { get; }
+        public ICommand NavigateToClassicalCommand { get; }
     }
 }

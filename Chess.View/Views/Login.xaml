@@ -39,7 +39,8 @@
                 <TextBox
                     Margin="0,0,0,20"
                     FontSize="18"
-                    Style="{StaticResource InfoInputTextBoxStyle}" />
+                    Style="{StaticResource InfoInputTextBoxStyle}"
+                    Text="{Binding Username, Mode=OneWayToSource}" />
                 <TextBlock
                     Margin="0,0,0,5"
                     Style="{StaticResource InputLabelStyle}"

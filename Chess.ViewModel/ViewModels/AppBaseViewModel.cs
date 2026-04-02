@@ -11,18 +11,20 @@ namespace Chess.ViewModel
         private readonly IUserStore _userStore;
         private readonly INavigationStore _navigationStore;
         private readonly INavigationService _navigationService;
-        public AppBaseViewModel(IUserStore userStore, INavigationService navigationService, INavigationStore navigationStore)
+        public AppBaseViewModel(IUserStore userStore, INavigationService navigationService, INavigationStore navigationStore, HomeViewModel hvm)
         {
             _navigationService = navigationService;
             _userStore = userStore;
             _userStore.CurrentUserChanged += OnUserChanged;
             _navigationStore = navigationStore;
             _navigationStore.PropertyChanged += NavigationStore_PropertyChanged;
+
             NavigateToHomeCommand = new NavigateCommand<HomeViewModel>(_navigationService);
             NavigateToStatsCommand = new NavigateCommand<StatsViewModel>(_navigationService);
             //NavigateToAdvancedSettingsCommand = new NavigateCommand(_navigationService, typeof(AdvancedSettingsViewModel));
             NavigateToSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigationService);
             //NavigateToHelpCommand = new NavigateCommand(_navigationService, typeof(HelpViewModel));
+            _navigationStore.CurrentViewModel = hvm;
         }
 
         public ICommand NavigateToHomeCommand { get; }
@@ -35,9 +37,7 @@ namespace Chess.ViewModel
 
         public string Username => _userStore.CurrentUser?.Username ?? "Stranger";
 
-        public int Elo => _userStore.CurrentUser?.Elo ?? -1;
-
-        public string EloText => $"Elo: {Elo}";
+        public string EloText => $"Elo: {_userStore.CurrentUser?.Elo ?? -1}";
 
         private void NavigationStore_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -56,7 +56,6 @@ namespace Chess.ViewModel
         private void OnUserChanged()
         {
             OnPropertyChanged(nameof(Username));
-            OnPropertyChanged(nameof(Elo));
             OnPropertyChanged(nameof(EloText));
         }
     }

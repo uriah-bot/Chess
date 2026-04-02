@@ -15,8 +15,10 @@ namespace Chess.View.Services
             _serviceProvider = serviceProvider;
         }
 
-        public void ShowWindow<TViewModel>() where TViewModel : ViewModelBase
+        public void SwitchWindow<TViewModel>() where TViewModel : ViewModelBase
         {
+            Window oldWindow = _currentWindow;
+
             Window window = null;
             if (typeof(TViewModel) == typeof(MainViewModel)) window = _serviceProvider.GetRequiredService<MainWindow>();
             if (typeof(TViewModel) == typeof(AppBaseViewModel)) window = _serviceProvider.GetRequiredService<AppBase>();
@@ -25,10 +27,24 @@ namespace Chess.View.Services
             {
                 window.DataContext = _serviceProvider.GetRequiredService<TViewModel>();
                 window.Show();
+
+                CloseCurrentWindow();
+
                 _currentWindow = window;
             }
         }
 
-        public void CloseCurrentWindow() => _currentWindow?.Close();
+        private void CloseCurrentWindow()
+        {
+            if (_currentWindow?.DataContext is IDisposable window)
+            {
+                window.Dispose();
+
+                _currentWindow.DataContext = null;
+            }
+
+            _currentWindow?.Close();
+            _currentWindow = null;
+        }
     }
 }

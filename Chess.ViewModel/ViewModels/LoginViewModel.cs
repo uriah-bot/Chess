@@ -33,15 +33,11 @@ namespace Chess.ViewModel
             {
                 _userStore.CurrentUser = user;
 
-                _windowService.ShowWindow<AppBaseViewModel>();
-                _windowService.CloseCurrentWindow();
+                _windowService.SwitchWindow<AppBaseViewModel>();
             }
         }
 
-        private bool CanUserLogIn()
-        {
-            return _authService.CanUserLogIn(Username, Password);
-        }
+        private bool CanUserLogIn() => _authService.CanUserLogIn(Username, Password);
 
         private string _username;
         public string Username
@@ -85,21 +81,16 @@ namespace Chess.ViewModel
             }
         }
 
-        //private bool _isLoading;
-        //public bool IsLoading
-        //{
-        //    get => _isLoading;
-        //    set
-        //    {
-        //        _isLoading = value;
-        //        OnPropertyChanged(nameof(IsLoading));
-        //    }
-        //}
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
         // for preventing double clicks when requesting login
-
-        //public LoginViewModel()
-        //{
-        //    LoginCommand = new RelayCommand(RequestLoginAsync);
-        //}
     }
 }

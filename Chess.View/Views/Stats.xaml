@@ -83,7 +83,7 @@
                                 Background="#333"
                                 BorderThickness="0"
                                 Foreground="{StaticResource AccentColor}"
-                                Value="{Binding WinRateBar}" />
+                                Value="{Binding WinRateBar, Mode=OneWay}" />
                         </StackPanel>
                     </Border>
                     <Border

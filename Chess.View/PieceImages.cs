@@ -30,6 +30,7 @@ namespace Chess.View
             { PieceType.Queen, LoadImage("/Assets/Default/black_queen.png") },
             { PieceType.King, LoadImage("/Assets/Default/black_king.png") }
         };
+
         private static ImageSource LoadImage(string path)
         {
             return new BitmapImage(new Uri(path, UriKind.Relative));

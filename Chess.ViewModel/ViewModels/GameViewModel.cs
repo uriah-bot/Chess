@@ -16,7 +16,7 @@ namespace Chess.ViewModel
 		{
 			get
 			{
-				return AIName;
+				return _AIName;
 			}
 			set
 			{

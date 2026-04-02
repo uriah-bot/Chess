@@ -24,6 +24,8 @@ namespace Chess.ViewModel.Stores
             }
         }
 
+        public void Logout() => CurrentUser = null;
+
         public void Update(Action<UserEntity> runUpdate)
         {
             if (_currentUser != null) return;

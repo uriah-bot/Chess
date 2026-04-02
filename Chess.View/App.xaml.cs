@@ -38,6 +38,8 @@ namespace Chess.View
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            var windowService = _serviceProvider.GetRequiredService<IWindowService>();
+
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             var mainWindowVM = _serviceProvider.GetRequiredService<MainViewModel>();
             mainWindow.DataContext = mainWindowVM;
@@ -46,7 +48,8 @@ namespace Chess.View
             var appBaseVM = _serviceProvider.GetRequiredService<AppBaseViewModel>();
             appBase.DataContext = appBaseVM;
 
-            mainWindow.Show();
+            //mainWindow.Show();
+            windowService.SwitchWindow<AppBaseViewModel>();
         }
     }
 }

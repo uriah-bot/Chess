@@ -35,15 +35,11 @@ namespace Chess.ViewModel
 
                 _userStore.CurrentUser = user;
 
-                _windowService.ShowWindow<AppBaseViewModel>();
-                _windowService.CloseCurrentWindow();
+                _windowService.SwitchWindow<AppBaseViewModel>();
             }
         }
 
-        private bool CanRegister()
-        {
-            return _authService.CanUserRegister(Username, Password);
-        }
+        private bool CanRegister() => _authService.CanUserRegister(Username, Password);
 
         private string _username;
 		public string Username
