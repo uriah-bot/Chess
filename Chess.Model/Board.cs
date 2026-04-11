@@ -285,7 +285,7 @@ namespace Chess.Model
             // must be King King + piece, and piece may be a Knight
         }
 
-        public static bool IsKingAndMinorPieceVsKing(Counter counter) // cleaner
+        private static bool IsKingAndMinorPieceVsKing(Counter counter) // cleaner
         {
             return  IsKingBishopVsKing(counter) || IsKingKnightVsKing(counter);
         }

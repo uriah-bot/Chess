@@ -20,10 +20,7 @@ namespace Chess.ViewModel.Stores
             }
             set
             {
-                if (_currentViewModel is IDisposable oldVm)
-                {
-                    oldVm.Dispose();
-                }
+                _currentViewModel?.Dispose();
 
                 _currentViewModel = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentViewModel)));

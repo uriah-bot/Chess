@@ -1,27 +1,22 @@
 ﻿using Chess.Model;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Chess.Data.Repositories;
 
 namespace Chess.Data
 {
     public class GameRepo : IGameRepository
     {
-        public async Task<List<GameEntity>> GetGamesByUsernameAsync(string username)
+        public async Task<List<GameEntity>> GetGamesByUserAsync(UserEntity user)
         {
-            string sql = "SELECT * FROM Games WHERE Username = ?";
+            string sql = "SELECT * FROM Games WHERE UserID =?";
 
-            DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter(@username, "username"));
+            DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter("@userId", user.Id));
 
             List<GameEntity> games = new List<GameEntity>();
             if (dt.Rows.Count != 0)
             {
-                foreach(DataRow game in dt.Rows)
+                foreach (DataRow game in dt.Rows)
                 {
                     string rawFENs = game["GameFENs"].ToString();
                     // removes empty strings returned   e.g ",," with ',' Split
@@ -29,7 +24,7 @@ namespace Chess.Data
 
                     GameEntity entity = new GameEntity
                     {
-                        Id = (int)game["Id"],
+                        Id = (int)game["ID"],
                         GameFENs = fens,
                         Username = game["Username"].ToString(),
                         UserPlayedAs = Enum.TryParse<PlayerColor>(game["UserPlayedAs"]?.ToString(), out var color) ? color : null,
@@ -49,10 +44,10 @@ namespace Chess.Data
 
         public async Task AddGameAsync(GameEntity newGame)
         {
-            string sql = "INSERT INTO Games (Username, GameFENs, GameMode, UserPlayedAs, BotRating, Result, DatePlayed) VALUES (?, ?, ?, ?, ?)";
+            string sql = "INSERT INTO Games (Username, GameFENs, GameMode, UserPlayedAs, BotRating, Result, DatePlayed) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             await DbConnectionProvider.ExecuteCommandAsync(sql,
-                new OleDbParameter("@userId", newGame.Username),
+                new OleDbParameter("@username", newGame.Username),
                 new OleDbParameter("@gameFENs", newGame.GameFENs),
                 new OleDbParameter("@gameMode", newGame.GameMode),
                 new OleDbParameter("@userPlayedAs", newGame.UserPlayedAs),
@@ -60,6 +55,13 @@ namespace Chess.Data
                 new OleDbParameter("@result", newGame.Result.ToString()),
                 new OleDbParameter("@date", newGame.DatePlayed)
             );
+        }
+
+        public async Task DeleteAllUserGamesAsync(UserEntity user)
+        {
+            string sql = "DELETE FROM Games WHERE UserID =?";
+
+            await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter("@userId", user.Id));
         }
     }
 }

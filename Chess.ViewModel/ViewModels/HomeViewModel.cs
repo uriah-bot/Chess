@@ -1,9 +1,5 @@
-﻿using Chess.ViewModel.ViewModelHelper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Chess.ViewModel.Stores;
+using Chess.ViewModel.ViewModelHelper;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
@@ -11,14 +7,19 @@ namespace Chess.ViewModel
     public class HomeViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
+        private readonly IUserStore _userStore;
 
-        public HomeViewModel(INavigationService navigationService)
+        public HomeViewModel(INavigationService navigationService, IUserStore userStore)
         {
             _navigationService = navigationService;
+            _userStore = userStore;
             NavigateToAdventureCommand = new NavigateCommand<AdventureViewModel>(_navigationService);
             NavigateToClassicalCommand = new NavigateCommand<ClassicalViewModel>(_navigationService);
         }
+
         public ICommand NavigateToAdventureCommand { get; }
         public ICommand NavigateToClassicalCommand { get; }
+
+        public string WelcomeText => $"Welcome back, {_userStore.CurrentUser?.Username ?? "Guest"}";
     }
 }

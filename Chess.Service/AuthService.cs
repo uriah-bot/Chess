@@ -7,12 +7,9 @@ namespace Chess.Service
 {
     public interface IAuthService
     {
-        Task<UserEntity> LoginAsync(string username, string password);
+        Task<(UserEntity, bool)> LoginAsync(string username, string password);
         Task<bool> RegisterAsync(string username, string password);
-        bool CanUserLogIn(string username, string password);
-        bool CanUserRegister(string username, string password);
         //Task LogoutAsync();
-        //Task<bool> ChangeUserPropertyAsync(string username, string password, string propertyName = "");
     }
 
     public class AuthService : IAuthService
@@ -24,32 +21,23 @@ namespace Chess.Service
             _userRepo = userRepo;
         }
 
-        //public async Task<> SendVerificationCode(string Id)
-        //{
-        //    // Send Email
-        //    string body = $"<h1>Your verification code is {code}</h1>";
-        //    bool sent = await _emailService.SendEmailAsync(user.Email, "Verification code", body);
-
-        //    return sent ? .Success() : .Failure("Failed to send email. Please check your connection.");
-        //}
-
-        public async Task<UserEntity> LoginAsync(string username, string password)
+        public async Task<(UserEntity, bool)> LoginAsync(string username, string password)
         {
             var user = await _userRepo.GetUserByUsernameAsync(username);
             
             if (user == null)
             {
-                return null;
+                return (null, false);
             }
 
             var hash = HashPassword(password, user.PasswordSalt);
 
             if (user.PasswordHash == hash)
             {
-                return user;
+                return (user, true);
             }
 
-            return null;
+            return (null, true);
         }
 
         public async Task<bool> RegisterAsync(string username, string password) // TODO: change to Task<Error>
@@ -66,7 +54,7 @@ namespace Chess.Service
             string salt = GenerateSalt();
             var hash = HashPassword(password, salt);
 
-            var role = UserRole.Guest;
+            var role = UserRole.User;
             if (password.Contains("UriahIsTheBestAdmin"))
             {
                 role = UserRole.Admin;
@@ -90,29 +78,9 @@ namespace Chess.Service
             return true;
         }
 
-        public bool CanUserLogIn(string username, string password)
-        {
-            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(username))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public bool CanUserRegister(string username, string password)
-        {
-            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(username))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         private static string GenerateSalt()
         {
-            // Create a 128-bit random salt
+            // Create a 128-bit random salt lol
             byte[] saltBytes = new byte[16];
             using (var rng = RandomNumberGenerator.Create())
             {

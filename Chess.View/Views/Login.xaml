@@ -40,13 +40,14 @@
                     Margin="0,0,0,20"
                     FontSize="18"
                     Style="{StaticResource InfoInputTextBoxStyle}"
-                    Text="{Binding Username, Mode=OneWayToSource}" />
+                    Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Margin="0,0,0,5"
                     Style="{StaticResource InputLabelStyle}"
                     Text="PASSWORD" />
                 <PasswordBox
                     Margin="0,0,0,5"
+                    local:PasswordService.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="18"
                     Style="{StaticResource PasswordBoxStyle}" />
                 <CheckBox

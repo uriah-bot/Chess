@@ -7,6 +7,7 @@ namespace Chess.ViewModel
 {
     public class ClassicalViewModel : ViewModelBase
     {
+        private static readonly Random rnd = new Random();
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
         private readonly IGameConfigurationStore _gameConfigStore;
@@ -29,7 +30,20 @@ namespace Chess.ViewModel
             _gameConfigStore.Mode = GameMode.Classical;
             _gameConfigStore.UserColor = UserColor;
 
+            _navigationService.NavigateTo<GameViewModel>();
             _windowService.SwitchWindow<MainViewModel>();
+        }
+
+        private PlayerColor RandomizePlayerColor()
+        {
+            int random = rnd.Next(2);
+
+            return random switch
+            {
+                0 => PlayerColor.White,
+                1 => PlayerColor.Black,
+                _ => PlayerColor.None // if somehow you managed to (just quit at that point)
+            };
         }
     }
 }

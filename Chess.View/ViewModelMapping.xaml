@@ -32,5 +32,8 @@
     <DataTemplate DataType="{x:Type vm:AdventureViewModel}">
         <views:Adventure />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:HelpViewModel}">
+        <views:Help />
+    </DataTemplate>
 
 </ResourceDictionary>

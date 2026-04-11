@@ -34,12 +34,13 @@
                     Margin="0,0,0,10"
                     FontSize="18"
                     Style="{StaticResource InfoInputTextBoxStyle}"
-                    Text="{Binding Username, Mode=OneWayToSource}" />
+                    Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock
                     Margin="0,0,0,5"
                     Style="{StaticResource InputLabelStyle}"
                     Text="PASSWORD" />
                 <PasswordBox
+                    local:PasswordService.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Margin="0,0,0,5"
                     FontSize="18"
                     Style="{StaticResource PasswordBoxStyle}" />

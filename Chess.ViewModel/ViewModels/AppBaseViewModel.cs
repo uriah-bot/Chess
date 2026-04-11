@@ -1,4 +1,5 @@
-﻿using Chess.ViewModel.Stores;
+﻿using Chess.Model;
+using Chess.ViewModel.Stores;
 using Chess.ViewModel.ViewModelHelper;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -6,7 +7,7 @@ using System.Windows.Navigation;
 
 namespace Chess.ViewModel
 {
-    public class AppBaseViewModel : ViewModelBase, IDisposable
+    public class AppBaseViewModel : ViewModelBase
     {
         private readonly IUserStore _userStore;
         private readonly INavigationStore _navigationStore;
@@ -23,7 +24,7 @@ namespace Chess.ViewModel
             NavigateToStatsCommand = new NavigateCommand<StatsViewModel>(_navigationService);
             //NavigateToAdvancedSettingsCommand = new NavigateCommand(_navigationService, typeof(AdvancedSettingsViewModel));
             NavigateToSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigationService);
-            //NavigateToHelpCommand = new NavigateCommand(_navigationService, typeof(HelpViewModel));
+            NavigateToHelpCommand = new NavigateCommand<HelpViewModel>(_navigationService);
             _navigationStore.CurrentViewModel = hvm;
         }
 
@@ -37,6 +38,8 @@ namespace Chess.ViewModel
 
         public string Username => _userStore.CurrentUser?.Username ?? "Stranger";
 
+        public UserRole Role => _userStore.CurrentUser?.Role ?? UserRole.User;
+
         public string EloText => $"Elo: {_userStore.CurrentUser?.Elo ?? -1}";
 
         private void NavigationStore_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -47,10 +50,12 @@ namespace Chess.ViewModel
             }
         }
 
-        public void Dispose() // might stay in memory even when in a different view
+        public override void Dispose() // might stay in memory even when in a different view
         {
             _userStore.CurrentUserChanged -= OnUserChanged;
             _navigationStore.PropertyChanged -= NavigationStore_PropertyChanged;
+
+            base.Dispose();
         }
 
         private void OnUserChanged()

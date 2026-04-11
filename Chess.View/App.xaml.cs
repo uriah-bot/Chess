@@ -4,8 +4,6 @@ using Chess.View.Services;
 using Chess.ViewModel;
 using Chess.ViewModel.ViewModelHelper;
 using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
-using System.Data;
 using System.Windows;
 
 namespace Chess.View
@@ -22,8 +20,8 @@ namespace Chess.View
             var services = new ServiceCollection();
 
             services.AddSingleton<IWindowService, WindowService>();
-            services.AddSingleton<MainWindow>();
-            services.AddSingleton<AppBase>();
+            services.AddTransient<MainWindow>();
+            services.AddTransient<AppBase>();
 
             // Maps Func<Type, ViewModelBase> (NavigateCommand) to ServiceProvider's GetRequiredService method
             services.AddSingleton<Func<Type, ViewModelBase>>(provider =>
@@ -39,17 +37,11 @@ namespace Chess.View
         protected override void OnStartup(StartupEventArgs e)
         {
             var windowService = _serviceProvider.GetRequiredService<IWindowService>();
+            var navService = _serviceProvider.GetRequiredService<INavigationService>();
 
-            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            var mainWindowVM = _serviceProvider.GetRequiredService<MainViewModel>();
-            mainWindow.DataContext = mainWindowVM;
-
-            var appBase = _serviceProvider.GetRequiredService<AppBase>();
-            var appBaseVM = _serviceProvider.GetRequiredService<AppBaseViewModel>();
-            appBase.DataContext = appBaseVM;
-
-            //mainWindow.Show();
-            windowService.SwitchWindow<AppBaseViewModel>();
+            //windowService.SwitchWindow<AppBaseViewModel>();
+            navService.NavigateTo<LoginViewModel>();
+            windowService.SwitchWindow<MainViewModel>();
         }
     }
 }

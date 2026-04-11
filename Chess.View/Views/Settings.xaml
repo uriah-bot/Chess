@@ -266,7 +266,6 @@
                     </StackPanel>
                 </Border>
                 <TextBlock Style="{StaticResource SectionHeader}" Text="User Settings" />
-
                 <Border
                     Padding="15"
                     Background="#252526"
@@ -329,7 +328,7 @@
                             <TextBlock
                                 Width="70"
                                 Foreground="White"
-                                Text="Email:" />
+                                Text="User Role:" />
                             <Border
                                 Width="230"
                                 Height="15"
@@ -342,13 +341,15 @@
                                     BorderThickness="0"
                                     Foreground="{StaticResource Brush.TextSecondary}"
                                     IsEnabled="False"
-                                    Text="{Binding Email}" />
+                                    Text="{Binding Role, Mode=OneWay}" />
                             </Border>
                             <Button
                                 Width="20"
                                 Height="20"
-                                Content="&#x270E;"
-                                Style="{StaticResource DefaultButton}" />
+                                Content="&#xE8D7;"
+                                FontFamily="Segoe MDL2 Assets"
+                                Style="{StaticResource DefaultButton}"
+                                ToolTip="Request Role" />
                         </DockPanel>
                     </StackPanel>
                 </Border>
@@ -359,7 +360,7 @@
                             FontSize="16"
                             FontWeight="SemiBold"
                             Foreground="#AAAAAA"
-                            Text="Advanced Settings" />
+                            Text="Sensitive Settings" />
                     </Expander.Header>
                     <Border
                         Margin="10,10,10,0"
@@ -371,6 +372,7 @@
                                 FontWeight="Bold"
                                 Foreground="#FF5555"
                                 Text="Danger Zone" />
+                            <!--  TODO: this button appears white when disabled  -->
                             <Button
                                 Width="200"
                                 Height="35"
@@ -378,17 +380,17 @@
                                 HorizontalAlignment="Left"
                                 Background="#990000"
                                 BorderThickness="0"
+                                Command="{Binding DeleteUserCommand}"
                                 Content="DELETE USER"
                                 FontWeight="Bold"
-                                Foreground="White">
+                                Foreground="White"
+                                Visibility="{Binding CanDeleteUser, Converter={StaticResource BoolToVis}}">
                                 <Button.Resources>
                                     <Style TargetType="Border">
                                         <Setter Property="CornerRadius" Value="4" />
                                     </Style>
                                 </Button.Resources>
                             </Button>
-                            <CheckBox Margin="10,15,0,0" Content="Enable Debug Logging (Console Output)" />
-                            <CheckBox Margin="10,5,0,10" Content="Force GPU Acceleration for Neural Networks" />
                         </StackPanel>
                     </Border>
                 </Expander>

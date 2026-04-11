@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Chess.View.Views
+namespace Chess.View
 {
     /// <summary>
     /// Interaction logic for Help.xaml

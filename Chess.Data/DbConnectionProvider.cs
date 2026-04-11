@@ -12,8 +12,13 @@ namespace Chess.Data
         {
             if (ConnectionString == null)
             {
-                string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "");
+                // Debug Db
+                string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Chess.accdb");
                 ConnectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath};Persist Security Info=True;";
+
+                //Original Db File(hardcoded)
+                //string masterDbPath = @"C:\Users\uriah\source\repos\Chess\Chess.Data\Chess.accdb";
+                //ConnectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={masterDbPath};Persist Security Info=False;";
             }
             return new OleDbConnection(ConnectionString);
         }
@@ -46,6 +51,7 @@ namespace Chess.Data
                     cmd.Parameters.AddRange(parameters);
 
                 await con.OpenAsync();
+
                 return await cmd.ExecuteNonQueryAsync();
             }
         }

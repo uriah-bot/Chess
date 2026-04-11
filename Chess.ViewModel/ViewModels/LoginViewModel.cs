@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace Chess.ViewModel
 {
-    public class LoginViewModel : ViewModelBase
+    public class LoginViewModel : ValidatableViewModel
     {
         private readonly IAuthService _authService;
         private readonly IUserStore _userStore;
@@ -27,17 +27,26 @@ namespace Chess.ViewModel
 
         private async void Login()
         {
-            var user = await _authService.LoginAsync(Username, Password);
+            (var user, bool exists) = await _authService.LoginAsync(Username, Password);
 
             if (user != null)
             {
                 _userStore.CurrentUser = user;
 
                 _windowService.SwitchWindow<AppBaseViewModel>();
+                return;
             }
+
+            if (exists)
+            {
+                AddError("Password is incorrect.", nameof(LoginCommand));
+                return;
+            }
+
+            AddError("No user found of this name.", nameof(LoginCommand));
         }
 
-        private bool CanUserLogIn() => _authService.CanUserLogIn(Username, Password);
+        private bool CanUserLogIn() => !HasErrors && !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
 
         private string _username;
         public string Username
@@ -50,6 +59,15 @@ namespace Chess.ViewModel
             {
                 _username = value;
                 OnPropertyChanged(nameof(Username));
+
+                ClearErrors();
+                ClearErrors(nameof(LoginCommand));
+                if (string.IsNullOrWhiteSpace(Username))
+                {
+                    AddError("Username is a required field.");
+                }
+
+                OnPropertyChanged(nameof(LoginCommand));
             }
         }
 
@@ -64,32 +82,23 @@ namespace Chess.ViewModel
             {
                 _password = value;
                 OnPropertyChanged(nameof(Password));
+
+                ClearErrors();
+                ClearErrors(nameof(LoginCommand));
+                if (string.IsNullOrWhiteSpace(Password))
+                {
+                    AddError("Password is a required field.");
+                }
+
+                OnPropertyChanged(nameof(LoginCommand));
             }
         }
 
-        private string _errorMessage;
-        public string ErrorMessage
+        public override void Dispose()
         {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-            }
-        }
+            Password = string.Empty;
 
-        private bool _isLoading;
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
+            base.Dispose();
         }
         // for preventing double clicks when requesting login
     }

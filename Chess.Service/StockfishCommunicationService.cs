@@ -81,7 +81,7 @@ namespace Chess.Service
                     string[] parts = line.Split(' ');
                     if (parts.Length >= 2)
                     {
-                        return parts[1]; // example: bestmove e4
+                        return parts[1]; // example: bestmove e2e4
                     }
                 }
             }

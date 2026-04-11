@@ -1,11 +1,12 @@
-﻿using Chess.Service;
+﻿using Chess.Model;
+using Chess.Service;
 using Chess.ViewModel.Stores;
 using Chess.ViewModel.ViewModelHelper;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
 {
-    public class RegisterViewModel : ViewModelBase
+    public class RegisterViewModel : ValidatableViewModel
     {
         private readonly IAuthService _authService;
         private readonly IUserStore _userStore;
@@ -31,15 +32,18 @@ namespace Chess.ViewModel
 
             if (success)
             {
-                var user = await _authService.LoginAsync(Username, Password);
+                (var user, bool exists)  = await _authService.LoginAsync(Username, Password);
 
                 _userStore.CurrentUser = user;
 
                 _windowService.SwitchWindow<AppBaseViewModel>();
+                return;
             }
+
+            AddError("A user of this name already exists.", nameof(RegisterCommand));
         }
 
-        private bool CanRegister() => _authService.CanUserRegister(Username, Password);
+        private bool CanRegister() => !HasErrors && !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
 
         private string _username;
 		public string Username
@@ -52,11 +56,29 @@ namespace Chess.ViewModel
 			{
 				_username = value;
 				OnPropertyChanged(nameof(Username));
-			}
+
+                ClearErrors();
+                if (string.IsNullOrWhiteSpace(Username))
+                {
+                    AddError("Username is a required field.");
+                }
+
+                if (Username.Length < AppConstants.MIN_USERNAME_LENGTH)
+                {
+                    AddError($"Username is too short ({AppConstants.MIN_USERNAME_LENGTH})");
+                }
+
+                if (Username.Length > AppConstants.MAX_USERNAME_LENGTH)
+                {
+                    AddError($"Username exceeds maximum length ({AppConstants.MAX_USERNAME_LENGTH})");
+                }
+
+                OnPropertyChanged(nameof(RegisterCommand));
+            }
 		}
 
 		private string _password;
-		public string Password
+        public string Password
 		{
 			get
 			{
@@ -66,35 +88,32 @@ namespace Chess.ViewModel
 			{
 				_password = value;
 				OnPropertyChanged(nameof(Password));
-			}
+
+                ClearErrors();
+                if (string.IsNullOrWhiteSpace(Username))
+                {
+                    AddError("Password is a required field.");
+                }
+
+                if (Password.Length < AppConstants.MIN_PASSWORD_LENGTH)
+                {
+                    AddError($"Password is too short ({AppConstants.MIN_PASSWORD_LENGTH})");
+                }
+
+                if (Password.Length > AppConstants.MAX_PASSWORD_LENGTH)
+                {
+                    AddError($"Password exceeds maximum length ({AppConstants.MAX_PASSWORD_LENGTH})");
+                }
+
+                OnPropertyChanged(nameof(RegisterCommand));
+            }
 		}
 
-        private bool _isPasswordVisible = false;
-        public bool IsPasswordVisible
+        public override void Dispose()
         {
-            get
-            {
-                return _isPasswordVisible;
-            }
-            set
-            {
-                _isPasswordVisible = value;
-                OnPropertyChanged(nameof(IsPasswordVisible));
-            }
-        }
+            Password = string.Empty;
 
-        private string _errorMessage;
-        public string ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-            }
+            base.Dispose();
         }
 
         //private bool _isLoading;

@@ -11,10 +11,10 @@ namespace Chess.ViewModel
             // Stores
             services.AddSingleton<IUserStore, UserStore>();
             services.AddSingleton<INavigationStore, NavigationStore>();
+            services.AddSingleton<IGameConfigurationStore, GameConfigurationStore>();
 
             // ViewModel Helpers
             services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton<IGameConfigurationStore, GameConfigurationStore>();
 
             // ViewModels
             services.AddTransient<MainViewModel>();
@@ -27,6 +27,7 @@ namespace Chess.ViewModel
             services.AddTransient<RegisterViewModel>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<StatsViewModel>();
+            services.AddTransient<HelpViewModel>();
 
             return services;
         }
