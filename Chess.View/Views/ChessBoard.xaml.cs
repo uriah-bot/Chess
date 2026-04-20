@@ -35,8 +35,7 @@ namespace Chess.View
         private Position selectedPosition = null;
         List<ModifierType> chosenRules = new List<ModifierType>()
         {
-            ModifierType.KingPromotion,
-            ModifierType.Poof
+            ModifierType.TimeLimit
         };
 
         private Move lastMove = null; // only for UI
@@ -171,6 +170,7 @@ namespace Chess.View
 
             if (Game.IsGameOver())
             {
+                Game.RemoveModifiers(); // TODO: TEMPPPPP
                 ShowGameOver();
             }
         }

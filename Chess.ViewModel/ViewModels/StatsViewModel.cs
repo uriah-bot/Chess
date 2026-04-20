@@ -1,14 +1,41 @@
-﻿using Chess.ViewModel.Stores;
+﻿using Chess.Model;
+using Chess.ViewModel.Stores;
+using System.Collections.ObjectModel;
 
 namespace Chess.ViewModel
 {
     public class StatsViewModel : ViewModelBase
     {
         private readonly IUserStore _userStore;
-        public StatsViewModel(IUserStore userStore)
+        private readonly IGameHistoryStore _gameHistoryStore;
+
+        public ObservableCollection<GameRecord> GameHistory { get; } = new ObservableCollection<GameRecord>();
+
+        public StatsViewModel(IUserStore userStore, IGameHistoryStore gameHistoryStore)
         {
             _userStore = userStore;
+            _gameHistoryStore = gameHistoryStore;
             _userStore.CurrentUserChanged += OnUserChanged;
+
+            _ = ReloadDataAsync();
+            
+        }
+
+        private async Task ReloadDataAsync()
+        {
+            GameHistory.Clear();
+
+            await _gameHistoryStore.LoadGamesAsync();
+
+            if (_userStore.CurrentUser == null)
+            {
+                return;
+            }
+
+            foreach (var game in _gameHistoryStore.UserGames)
+            {
+                GameHistory.Add(new GameRecord(game));
+            }
         }
 
         public int Wins => _userStore.CurrentUser?.Wins ?? -1;
@@ -30,10 +57,10 @@ namespace Chess.ViewModel
                     return 0;
                 }
                 
-                return (double)Wins / TotalMatches;
+                return Math.Round((double) 100 * Wins / TotalMatches, 3);
             }
         }
-		public int WinRateBar => (int) WinRate;
+		public int WinRateBar => (int) (WinRate);
 		public int Elo => _userStore.CurrentUser?.Elo ?? -1;
 		public int PeakElo => _userStore.CurrentUser?.PeakElo ?? -1;
 
@@ -47,7 +74,43 @@ namespace Chess.ViewModel
             OnPropertyChanged(nameof(WinRateBar));
             OnPropertyChanged(nameof(Elo));
             OnPropertyChanged(nameof(PeakElo));
+            OnPropertyChanged(nameof(GameHistory));
         }
-        // TODO: How will it know when user is changed
+
+        public override void Dispose()
+        {
+            _userStore.CurrentUserChanged -= OnUserChanged;
+            base.Dispose();
+        }
+    }
+
+    public readonly record struct GameRecord
+    {
+        public GameRecord(GameEntity game)
+        {
+            GameMode = game.BotRating == null ? "Player vs Player" : "Player vs AI";
+            AIName = game.BotRating == null ? string.Empty :"Stockfish" + game.BotRating.ToString();
+            UserColor = game.BotRating == null ? string.Empty : game.UserPlayedAs.ToString();
+            Result = game.BotRating == null ? "(friendly game)" : game.Result.ToString();
+            Date = game.DatePlayed.ToString("yy-MM-dd--hh--mm");
+        }
+
+        public string GameMode { get; }
+        public string AIName { get; }
+        public string Result { get; }
+        public string Date { get; }
+        public string UserColor { get; }
+        public string ResultColor {
+            get
+            {
+                return Result switch
+                {
+                    "Win" => "Green",
+                    "Loss" => "Red",
+                    "Draw" => "Yellow",
+                    _ => "Black"
+                };
+            }
+        }
     }
 }

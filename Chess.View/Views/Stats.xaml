@@ -122,123 +122,68 @@
                     FontWeight="Bold"
                     Foreground="White"
                     Text="Classical Match History" />
-
-                <ItemsControl>
-                    <Border
-                        Margin="0,0,0,10"
-                        Padding="15"
-                        Background="#202020"
-                        CornerRadius="6">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
+                <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding GameHistory}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
                             <Border
-                                Width="40"
-                                Height="40"
-                                HorizontalAlignment="Left"
-                                Background="#204CD964"
-                                CornerRadius="20">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Foreground="#4CD964"
-                                    Text="W" />
+                                Margin="0,0,0,10"
+                                Padding="15"
+                                Background="#202020"
+                                CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border
+                                        Width="40"
+                                        Height="40"
+                                        HorizontalAlignment="Left"
+                                        Background="#20FF5555"
+                                        CornerRadius="20">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontWeight="Bold"
+                                            Foreground="{Binding Result}"
+                                            Text="{Binding Result}" />
+                                    </Border>
+
+                                    <StackPanel
+                                        Grid.Column="1"
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Center">
+                                        <TextBlock
+                                            FontWeight="SemiBold"
+                                            Foreground="White"
+                                            Text="{Binding AIName, FallbackValue=''}" />
+                                        <TextBlock
+                                            FontSize="12"
+                                            Foreground="Gray"
+                                            Text="{Binding GameMode}" />
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center">
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            FontWeight="Bold"
+                                            Foreground="{Binding Result}"
+                                            Text="{Binding EloDelta}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            FontSize="11"
+                                            Foreground="Gray"
+                                            Text="{Binding Time}" />
+                                    </StackPanel>
+                                </Grid>
                             </Border>
-
-                            <StackPanel
-                                Grid.Column="1"
-                                Margin="10,0,0,0"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    FontWeight="SemiBold"
-                                    Foreground="White"
-                                    Text="vs. Stockfish (Level 5)" />
-                                <TextBlock
-                                    FontSize="12"
-                                    Foreground="Gray"
-                                    Text="Classical • 15 min • 32 Moves" />
-                            </StackPanel>
-
-                            <StackPanel
-                                Grid.Column="2"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    FontWeight="Bold"
-                                    Foreground="#4CD964"
-                                    Text="+12 ELO" />
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    FontSize="11"
-                                    Foreground="Gray"
-                                    Text="Yesterday" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-
-                    <Border
-                        Margin="0,0,0,10"
-                        Padding="15"
-                        Background="#202020"
-                        CornerRadius="6">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <Border
-                                Width="40"
-                                Height="40"
-                                HorizontalAlignment="Left"
-                                Background="#20FF5555"
-                                CornerRadius="20">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Foreground="#FF5555"
-                                    Text="L" />
-                            </Border>
-
-                            <StackPanel
-                                Grid.Column="1"
-                                Margin="10,0,0,0"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    FontWeight="SemiBold"
-                                    Foreground="White"
-                                    Text="vs. The Dark Knight" />
-                                <TextBlock
-                                    FontSize="12"
-                                    Foreground="Gray"
-                                    Text="Adventure • Level 3 • 45 Moves" />
-                            </StackPanel>
-
-                            <StackPanel
-                                Grid.Column="2"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    FontWeight="Bold"
-                                    Foreground="#FF5555"
-                                    Text="-8 ELO" />
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    FontSize="11"
-                                    Foreground="Gray"
-                                    Text="2 Days ago" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
                 <Rectangle Height="40" Fill="Transparent" />

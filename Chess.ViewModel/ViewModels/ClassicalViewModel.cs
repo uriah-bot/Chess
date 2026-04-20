@@ -10,15 +10,15 @@ namespace Chess.ViewModel
         private static readonly Random rnd = new Random();
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
-        private readonly IGameConfigurationStore _gameConfigStore;
+        private readonly IGameManagerService _gameManagerService;
         public ICommand NavigateToSettingsCommand { get; }
         public ICommand StartClassicalGameCommand { get; }
 
-        public ClassicalViewModel(INavigationService navigationService, IWindowService windowService, IGameConfigurationStore gameConfigurationStore)
+        public ClassicalViewModel(INavigationService navigationService, IWindowService windowService, IGameManagerService gameManagerService)
         {
             _navigationService = navigationService;
             _windowService = windowService;
-            _gameConfigStore = gameConfigurationStore;
+            _gameManagerService = gameManagerService;
             NavigateToSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigationService);
             StartClassicalGameCommand = new RelayCommand(o => ExecuteStartClassicalGame());
         }
@@ -27,8 +27,8 @@ namespace Chess.ViewModel
 
         public void ExecuteStartClassicalGame()
         {
-            _gameConfigStore.Mode = GameMode.Classical;
-            _gameConfigStore.UserColor = UserColor;
+            _gameManagerService.Mode = GameMode.Classical;
+            _gameManagerService.UserColor = UserColor;
 
             _navigationService.NavigateTo<GameViewModel>();
             _windowService.SwitchWindow<MainViewModel>();

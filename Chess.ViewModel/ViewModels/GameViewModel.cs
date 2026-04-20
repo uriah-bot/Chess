@@ -1,14 +1,18 @@
-﻿using Chess.ViewModel.Stores;
+﻿using Chess.Model;
+using Chess.ViewModel.Stores;
 
 namespace Chess.ViewModel
 {
-    public partial class GameViewModel : ViewModelBase
+    public partial class GameViewModel : ViewModelBase, IDisposable
     {
 		private readonly IUserStore _userStore;
 		public GameViewModel(IUserStore userStore)
 		{
 			_userStore = userStore;
-		}
+
+			
+        }
+
         public string Username => _userStore.CurrentUser?.Username ?? "Stranger";
 
 		private string _AIName = string.Empty;
@@ -25,7 +29,7 @@ namespace Chess.ViewModel
 			}
 		}
 
-		private bool _isClassicalGame = true;
+		private bool _isClassicalGame;
 		public bool IsClassicalGame
 		{
 			get
@@ -38,5 +42,33 @@ namespace Chess.ViewModel
 				OnPropertyChanged(nameof(IsClassicalGame));
 			}
 		}
-    }
+
+		private string _whiteUserTimerText = "10:00";
+		public string WhiteUserTimerText
+		{
+			get
+			{
+				return _whiteUserTimerText;
+			}
+			set
+			{
+				_whiteUserTimerText = value;
+				OnPropertyChanged(nameof(WhiteUserTimerText));
+			}
+		}
+
+		private string _blackUserTimerText = "10:00";
+		public string BlackUserTimerText
+		{
+			get
+			{
+				return _blackUserTimerText;
+			}
+			set
+			{
+				_blackUserTimerText = value;
+				OnPropertyChanged(nameof(BlackUserTimerText));
+			}
+		}
+	}
 }

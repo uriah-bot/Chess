@@ -8,26 +8,20 @@
     Background="{StaticResource Brush.Background}"
     FontFamily="Segoe UI"
     mc:Ignorable="d">
-    <Grid Width="420" Height="515">
+    <Grid>
         <Border
             Width="420"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Style="{StaticResource CardStyle}">
-
             <StackPanel Margin="0,-20,0,0">
-
-                <!--  Icon  -->
                 <TextBlock
                     Margin="0,0,0,15"
                     HorizontalAlignment="Center"
                     FontSize="40"
                     Foreground="{StaticResource Brush.TextPrimary}"
                     Text="♟" />
-
-                <!--  Title  -->
                 <TextBlock Style="{StaticResource TitleTextStyle}" Text="Welcome Back" />
-
                 <TextBlock
                     Margin="0,5,0,25"
                     Style="{StaticResource SubtitleTextStyle}"
@@ -37,19 +31,60 @@
                     Style="{StaticResource InputLabelStyle}"
                     Text="USERNAME" />
                 <TextBox
-                    Margin="0,0,0,20"
+                    x:Name="UsernameTextBox"
                     FontSize="18"
                     Style="{StaticResource InfoInputTextBoxStyle}"
-                    Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=UsernameTextBox}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,2" Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    Foreground="#FF5555"
+                                    Text="&#xE783;" />
+
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    Foreground="#FF5555"
+                                    Text="{Binding ErrorContent}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <TextBlock
-                    Margin="0,0,0,5"
+                    Margin="0,20,0,5"
                     Style="{StaticResource InputLabelStyle}"
                     Text="PASSWORD" />
                 <PasswordBox
+                    x:Name="PasswordBox"
                     Margin="0,0,0,5"
-                    local:PasswordService.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    local:PasswordService.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                     FontSize="18"
                     Style="{StaticResource PasswordBoxStyle}" />
+                <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=PasswordBox}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,2" Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    Foreground="#FF5555"
+                                    Text="&#xE783;" />
+
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    Foreground="#FF5555"
+                                    Text="{Binding ErrorContent}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <CheckBox
                     x:Name="PasswordVisibilityCheckBox"
                     Margin="0,0,0,5"
@@ -60,10 +95,33 @@
                     HorizontalAlignment="Right"
                     Style="{StaticResource LinkTextStyle}"
                     Text="Forgot Password?" />
-                <Button
-                    Command="{Binding LoginCommand}"
-                    Content="LOGIN"
-                    Style="{StaticResource DefaultButton}" />
+                <StackPanel>
+                    <Button
+                        x:Name="LoginButton"
+                        Command="{Binding LoginCommand}"
+                        Content="LOGIN"
+                        Style="{StaticResource DefaultButton}"
+                        Validation.ErrorTemplate="{x:Null}" />
+                    <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=LoginButton}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,2" Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        FontFamily="Segoe MDL2 Assets"
+                                        Foreground="#FF5555"
+                                        Text="&#xE783;" />
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Foreground="#FF5555"
+                                        Text="{Binding ErrorContent}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
                 <StackPanel
                     Margin="0,20,0,0"
                     HorizontalAlignment="Center"

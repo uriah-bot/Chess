@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using Chess.ViewModel;
 
 namespace Chess.View
 {

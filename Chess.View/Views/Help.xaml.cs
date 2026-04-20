@@ -29,87 +29,87 @@ namespace Chess.View
             InitializeComponent();
         }
 
-        private void WatchVideo_Click(object sender, RoutedEventArgs e)
-        {
-            VideoGrid.Visibility = Visibility.Visible;
-        }
+        //private void WatchVideo_Click(object sender, RoutedEventArgs e)
+        //{
+        //    VideoGrid.Visibility = Visibility.Visible;
+        //}
 
-        private async void SendEmailToDeveloper_Click(object sender, RoutedEventArgs e)
-        {
-            string subject = EmailSubject.Text;
-            string body = EmailBody.Text;
+        //private async void SendEmailToDeveloper_Click(object sender, RoutedEventArgs e)
+        //{
+        //    string subject = EmailSubject.Text;
+        //    string body = EmailBody.Text;
 
-            if (string.IsNullOrWhiteSpace(subject) || string.IsNullOrWhiteSpace(body))
-            {
-                MessageBox.Show("Please fill out both the subject and the message before sending.", "Missing Info");
-                return;
-            }
+        //    if (string.IsNullOrWhiteSpace(subject) || string.IsNullOrWhiteSpace(body))
+        //    {
+        //        MessageBox.Show("Please fill out both the subject and the message before sending.", "Missing Info");
+        //        return;
+        //    }
 
-            // TODO: remove ts and connect to SendEmail() from servicw when in vm
-            try
-            {
-                var smtpClient = new SmtpClient("smtp.gmail.com")
-                {
-                    Port = 587,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(AppConstants.APP_EMAIL, AppConstants.APP_KEY),
-                    EnableSsl = true
-                };
+        //    // TODO: remove ts and connect to SendEmail() from servicw when in vm
+        //    try
+        //    {
+        //        var smtpClient = new SmtpClient("smtp.gmail.com")
+        //        {
+        //            Port = 587,
+        //            UseDefaultCredentials = false,
+        //            Credentials = new NetworkCredential(AppConstants.APP_EMAIL, AppConstants.APP_KEY),
+        //            EnableSsl = true
+        //        };
 
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress(AppConstants.APP_EMAIL),
-                    Subject = $"[Custom Chess Feedback] {subject}",
-                    Body = $"Message from User:\n\n{body}",
-                };
+        //        var mailMessage = new MailMessage
+        //        {
+        //            From = new MailAddress(AppConstants.APP_EMAIL),
+        //            Subject = $"[Custom Chess Feedback] {subject}",
+        //            Body = $"Message from User:\n\n{body}",
+        //        };
 
-                mailMessage.To.Add(AppConstants.APP_EMAIL);
-                await smtpClient.SendMailAsync(mailMessage);
+        //        mailMessage.To.Add(AppConstants.APP_EMAIL);
+        //        await smtpClient.SendMailAsync(mailMessage);
 
-                EmailSubject.Clear();
-                EmailBody.Clear();
+        //        EmailSubject.Clear();
+        //        EmailBody.Clear();
 
-                MessageBox.Show("Message sent successfully! Thank you for your feedback.", "Success");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Could not send message. Check your internet connection.\n\nError: {ex.Message}", "Failed to Send");
-            }
-        }
+        //        MessageBox.Show("Message sent successfully! Thank you for your feedback.", "Success");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Could not send message. Check your internet connection.\n\nError: {ex.Message}", "Failed to Send");
+        //    }
+        //}
 
-        private void CollapseVideo_Click(object sender, RoutedEventArgs e)
-        {
-            TutorialVideo.Stop();
-            VideoGrid.Visibility = Visibility.Collapsed;
-        }
+        //private void CollapseVideo_Click(object sender, RoutedEventArgs e)
+        //{
+        //    TutorialVideo.Stop();
+        //    VideoGrid.Visibility = Visibility.Collapsed;
+        //}
 
-        private void Forwards5Sec_Click(object sender, RoutedEventArgs e)
-        {
-            var duration = TutorialVideo.NaturalDuration.TimeSpan;
-            var nextPosition = TutorialVideo.Position.Add(TimeSpan.FromSeconds(5));
+        //private void Forwards5Sec_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var duration = TutorialVideo.NaturalDuration.TimeSpan;
+        //    var nextPosition = TutorialVideo.Position.Add(TimeSpan.FromSeconds(5));
 
-            if (nextPosition > duration)
-            {
-                nextPosition = duration;
-            }
+        //    if (nextPosition > duration)
+        //    {
+        //        nextPosition = duration;
+        //    }
 
-            TutorialVideo.Position = nextPosition;
-        }
+        //    TutorialVideo.Position = nextPosition;
+        //}
 
-        private void Backwards5Sec_Click(object sender, RoutedEventArgs e)
-        {
-            var zero = TimeSpan.FromSeconds(0);
-            var nextPosition = TutorialVideo.Position.Subtract(TimeSpan.FromSeconds(5));
+        //private void Backwards5Sec_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var zero = TimeSpan.FromSeconds(0);
+        //    var nextPosition = TutorialVideo.Position.Subtract(TimeSpan.FromSeconds(5));
 
-            if (nextPosition < zero)
-            {
-                nextPosition = zero;
-            }
+        //    if (nextPosition < zero)
+        //    {
+        //        nextPosition = zero;
+        //    }
 
-            TutorialVideo.Position = nextPosition;
-        }
+        //    TutorialVideo.Position = nextPosition;
+        //}
 
-        private void PlayVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Play();
-        private void PauseVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Pause();
+        //private void PlayVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Play();
+        //private void PauseVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Pause();
     }
 }

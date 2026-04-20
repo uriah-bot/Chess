@@ -100,6 +100,5 @@ namespace Chess.ViewModel
 
             base.Dispose();
         }
-        // for preventing double clicks when requesting login
     }
 }

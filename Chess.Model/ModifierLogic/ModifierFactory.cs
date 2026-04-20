@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess.Model
+﻿namespace Chess.Model
 {
     public static class ModifierFactory
     {
@@ -17,6 +11,7 @@ namespace Chess.Model
                 ModifierType.DoubleMoves => new DoubleMove(),
                 //ModifierType.FogOfWar => new FogOfWar(),
                 ModifierType.Poof => new Poof(),
+                //ModifierType.Wormholes => new Wormholes(),
                 _ => null
             };
         }

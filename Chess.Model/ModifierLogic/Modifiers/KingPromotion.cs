@@ -10,6 +10,8 @@ namespace Chess.Model
     {
         private Game _game; // so Result can be set
 
+        public List<ModifierType> Conflicts => null;
+
         public void Apply(Game game)
         {
             _game = game;

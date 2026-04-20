@@ -36,7 +36,7 @@ namespace Chess.ViewModel
 			}
 
             // papa and I's accounts are sacred, we won't delete them
-            if (_userStore.CurrentUser.Id == AppConstants.MY_USER_ID || _userStore.CurrentUser.Id == AppConstants.MY_USER_ID)
+            if (_userStore.CurrentUser.Id == AppConstants.MY_USER_ID || _userStore.CurrentUser.Id == AppConstants.PAPA_MOR_USER_ID)
 			{
 				return false;
 			}
@@ -45,9 +45,9 @@ namespace Chess.ViewModel
             return true;
         }
 
-        private void DeleteUser()
+        private async void DeleteUser()
         {
-			_userRepo.DeleteUserAsync(_userStore.CurrentUser);
+			await _userRepo.DeleteUserAsync(_userStore.CurrentUser);
             _userStore.CurrentUser = null;
 
             _navigationService.NavigateTo<LoginViewModel>();

@@ -130,7 +130,7 @@
                             FontSize="34"
                             FontWeight="SemiBold"
                             Foreground="White"
-                            Text="10:00" />
+                            Text="{Binding BlackUserTimerText}" />
                     </StackPanel>
                 </Border>
 
@@ -183,7 +183,7 @@
                             FontSize="34"
                             FontWeight="SemiBold"
                             Foreground="White"
-                            Text="10:00" />
+                            Text="{Binding WhiteUserTimerText}" />
                         <TextBlock
                             Margin="0,5,0,0"
                             HorizontalAlignment="Center"

@@ -28,7 +28,7 @@ namespace Chess.ViewModel.Stores
 
         public void Update(Action<UserEntity> runUpdate)
         {
-            if (_currentUser != null) return;
+            if (_currentUser == null) return;
 
             runUpdate(CurrentUser);
 

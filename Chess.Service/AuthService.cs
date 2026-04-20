@@ -9,7 +9,6 @@ namespace Chess.Service
     {
         Task<(UserEntity, bool)> LoginAsync(string username, string password);
         Task<bool> RegisterAsync(string username, string password);
-        //Task LogoutAsync();
     }
 
     public class AuthService : IAuthService
@@ -40,9 +39,9 @@ namespace Chess.Service
             return (null, true);
         }
 
-        public async Task<bool> RegisterAsync(string username, string password) // TODO: change to Task<Error>
+        public async Task<bool> RegisterAsync(string username, string password)
         {
-            // check if user exists
+            // check if user already exists
             var copycat = await _userRepo.GetUserByUsernameAsync(username);
 
             if (copycat != null)
@@ -55,11 +54,7 @@ namespace Chess.Service
             var hash = HashPassword(password, salt);
 
             var role = UserRole.User;
-            if (password.Contains("UriahIsTheBestAdmin"))
-            {
-                role = UserRole.Admin;
-            }
-            else if (password.Contains("TwinkleTwinleLittleStar"))
+            if (password.Contains("TwinkleTwinleLittleStar"))
             {
                 role = UserRole.Moderator;
             }
@@ -91,6 +86,7 @@ namespace Chess.Service
 
         private static string HashPassword(string password, string salt)
         {
+            // Hash the password with the salt using SHA256
             using (SHA256 sha = SHA256.Create())
             {
                 byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password + salt));

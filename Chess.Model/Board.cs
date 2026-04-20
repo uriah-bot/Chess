@@ -46,12 +46,8 @@ namespace Chess.Model
             return board;
         }
 
-        public static Board InitialInverse()
-        {
-            Board board = new Board();
-            board.AddStartPiecesInverse();
-            return board;
-        }
+        // cant initialize inverse because logic is hardcoded for logicPieces to be on a regular position
+        // must flip only in UI when black pieces are chosen
 
         private void AddStartPieces()
         {
@@ -77,33 +73,6 @@ namespace Chess.Model
             {
                 this[1, i] = new Pawn(PlayerColor.Black);
                 this[6, i] = new Pawn(PlayerColor.White);
-            }
-        }
-
-        private void AddStartPiecesInverse()
-        {
-            this[7, 0] = new Rook(PlayerColor.Black);
-            this[7, 1] = new Knight(PlayerColor.Black);
-            this[7, 2] = new Bishop(PlayerColor.Black);
-            this[7, 3] = new Queen(PlayerColor.Black);
-            this[7, 4] = new King(PlayerColor.Black);
-            this[7, 5] = new Bishop(PlayerColor.Black);
-            this[7, 6] = new Knight(PlayerColor.Black);
-            this[7, 7] = new Rook(PlayerColor.Black);
-
-            this[0, 0] = new Rook(PlayerColor.White);
-            this[0, 1] = new Knight(PlayerColor.White);
-            this[0, 2] = new Bishop(PlayerColor.White);
-            this[0, 3] = new Queen(PlayerColor.White);
-            this[0, 4] = new King(PlayerColor.White);
-            this[0, 5] = new Bishop(PlayerColor.White);
-            this[0, 6] = new Knight(PlayerColor.White);
-            this[0, 7] = new Rook(PlayerColor.White);
-
-            for (int i = 0; i < 8; i++)
-            {
-                this[6, i] = new Pawn(PlayerColor.Black);
-                this[1, i] = new Pawn(PlayerColor.White);
             }
         }
 

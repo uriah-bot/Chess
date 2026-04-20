@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Pipelines;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace Chess.Model
+﻿namespace Chess.Model
 {
     public class Poof : IModifier
     {
         private Game _game; // so Result can be set
         private readonly Random rnd = new Random();
+
+        public List<ModifierType> Conflicts => null;
 
         public void Apply(Game game)
         {
@@ -29,7 +23,7 @@ namespace Chess.Model
 
         public void PoofPiece(Move move)
         {
-            if (_game.halfMoves % 10 != 9 &&  _game.halfMoves % 10 != 0)
+            if (_game.HalfMoves % 10 != 9 &&  _game.HalfMoves % 10 != 0)
             {
                 return;
             }

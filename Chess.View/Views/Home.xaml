@@ -129,7 +129,6 @@
 
                     <Button
                         Height="20"
-                        Click="Temp"
                         Command="{Binding NavigateToAdventureCommand}"
                         Content="Modifier Selection"
                         FontFamily="Segoe UI"

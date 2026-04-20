@@ -9,6 +9,7 @@
         FiftyMoveRule,
         KingPromotion,
         NotEnoughPoofPieces,
+        TimeRanOut,
         Resignation
     }
 }

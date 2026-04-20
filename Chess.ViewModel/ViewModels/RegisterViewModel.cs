@@ -127,10 +127,5 @@ namespace Chess.ViewModel
         //    }
         //}
         // for preventing double clicks when requesting registration and nice UI
-
-        //public RegisterViewModel()
-        //{
-        //    RegisterCommand = new RelayCommand(RequestRegistrationAsync);
-        //}
     }
 }

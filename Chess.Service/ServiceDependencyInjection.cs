@@ -8,6 +8,10 @@ namespace Chess.Service
         {
             // Auth
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IEmailService, EmailService>();
+            services.AddSingleton<IGameService, GameService>();
+            services.AddSingleton<StockfishCommunicationService>();
+            services.AddSingleton<StockfishHelper>();
 
             return services;
         }

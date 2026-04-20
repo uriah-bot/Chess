@@ -36,21 +36,18 @@
                             Width="40"
                             Height="20"
                             Margin="230,0,0,12"
-                            Click="WatchVideo_Click"
+                            Command="{Binding ShowVideoCommand}"
                             Content="Show"
                             Style="{StaticResource DefaultButton}" />
                         <Button
                             Width="40"
                             Height="20"
                             Margin="5,0,0,12"
-                            Click="CollapseVideo_Click"
+                            Command="{Binding CollapseVideoCommand}"
                             Content="Hide"
                             Style="{StaticResource DefaultButton}" />
                     </DockPanel>
-                    <Grid
-                        x:Name="VideoGrid"
-                        Panel.ZIndex="100"
-                        Visibility="Collapsed">
+                    <Grid Panel.ZIndex="100" Visibility="{Binding VideoGridVisible, Converter={StaticResource BoolToVis}}">
                         <StackPanel Margin="0,15,0,0">
                             <MediaElement
                                 x:Name="TutorialVideo"
@@ -69,7 +66,7 @@
                                     Margin="5"
                                     Background="#333333"
                                     BorderThickness="0"
-                                    Click="Backwards5Sec_Click"
+                                    Command="{Binding BackFiveSecCommand}"
                                     Content="-5s"
                                     Cursor="Hand"
                                     FontSize="18"
@@ -80,7 +77,7 @@
                                     Margin="5"
                                     Background="#333333"
                                     BorderThickness="0"
-                                    Click="PlayVideo_Click"
+                                    Command="{Binding PlayVideoCommand}"
                                     Content="&#xE768;"
                                     Cursor="Hand"
                                     FontFamily="Segoe MDL2 Assets"
@@ -92,7 +89,7 @@
                                     Margin="5"
                                     Background="#333333"
                                     BorderThickness="0"
-                                    Click="PauseVideo_Click"
+                                    Command="{Binding PauseVideoCommand}"
                                     Content="&#xE769;"
                                     Cursor="Hand"
                                     FontFamily="Segoe MDL2 Assets"
@@ -104,7 +101,7 @@
                                     Margin="5"
                                     Background="#333333"
                                     BorderThickness="0"
-                                    Click="Forwards5Sec_Click"
+                                    Command="{Binding ForwardsFiveSecCommand}"
                                     Content="+5s"
                                     Cursor="Hand"
                                     FontSize="18"
@@ -243,7 +240,7 @@
                         Width="120"
                         Height="30"
                         HorizontalAlignment="Left"
-                        Click="SendEmailToDeveloper_Click"
+                        Command="{Binding SendEmailToDeveloper_Click}"
                         Content="Send Message"
                         Style="{StaticResource DefaultButton}" />
                 </StackPanel>

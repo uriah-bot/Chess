@@ -5,7 +5,12 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Chess.Service
 {
-    public class EmailService
+    public interface IEmailService
+    {
+        Task<(bool successful, string exception)> SendEmail(string subject, string body);
+    }
+
+    public class EmailService : IEmailService
     {
         public async Task<(bool successful, string exception)> SendEmail(string subject, string body)
         {

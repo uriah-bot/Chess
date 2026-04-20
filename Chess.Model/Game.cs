@@ -9,8 +9,7 @@ namespace Chess.Model
     public class Game
     {
         public GameMode Mode;
-        private List<ModifierType> selectedModifiers = new List<ModifierType>();
-        private List<IModifier> _activeModifiers = new List<IModifier>();
+        private readonly List<IModifier> ActiveModifiers = new List<IModifier>();
 
         public delegate void PieceMovedHandler(Move move);
         public event PieceMovedHandler OnPieceMoved;
@@ -18,7 +17,7 @@ namespace Chess.Model
         public delegate void BoardSetupHandler(Board board);
         public event BoardSetupHandler OnBoardSetup;
 
-        public int halfMoves { get; private set; } = 0; // modifiers
+        public int HalfMoves { get; private set; } = 0; // modifiers
 
         public Board Board { get; }
         public PlayerColor CurrentPlayer { get; private set; }
@@ -28,6 +27,13 @@ namespace Chess.Model
         private string gameStateString;
 
         private readonly Dictionary<string, int> stateHistory = new Dictionary<string, int>();
+
+
+        public event Action<string, string> OnModifierDataUpdated;
+        public void BroadcastModifierData(string key, string value)
+        {
+            OnModifierDataUpdated?.Invoke(key, value);
+        }
 
         // white always starts, this constructor helps with testing
         public Game(PlayerColor player, Board board)
@@ -39,24 +45,34 @@ namespace Chess.Model
             stateHistory[gameStateString] = 1;
         }
 
-        private void ApplyModifiers()
+        private void ApplyModifiers(List<ModifierType> selectedModifiers)
         {
             foreach (var modType in selectedModifiers)
             {
                 IModifier modifier = ModifierFactory.Create(modType);
                 if (modifier != null)
                 {
-                    _activeModifiers.Add(modifier);
+                    ActiveModifiers.Add(modifier);
                     modifier.Apply(this);
+                }
+            }
+        }
+
+        public void RemoveModifiers()
+        {
+            foreach (var modifier in ActiveModifiers)
+            {
+                if (modifier != null)
+                {
+                    ActiveModifiers.Remove(modifier);
+                    modifier.Remove(this);
                 }
             }
         }
 
         public void StartMatch(List<ModifierType> selectedModifiers)
         {
-            this.selectedModifiers = selectedModifiers;
-
-            ApplyModifiers();
+            ApplyModifiers(selectedModifiers);
             OnBoardSetup?.Invoke(Board);
         }
 
@@ -76,7 +92,7 @@ namespace Chess.Model
         {
             Board.SetPawnSkippedPosition(CurrentPlayer, null);
             bool captureOrPawnMove = move.ExecuteMove(Board);
-            halfMoves++;
+            HalfMoves++;
 
             OnPieceMoved?.Invoke(move);
 
