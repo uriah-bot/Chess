@@ -29,7 +29,7 @@
         public DateTime DatePlayed { get; set; }
     }
 
-    public class ThemeEntity : DBEntity
+    public class BoardThemeEntity : DBEntity
     {
         public int? UserId { get; set; }
         public string Name { get; set; }

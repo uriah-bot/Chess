@@ -212,23 +212,37 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <ScrollViewer
-                                        Grid.Row="0"
-                                        MaxHeight="150"
-                                        Margin="0,0,0,10"
-                                        VerticalScrollBarVisibility="Auto">
-                                        <StackPanel x:Name="MusicListPanel">
-                                            <RadioButton
-                                                Margin="0,5"
-                                                Content="Classical (Mozart)"
-                                                Foreground="LightGray"
-                                                GroupName="MusicOptions" />
-                                            <RadioButton
-                                                Margin="0,5"
-                                                Content="Lofi Beats"
-                                                Foreground="LightGray"
-                                                GroupName="MusicOptions" />
-                                        </StackPanel>
+                                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Hidden">
+                                        <ListBox
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            ItemsSource="{Binding MusicChannels}"
+                                            SelectedIndex="0">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <ContentPresenter />
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <RadioButton
+                                                        Margin="0,5"
+                                                        Command="{Binding DataContext.PlaySelectedMusicCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                        CommandParameter="{Binding ChannelName}"
+                                                        Content="{Binding ChannelName}"
+                                                        Foreground="LightGray"
+                                                        GroupName="MusicOptions"
+                                                        IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Mode=TwoWay}" />
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
                                     </ScrollViewer>
 
                                     <Button

@@ -23,7 +23,7 @@ namespace Chess.ViewModel
             StartClassicalGameCommand = new RelayCommand(o => ExecuteStartClassicalGame());
         }
 
-        public PlayerColor UserColor => PlayerColor.None; // TODO: change this to user selected color
+        public PlayerColor UserColor { get; set; } // TODO: change this to user selected color
 
         public void ExecuteStartClassicalGame()
         {

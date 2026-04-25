@@ -16,20 +16,23 @@ namespace Chess.Data
             Task AddGameAsync(GameEntity newGame);
             Task DeleteAllUserGamesAsync(UserEntity user);
         }
-        public interface IThemeRepository
+        public interface IBoardThemeRepository
         {
-            Task<IEnumerable<ThemeEntity>> GetUserThemesAsync(UserEntity user);
-            Task AddThemeAsync(ThemeEntity newTheme);
+            Task<IEnumerable<BoardThemeEntity>> GetUserThemesAsync(UserEntity user);
+            Task AddThemeAsync(BoardThemeEntity newTheme);
+            Task RemoveThemeAsync(BoardThemeEntity newTheme);
         }
         public interface IPieceThemeRepository
         {
             Task<IEnumerable<PieceThemeEntity>> GetUserThemesAsync(UserEntity user);
             Task AddThemeAsync(PieceThemeEntity newTheme);
+            Task RemoveThemeAsync(PieceThemeEntity newTheme);
         }
         public interface IRadioChannelRepository
         {
             Task<IEnumerable<RadioChannelEntity>> GetUserChannelsAsync(UserEntity user);
             Task AddChannelAsync(RadioChannelEntity newChannel);
+            Task RemoveChannelAsync(RadioChannelEntity newChannel);
         }
     }
 }

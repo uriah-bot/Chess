@@ -12,7 +12,8 @@
     Icon="/Assets/icon.ico"
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
-    WindowState="Maximized">
+    WindowState="Maximized"
+    WindowStyle="None">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
@@ -121,5 +122,13 @@
             Grid.Column="1"
             Margin="30"
             Content="{Binding CurrentViewModel}" />
+        <MediaElement
+            x:Name="Radio"
+            LoadedBehavior="Play"
+            MediaEnded="Radio_MediaEnded"
+            Source="{Binding MusicUri}"
+            UnloadedBehavior="Stop"
+            Visibility="Collapsed"
+            Volume="{Binding Volume}" />
     </Grid>
 </Window>

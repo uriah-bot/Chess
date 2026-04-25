@@ -12,6 +12,8 @@ namespace Chess.ViewModel
             services.AddSingleton<IUserStore, UserStore>();
             services.AddSingleton<INavigationStore, NavigationStore>();
             services.AddSingleton<IGameHistoryStore, GameHistoryStore>();
+            services.AddSingleton<ISettingsStore, SettingsStore>();
+            services.AddSingleton<IDecorStore, DecorStore>();
 
             // ViewModel Helpers
             services.AddSingleton<INavigationService, NavigationService>();

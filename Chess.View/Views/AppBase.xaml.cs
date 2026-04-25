@@ -11,5 +11,10 @@ namespace Chess.View
         {
             InitializeComponent();
         }
+
+        private void Radio_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            Radio.Position = TimeSpan.Zero;
+        }
     }
 }

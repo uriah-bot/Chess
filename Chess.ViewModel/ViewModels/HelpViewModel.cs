@@ -22,6 +22,7 @@ namespace Chess.ViewModel
             ForwardsFiveSecCommand = new RelayCommand(o => ForwardsFiveSec());
             CloseVideoCommand = new RelayCommand(o => CloseVideo());
             PlayVideoCommand = new RelayCommand(o => PlayVideo());
+            SendEmailCommand = new RelayCommand(o => SendEmail());
         }
 
         public ICommand ShowVideoCommand { get; }
@@ -30,6 +31,13 @@ namespace Chess.ViewModel
         public ICommand ForwardsFiveSecCommand { get; }
         public ICommand CloseVideoCommand { get; }
         public ICommand PlayVideoCommand { get; }
+        public ICommand SendEmailCommand { get; }
+
+        private async void SendEmail()
+        {
+            //await _emailService.SendEmail();
+            return;
+        }
 
         private void PlayVideo()
         {

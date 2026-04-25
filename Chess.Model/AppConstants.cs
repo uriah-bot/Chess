@@ -14,6 +14,8 @@
         public const int MY_USER_ID = 3;
         public const int PAPA_MOR_USER_ID = 4;
 
+        public static string BASE_PATH = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Music");
+
         // Email
         public const string APP_EMAIL = "uribitmap2010@gmail.com";
         public const string APP_KEY = "upbz xvsd rike fspc";

@@ -2,8 +2,8 @@
 using Chess.ViewModel.Stores;
 using Chess.ViewModel.ViewModelHelper;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace Chess.ViewModel
 {
@@ -12,13 +12,17 @@ namespace Chess.ViewModel
         private readonly IUserStore _userStore;
         private readonly INavigationStore _navigationStore;
         private readonly INavigationService _navigationService;
-        public AppBaseViewModel(IUserStore userStore, INavigationService navigationService, INavigationStore navigationStore, HomeViewModel hvm)
+        private readonly IDecorStore _decorStore;
+
+        public AppBaseViewModel(IUserStore userStore, INavigationService navigationService, INavigationStore navigationStore, IDecorStore decorStore, HomeViewModel hvm)
         {
             _navigationService = navigationService;
             _userStore = userStore;
+            _decorStore = decorStore;
             _userStore.CurrentUserChanged += OnUserChanged;
             _navigationStore = navigationStore;
             _navigationStore.PropertyChanged += NavigationStore_PropertyChanged;
+            _decorStore.CurrentSongChanged += OnSongChanged;
 
             NavigateToHomeCommand = new NavigateCommand<HomeViewModel>(_navigationService);
             NavigateToStatsCommand = new NavigateCommand<StatsViewModel>(_navigationService);
@@ -26,6 +30,8 @@ namespace Chess.ViewModel
             NavigateToSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigationService);
             NavigateToHelpCommand = new NavigateCommand<HelpViewModel>(_navigationService);
             _navigationStore.CurrentViewModel = hvm;
+
+            _decorStore.CurrentSong = new Uri(Path.Combine(AppConstants.BASE_PATH, "DefaultMusic.mp3"), UriKind.RelativeOrAbsolute); //TODO: change
         }
 
         public ICommand NavigateToHomeCommand { get; }
@@ -42,6 +48,8 @@ namespace Chess.ViewModel
 
         public string EloText => $"Elo: {_userStore.CurrentUser?.Elo ?? -1}";
 
+        public Uri MusicUri => _decorStore.CurrentSong;
+
         private void NavigationStore_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(_navigationStore.CurrentViewModel))
@@ -50,10 +58,16 @@ namespace Chess.ViewModel
             }
         }
 
+        private void OnSongChanged()
+        {
+            OnPropertyChanged(nameof(MusicUri));
+        }
+
         public override void Dispose() // might stay in memory even when in a different view
         {
             _userStore.CurrentUserChanged -= OnUserChanged;
             _navigationStore.PropertyChanged -= NavigationStore_PropertyChanged;
+            _decorStore.CurrentSongChanged -= OnSongChanged;
 
             base.Dispose();
         }

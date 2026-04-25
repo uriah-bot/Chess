@@ -3,6 +3,9 @@ using Chess.ViewModel.ViewModelHelper;
 using System.Windows.Input;
 using static Chess.Data.Repositories;
 using Chess.Model;
+using Chess.Service;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace Chess.ViewModel
 {
@@ -12,20 +15,69 @@ namespace Chess.ViewModel
 		private readonly INavigationService _navigationService;
 		private readonly IWindowService _windowService;
 		private readonly IUserRepository _userRepo;
+		private readonly IDecorStore _decorStore;
+		private readonly ICustomizableDecorManager<BoardThemeEntity> _boardThemeManager;
+		private readonly ICustomizableDecorManager<PieceThemeEntity> _pieceThemeManager;
+		private readonly ICustomizableDecorManager<RadioChannelEntity> _radioChannel;
 
-        public SettingsViewModel(IUserStore userStore, INavigationService navigationService, IWindowService windowService, IUserRepository userRepository)
+        public SettingsViewModel(IUserStore userStore, INavigationService navigationService, IWindowService windowService, IUserRepository userRepository, IDecorStore decorStore,
+			ICustomizableDecorManager<BoardThemeEntity> boardThemeManager, ICustomizableDecorManager<PieceThemeEntity> pieceThemeManager, ICustomizableDecorManager<RadioChannelEntity> radioChannel)
         {
             _userStore = userStore;
 			_navigationService = navigationService;
 			_windowService = windowService;
 			_userRepo = userRepository;
+			_boardThemeManager = boardThemeManager;
+			_pieceThemeManager = pieceThemeManager;
+			_radioChannel = radioChannel;
+			_decorStore = decorStore;
 
-			_usermame = _userStore.CurrentUser?.Username ?? "Stranger";
+            _username = _userStore.CurrentUser?.Username ?? "Stranger";
 
 			DeleteUserCommand = new RelayCommand(o => DeleteUser(), o => CanDeleteUser());
+			PlaySelectedMusicCommand = new RelayCommand(o => PlayMusic(o));
+			_ = LoadChannelsAsync();
+
+			
         }
 
+        private ObservableCollection<RadioChannelEntity> _musicChannels;
+        public ObservableCollection<RadioChannelEntity> MusicChannels
+        {
+            get
+            {
+                return _musicChannels;
+            }
+            set
+            {
+                _musicChannels = value;
+                // THIS is the magic line that wakes up the UI after the database loads!
+                OnPropertyChanged(nameof(MusicChannels));
+            }
+        }
+
+        private async Task LoadChannelsAsync()
+        {
+			await _radioChannel.GetItemsForUserAsync(_userStore.CurrentUser);
+
+            MusicChannels = new ObservableCollection<RadioChannelEntity>(_radioChannel.dbEntities);
+        }
+
+        private void PlayMusic(object content)
+        {
+			string musicName = content as string;
+			if (musicName != null)
+			{
+				var music = MusicChannels.FirstOrDefault(m => m.ChannelName == musicName);
+				if (music != null)
+				{
+                    _decorStore.CurrentSong = new Uri(Path.Combine(AppConstants.BASE_PATH, music.ChannelPath), UriKind.RelativeOrAbsolute);
+                }
+            }
+		}
+
         public ICommand DeleteUserCommand { get; }
+		public ICommand PlaySelectedMusicCommand { get; }
 
         private bool CanDeleteUser()
         {
@@ -54,17 +106,16 @@ namespace Chess.ViewModel
 			_windowService.SwitchWindow<MainViewModel>();
         }
 
-
-        private string _usermame;
+        private string _username;
 		public string Username
 		{
 			get
 			{
-				return _usermame;
+				return _username;
 			}
 			set
 			{
-                _usermame = value;
+                _username = value;
 				OnPropertyChanged(nameof(Username));
 			}
 		}
