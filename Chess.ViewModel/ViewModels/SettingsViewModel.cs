@@ -36,9 +36,7 @@ namespace Chess.ViewModel
 
 			DeleteUserCommand = new RelayCommand(o => DeleteUser(), o => CanDeleteUser());
 			PlaySelectedMusicCommand = new RelayCommand(o => PlayMusic(o));
-			_ = LoadChannelsAsync();
-
-			
+            _ = LoadChannelsAsync();
         }
 
         private ObservableCollection<RadioChannelEntity> _musicChannels;
@@ -78,7 +76,8 @@ namespace Chess.ViewModel
 
         public ICommand DeleteUserCommand { get; }
 		public ICommand PlaySelectedMusicCommand { get; }
-
+		
+		public ICommand AddMusicMP3 { get; }
         private bool CanDeleteUser()
         {
             // there is no user logged in, nothing to delete

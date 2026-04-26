@@ -1,4 +1,5 @@
-﻿using Chess.ViewModel;
+﻿using Chess.View.Menus;
+using Chess.ViewModel;
 using Chess.ViewModel.ViewModelHelper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
@@ -7,6 +8,7 @@ namespace Chess.View.Services
 {
     public class WindowService : IWindowService
     {
+        private static readonly Dictionary<Type, Type> mappings = new Dictionary<Type, Type>();
         private readonly IServiceProvider _serviceProvider;
         private Window _currentWindow;
 
@@ -32,6 +34,18 @@ namespace Chess.View.Services
 
                 _currentWindow = window;
             }
+        }
+
+        public void ShowDialog<TViewModel>() where TViewModel : DialogViewModel
+        {
+            var dialogWindow = _serviceProvider.GetRequiredService<PopupWindow>();
+
+            var viewModel = _serviceProvider.GetRequiredService<TViewModel>();
+
+            viewModel.RequestClose = () => dialogWindow.Close();
+            dialogWindow.DataContext = viewModel;
+
+            dialogWindow.ShowDialog();
         }
 
         private void CloseCurrentWindow()

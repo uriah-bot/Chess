@@ -52,37 +52,36 @@
                             Text="CHESS MASTER" />
                     </StackPanel>
                     <RadioButton
-                        Uid="Home"
-                        Command="{Binding NavigateToHomeCommand}"
+                        Command="{Binding NavigateRadioButtonCommand}"
+                        CommandParameter="Home"
                         Content="Home"
                         IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:HomeViewModel}, Mode=OneWay}"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE7FC;" />
                     <RadioButton
-                        Uid="Stats"
-                        Command="{Binding NavigateToStatsCommand}"
+                        Command="{Binding NavigateRadioButtonCommand}"
+                        CommandParameter="Stats"
                         Content="Statistics"
                         IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:StatsViewModel}, Mode=OneWay}"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE9D2;" />
                     <RadioButton
-                        x:Name="SettingsRadioButton"
-                        Uid="Settings"
-                        Command="{Binding NavigateToSettingsCommand}"
+                        Command="{Binding NavigateRadioButtonCommand}"
+                        CommandParameter="Settings"
                         Content="Settings"
                         IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:SettingsViewModel}, Mode=OneWay}"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE713;" />
                     <RadioButton
-                        Uid="AdvancedSettings"
-                        Command="{Binding NavigateToAdvancedSettingsCommand}"
+                        Command="{Binding NavigateRadioButtonCommand}"
+                        CommandParameter="AdvancedSettings"
                         Content="Advanced Settings"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE7BA;"
                         Visibility="{Binding Role, Converter={StaticResource RoleToVis}, ConverterParameter=Admin|Moderator}" />
                     <RadioButton
-                        Uid="Help"
-                        Command="{Binding NavigateToHelpCommand}"
+                        Command="{Binding NavigateRadioButtonCommand}"
+                        CommandParameter="Help"
                         Content="Help"
                         Style="{StaticResource NavButtonStyle}"
                         Tag="&#xE783;" />

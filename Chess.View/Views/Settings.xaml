@@ -198,20 +198,17 @@
                             Padding="10"
                             Background="#2D2D30"
                             CornerRadius="8">
-
                             <Expander
                                 FontSize="16"
                                 FontWeight="SemiBold"
                                 Foreground="White"
                                 Header="Radio Channels"
                                 IsExpanded="False">
-
                                 <Grid Margin="0,15,0,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-
                                     <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Hidden">
                                         <ListBox
                                             Background="Transparent"
@@ -244,12 +241,12 @@
                                             </ListBox.ItemTemplate>
                                         </ListBox>
                                     </ScrollViewer>
-
                                     <Button
                                         Grid.Row="1"
                                         Height="35"
                                         Padding="10,5"
                                         BorderThickness="0"
+                                        Command="{Binding AddMusicMP3}"
                                         Content="+ Add Music as .mp3"
                                         Cursor="Hand"
                                         Foreground="White"
@@ -380,30 +377,50 @@
                         Margin="10,10,10,0"
                         Background="#252526"
                         CornerRadius="8">
-                        <StackPanel>
+                        <StackPanel Background="Transparent">
                             <TextBlock
                                 Margin="10,10,0,10"
                                 FontWeight="Bold"
                                 Foreground="#FF5555"
                                 Text="Danger Zone" />
-                            <!--  TODO: this button appears white when disabled  -->
                             <Button
                                 Width="200"
                                 Height="35"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
-                                Background="#990000"
-                                BorderThickness="0"
                                 Command="{Binding DeleteUserCommand}"
                                 Content="DELETE USER"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Visibility="{Binding CanDeleteUser, Converter={StaticResource BoolToVis}}">
-                                <Button.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="4" />
+                                Cursor="Hand">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#990000" />
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="BorderThickness" Value="0" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border
+                                                        x:Name="border"
+                                                        Background="{TemplateBinding Background}"
+                                                        CornerRadius="4">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="border" Property="Background" Value="#CC0000" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter TargetName="border" Property="Background" Value="#4A1111" />
+                                                            <Setter Property="Foreground" Value="#888888" />
+                                                            <Setter Property="Opacity" Value="0.6" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
                                     </Style>
-                                </Button.Resources>
+                                </Button.Style>
                             </Button>
                         </StackPanel>
                     </Border>

@@ -32,6 +32,11 @@ namespace Chess.ViewModel
             services.AddTransient<StatsViewModel>();
             services.AddTransient<HelpViewModel>();
 
+            services.AddTransient<GameOverMenuViewModel>();
+            services.AddTransient<ModifiedGamePausedMenuViewModel>();
+            services.AddTransient<PromotionMenuViewModel>();
+            services.AddTransient<GamePausedMenuViewModel>();
+
             return services;
         }
     }

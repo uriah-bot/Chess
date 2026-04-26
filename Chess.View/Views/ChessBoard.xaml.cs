@@ -151,15 +151,15 @@ namespace Chess.View
             PieceImages[toPosition.Row, toPosition.Column].Source = Images.GetImage(Game.CurrentPlayer, PieceType.Pawn);
             PieceImages[fromPosition.Row, fromPosition.Column].Source = null;
 
-            PromotionMenu promotionMenu = new PromotionMenu(Game.CurrentPlayer);
-            MenuContainer.Content = promotionMenu;
+            //PromotionMenu promotionMenu = new PromotionMenu(Game.CurrentPlayer);
+            //MenuContainer.Content = promotionMenu;
 
-            promotionMenu.PieceSelected += pieceType =>
-            {
-                MenuContainer.Content = null;
-                Move promotionMove = new PawnPromotion(fromPosition, toPosition, pieceType);
-                HandleMove(promotionMove);
-            };
+            //promotionMenu.PieceSelected += pieceType =>
+            //{
+            //    MenuContainer.Content = null;
+            //    Move promotionMove = new PawnPromotion(fromPosition, toPosition, pieceType);
+            //    HandleMove(promotionMove);
+            //};
         }
 
         private void HandleMove(Move move) // helper
@@ -277,23 +277,23 @@ namespace Chess.View
 
         private void ShowGameOver()
         {
-            GameOverMenu gameOverMenu = new GameOverMenu(Game);
-            MenuContainer.Content = gameOverMenu;
+            //GameOverMenu gameOverMenu = new GameOverMenu(Game);
+            //MenuContainer.Content = gameOverMenu;
 
-            gameOverMenu.OptionSelected += option =>
-            {
-                if (option == MenuOption.Exit)
-                {
-                    var home = new AppBase();
-                    home.Show();
-                    Window.GetWindow(this).Close();
-                }
-                else if (option == MenuOption.Restart)
-                {
-                    MenuContainer.Content = null;
-                    RestartGame();
-                }
-            };
+            //gameOverMenu.OptionSelected += option =>
+            //{
+            //    if (option == MenuOption.Exit)
+            //    {
+            //        var home = new AppBase();
+            //        home.Show();
+            //        Window.GetWindow(this).Close();
+            //    }
+            //    else if (option == MenuOption.Restart)
+            //    {
+            //        MenuContainer.Content = null;
+            //        RestartGame();
+            //    }
+            //};
         }
 
         private void RestartGame()
@@ -331,19 +331,19 @@ namespace Chess.View
 
         private void ShowPauseMenu()
         {
-            GamePausedMenu PauseMenu = new GamePausedMenu();
-            MenuContainer.Content = PauseMenu;
+            //GamePausedMenu PauseMenu = new GamePausedMenu();
+            //MenuContainer.Content = PauseMenu;
 
-            PauseMenu.OptionSelected += option =>
-            {
-                MenuContainer.Content = null;
+            //PauseMenu.OptionSelected += option =>
+            //{
+            //    MenuContainer.Content = null;
 
-                if (option == MenuOption.Resign)
-                {
-                    Game.HasResigned();
-                    ShowGameOver();
-                }
-            };
+            //    if (option == MenuOption.Resign)
+            //    {
+            //        Game.HasResigned();
+            //        ShowGameOver();
+            //    }
+            //};
         }
 
         private void BoardGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)

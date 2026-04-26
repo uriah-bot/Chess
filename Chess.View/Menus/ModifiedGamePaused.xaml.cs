@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Chess.View
+namespace Chess.View.Menus
 {
     /// <summary>
     /// Interaction logic for ModifiedGamePaused.xaml

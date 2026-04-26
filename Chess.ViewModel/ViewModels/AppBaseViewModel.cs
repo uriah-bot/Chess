@@ -24,21 +24,42 @@ namespace Chess.ViewModel
             _navigationStore.PropertyChanged += NavigationStore_PropertyChanged;
             _decorStore.CurrentSongChanged += OnSongChanged;
 
-            NavigateToHomeCommand = new NavigateCommand<HomeViewModel>(_navigationService);
-            NavigateToStatsCommand = new NavigateCommand<StatsViewModel>(_navigationService);
-            //NavigateToAdvancedSettingsCommand = new NavigateCommand(_navigationService, typeof(AdvancedSettingsViewModel));
-            NavigateToSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigationService);
-            NavigateToHelpCommand = new NavigateCommand<HelpViewModel>(_navigationService);
+            NavigateRadioButtonCommand = new RelayCommand(o => NavigateToUserControl(o));
             _navigationStore.CurrentViewModel = hvm;
 
             _decorStore.CurrentSong = new Uri(Path.Combine(AppConstants.BASE_PATH, "DefaultMusic.mp3"), UriKind.RelativeOrAbsolute); //TODO: change
         }
 
-        public ICommand NavigateToHomeCommand { get; }
-        public ICommand NavigateToStatsCommand { get; }
-        public ICommand NavigateToAdvancedSettingsCommand { get; }
-        public ICommand NavigateToSettingsCommand { get; }
-        public ICommand NavigateToHelpCommand { get; }
+        private void NavigateToUserControl(object o)
+        {
+            var viewName = o as string;
+
+            switch (viewName)
+            {
+                case "Home":
+                    new NavigateCommand<HomeViewModel>(_navigationService).Execute(null);
+                        return;
+                case "Adventure":
+                    new NavigateCommand<AdventureViewModel>(_navigationService).Execute(null);
+                    return;
+                case "Stats":
+                    new NavigateCommand<StatsViewModel>(_navigationService).Execute(null);
+                    return;
+                case "AdvancedSettings":
+                    new NavigateCommand<AdvancedSettingsViewModel>(_navigationService).Execute(null);
+                    return;
+                case "Settings":
+                    new NavigateCommand<SettingsViewModel>(_navigationService).Execute(null);
+                    return;
+                case "Help":
+                    new NavigateCommand<HelpViewModel>(_navigationService).Execute(null);
+                    return;
+                default:
+                    throw new ArgumentException("Invalid view name", nameof(o));
+            }
+        }
+
+        public ICommand NavigateRadioButtonCommand { get; }
 
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 

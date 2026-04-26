@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Chess.Model;
 
-namespace Chess.View
+namespace Chess.View.Menus
 {
     /// <summary>
     /// Interaction logic for GameOverMenu.xaml
@@ -12,12 +12,12 @@ namespace Chess.View
         public event Action<MenuOption> OptionSelected;
         // TODO: Differenciate between color and user on display
         /* TODO: Differenciate between pvp and pve so that pvp can't resign (only pause/restart)*/
-        public GameOverMenu(Game game)
+        public GameOverMenu()
         {
             InitializeComponent();
-            Result result = game.Result;
-            WinnerTextBlock.Text = GetWinnerText(result.winner);
-            ReasonTextBlock.Text = GetReason(result.reason, game.CurrentPlayer);
+            //Result result = game.Result;
+            //WinnerTextBlock.Text = GetWinnerText(result.winner);
+            //ReasonTextBlock.Text = GetReason(result.reason, game.CurrentPlayer);
         }
 
         private static string GetWinnerText(PlayerColor winner)

@@ -1,9 +1,9 @@
 ﻿<UserControl
-    x:Class="Chess.View.PromotionMenu"
+    x:Class="Chess.View.Menus.PromotionMenu"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Chess.View"
+    xmlns:local="clr-namespace:Chess.View.Menus"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
@@ -48,4 +48,3 @@
         </Grid>
     </Border>
 </UserControl>
-<!--  Add Binding to Background if player is black change to white  -->

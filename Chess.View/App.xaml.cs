@@ -1,5 +1,6 @@
 ﻿using Chess.Data;
 using Chess.Service;
+using Chess.View.Menus;
 using Chess.View.Services;
 using Chess.ViewModel;
 using Chess.ViewModel.ViewModelHelper;
@@ -22,6 +23,7 @@ namespace Chess.View
             services.AddSingleton<IWindowService, WindowService>();
             services.AddTransient<MainWindow>();
             services.AddTransient<AppBase>();
+            services.AddTransient<PopupWindow>();
 
             // Maps Func<Type, ViewModelBase> (NavigateCommand) to ServiceProvider's GetRequiredService method
             services.AddSingleton<Func<Type, ViewModelBase>>(provider =>
