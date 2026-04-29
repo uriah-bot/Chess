@@ -15,8 +15,10 @@ namespace Chess.ViewModel
             _userStore = userStore;
             NavigateToAdventureCommand = new NavigateCommand<AdventureViewModel>(_navigationService);
             NavigateToClassicalCommand = new NavigateCommand<ClassicalViewModel>(_navigationService);
+            NavigateToLeaderboardCommand = new NavigateCommand<LeaderboardViewModel>(_navigationService);
         }
 
+        public ICommand NavigateToLeaderboardCommand { get; }
         public ICommand NavigateToAdventureCommand { get; }
         public ICommand NavigateToClassicalCommand { get; }
 

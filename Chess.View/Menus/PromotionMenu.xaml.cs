@@ -42,25 +42,5 @@ namespace Chess.View.Menus
             //BishopImage.Source = Images.GetImage(player, PieceType.Bishop);
             //KnightImage.Source = Images.GetImage(player, PieceType.Knight);
         }
-
-        private void QueenImage_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            PieceSelected?.Invoke(PieceType.Queen);
-        }
-
-        private void RookImage_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            PieceSelected?.Invoke(PieceType.Rook);
-        }
-
-        private void BishopImage_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            PieceSelected?.Invoke(PieceType.Bishop);
-        }
-
-        private void KnightImage_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            PieceSelected?.Invoke(PieceType.Knight);
-        }
     }
 }

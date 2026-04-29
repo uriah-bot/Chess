@@ -5,12 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Chess.View.Menus"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
     mc:Ignorable="d">
-
     <Border
-        x:Name="PromotionBorder"
         Width="275"
         Height="125"
+        Background="{Binding PromotionColorInverse}"
         RenderOptions.BitmapScalingMode="HighQuality"
         Style="{StaticResource ResourceKey=MenuBorderStyle}">
         <Grid>
@@ -19,8 +19,8 @@
                 <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
             <TextBlock
-                x:Name="SelectionText"
                 FontSize="28"
+                Foreground="{Binding PromotionColor}"
                 Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
                 Text="SELECT A PIECE" />
             <UniformGrid
@@ -28,22 +28,30 @@
                 Columns="4"
                 Cursor="Hand"
                 Rows="1">
-                <Image
-                    Name="QueenImage"
-                    MouseDown="QueenImage_MouseDown"
-                    Source="Assets/Default/white_queen.png" />
-                <Image
-                    Name="RookImage"
-                    MouseDown="RookImage_MouseDown"
-                    Source="Assets/Default/white_rook.png" />
-                <Image
-                    Name="BishopImage"
-                    MouseDown="BishopImage_MouseDown"
-                    Source="Assets/Default/white_bishop.png" />
-                <Image
-                    Name="KnightImage"
-                    MouseDown="KnightImage_MouseDown"
-                    Source="Assets/Default/white_knight.png" />
+                <Button
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding PieceSelected}">
+                    <Image Source="Assets/Default/white_queen.png" />
+                </Button>
+                <Button
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding PieceSelected}">
+                    <Image Source="Assets/Default/white_rook.png" />
+                </Button>
+                <Button
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding PieceSelected}">
+                    <Image Source="Assets/Default/white_bishop.png" />
+                </Button>
+                <Button
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding PieceSelected}">
+                    <Image Source="Assets/Default/white_knight.png" />
+                </Button>
             </UniformGrid>
         </Grid>
     </Border>

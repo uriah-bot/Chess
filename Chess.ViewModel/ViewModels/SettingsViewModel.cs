@@ -36,8 +36,29 @@ namespace Chess.ViewModel
 
 			DeleteUserCommand = new RelayCommand(o => DeleteUser(), o => CanDeleteUser());
 			PlaySelectedMusicCommand = new RelayCommand(o => PlayMusic(o));
+			ShowPopupCommand = new RelayCommand(o => ShowPopup(o));
             _ = LoadChannelsAsync();
         }
+
+        private void ShowPopup(object parameter)
+        {
+			var property = parameter as string;
+
+			switch (property)
+			{
+				case "Role":
+                    _windowService.ShowDialog<GamePausedMenuViewModel>();
+                    break;
+				case "Username":
+                    _windowService.ShowDialog<GamePausedMenuViewModel>();
+                    break;
+				case "Password":
+					_windowService.ShowDialog<GamePausedMenuViewModel>();
+					break;
+                default:
+					break;
+            }
+		}
 
         private ObservableCollection<RadioChannelEntity> _musicChannels;
         public ObservableCollection<RadioChannelEntity> MusicChannels
@@ -49,7 +70,6 @@ namespace Chess.ViewModel
             set
             {
                 _musicChannels = value;
-                // THIS is the magic line that wakes up the UI after the database loads!
                 OnPropertyChanged(nameof(MusicChannels));
             }
         }
@@ -76,9 +96,11 @@ namespace Chess.ViewModel
 
         public ICommand DeleteUserCommand { get; }
 		public ICommand PlaySelectedMusicCommand { get; }
-		
-		public ICommand AddMusicMP3 { get; }
-        private bool CanDeleteUser()
+		public ICommand ShowPopupCommand { get; }
+		public ICommand RequestRoleCommand { get; }
+        public ICommand AddMusicCommand { get; }
+        
+		private bool CanDeleteUser()
         {
             // there is no user logged in, nothing to delete
             if (!_userStore.IsLoggedIn)
@@ -121,16 +143,12 @@ namespace Chess.ViewModel
 
 		public string Role => _userStore.CurrentUser?.Role.ToString() ?? "Guest";
 
-		private int _volume;
 		public int Volume
 		{
-			get
-			{
-				return _volume;
-			}
+			get => (int)(_decorStore.CurrentVolume * 100);
 			set
 			{
-				_volume = value;
+				_decorStore.CurrentVolume = (double)value /100;
 				OnPropertyChanged(nameof(Volume));
 			}
 		}

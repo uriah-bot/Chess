@@ -134,7 +134,6 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -157,14 +156,12 @@
                 Foreground="#888"
                 Text="You have full control! Experience every feature to its fullest." />
         </StackPanel>
-
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
             <StackPanel Margin="5,0,20,0">
                 <TextBlock
                     Margin="5,0,0,10"
                     Style="{StaticResource SectionHeader}"
                     Text="General" />
-
                 <Border
                     Padding="15"
                     Background="#252526"
@@ -182,17 +179,15 @@
                                 VerticalAlignment="Center"
                                 DockPanel.Dock="Right"
                                 Foreground="Gray"
-                                Text="80%" />
+                                Text="{Binding Volume, Mode=OneWay}" />
                             <Slider
                                 IsSnapToTickEnabled="True"
                                 Maximum="100"
                                 TickFrequency="5"
-                                Value="80" />
+                                Value="{Binding Volume, Mode=OneWayToSource, FallbackValue=80}" />
                         </DockPanel>
-
                         <CheckBox Content="Mute Radio during matches" />
                         <CheckBox Content="Play sound effects on move" />
-
                         <Border
                             Margin="10"
                             Padding="10"
@@ -226,7 +221,6 @@
                                                     </Setter>
                                                 </Style>
                                             </ListBox.ItemContainerStyle>
-
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <RadioButton
@@ -252,18 +246,14 @@
                                         Foreground="White"
                                         Style="{StaticResource DefaultButton}" />
                                 </Grid>
-
                             </Expander>
                         </Border>
-
                         <Separator Margin="0,15,0,15" Background="#333" />
-
                         <TextBlock Style="{StaticResource SettingHeader}" Text="Visuals" />
                         <CheckBox Content="Show legal moves highlights" />
                         <CheckBox Content="Display coordinates (A-H, 1-8)" IsChecked="True" />
                     </StackPanel>
                 </Border>
-
                 <TextBlock Style="{StaticResource SectionHeader}" Text="Classical Mode" />
                 <Border
                     Padding="15"
@@ -283,7 +273,6 @@
                     CornerRadius="8">
                     <StackPanel>
                         <TextBlock Style="{StaticResource SettingHeader}" Text="Personal Info" />
-
                         <DockPanel Margin="0,5,0,5" LastChildFill="True">
                             <TextBlock
                                 Width="70"
@@ -306,6 +295,8 @@
                             <Button
                                 Width="20"
                                 Height="20"
+                                Command="{Binding ShowPopupCommand}"
+                                CommandParameter="Username"
                                 Content="&#x270E;"
                                 Style="{StaticResource DefaultButton}" />
                         </DockPanel>
@@ -332,6 +323,8 @@
                             <Button
                                 Width="20"
                                 Height="20"
+                                Command="{Binding ShowPopupCommand}"
+                                CommandParameter="Password"
                                 Content="&#x270E;"
                                 Style="{StaticResource DefaultButton}" />
                         </DockPanel>
@@ -357,6 +350,8 @@
                             <Button
                                 Width="20"
                                 Height="20"
+                                Command="{Binding ShowPopupCommand}"
+                                CommandParameter="Role"
                                 Content="&#xE8D7;"
                                 FontFamily="Segoe MDL2 Assets"
                                 Style="{StaticResource DefaultButton}"
@@ -364,7 +359,6 @@
                         </DockPanel>
                     </StackPanel>
                 </Border>
-
                 <Expander Margin="2,20,0,0">
                     <Expander.Header>
                         <TextBlock
@@ -425,7 +419,6 @@
                         </StackPanel>
                     </Border>
                 </Expander>
-
                 <Rectangle Height="50" Fill="Transparent" />
             </StackPanel>
         </ScrollViewer>

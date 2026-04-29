@@ -6,4 +6,5 @@
     <conv:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis" />
     <conv:RoleToVisibilityConverter x:Key="RoleToVis" />
     <conv:ViewModelToBooleanConverter x:Key="VMToBool" />
+    <conv:AddOneConverter x:Key="AddOne" />
 </ResourceDictionary>

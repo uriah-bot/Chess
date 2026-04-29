@@ -6,6 +6,7 @@ namespace Chess.Data
     {
         public interface IUserRepository
         {
+            Task<List<UserEntity>> GetLeaderboardAsync(int count, string property, bool ascending = false);
             Task<UserEntity> GetUserByUsernameAsync(string username);
             Task AddUserAsync(UserEntity newUser);
             Task DeleteUserAsync(UserEntity user);

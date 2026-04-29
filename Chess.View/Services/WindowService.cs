@@ -43,6 +43,7 @@ namespace Chess.View.Services
             var viewModel = _serviceProvider.GetRequiredService<TViewModel>();
 
             viewModel.RequestClose = () => dialogWindow.Close();
+            dialogWindow.Owner = _currentWindow;
             dialogWindow.DataContext = viewModel;
 
             dialogWindow.ShowDialog();

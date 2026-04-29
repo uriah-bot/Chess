@@ -9,7 +9,9 @@ namespace Chess.ViewModel.Stores
     public interface IDecorStore
     {
         Uri CurrentSong { get; set; }
+        double CurrentVolume { get; set; }
         event Action CurrentSongChanged;
+        event Action VolumeChanged;
 
         List<Uri> CurrentPieces { get; set; }
         event Action CurrentPiecesChanged;
@@ -54,6 +56,19 @@ namespace Chess.ViewModel.Stores
                 CurrentBoardChanged?.Invoke();
             }
         }
+
+        private double _currentVolume = 0.8;
+        public double CurrentVolume
+        {
+            get => _currentVolume;
+            set
+            {
+                _currentVolume = value;
+                VolumeChanged?.Invoke();
+            }
+        }
+
         public event Action CurrentBoardChanged;
+        public event Action VolumeChanged;
     }
 }

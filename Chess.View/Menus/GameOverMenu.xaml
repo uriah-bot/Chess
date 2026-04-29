@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="Transparent"
     mc:Ignorable="d">
     <Border
         Width="275"
@@ -39,21 +40,19 @@
                 Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
                 Text="REASON FOR WIN" />
             <Button
-                Name="RestartButton"
                 Grid.Row="2"
                 Width="80"
                 Height="30"
-                Click="Restart_Click"
+                Command="{Binding RestartCommand}"
                 Content="RESTART"
                 Style="{StaticResource ResourceKey=MenuButtonStyle}" />
 
             <Button
-                Name="ExitButton"
                 Grid.Row="2"
                 Grid.Column="1"
                 Width="80"
                 Height="30"
-                Click="Exit_Click"
+                Command="{Binding ExitCommand}"
                 Content="EXIT"
                 Style="{StaticResource ResourceKey=MenuButtonStyle}" />
         </Grid>

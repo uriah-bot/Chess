@@ -1,0 +1,160 @@
+﻿<UserControl
+    x:Class="Chess.View.Leaderboard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Chess.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock
+                Margin="5,0,0,0"
+                FontSize="32"
+                FontWeight="Bold"
+                Foreground="White"
+                Text="Global Leaderboard" />
+            <DockPanel>
+                <TextBlock
+                    Margin="10,0,0,0"
+                    FontSize="14"
+                    Foreground="#888"
+                    Text="The highest rated players across all servers." />
+                <ComboBox
+                    Width="70"
+                    Padding="5,2"
+                    ItemsSource="{Binding PlayerCountOptions}"
+                    SelectedItem="{Binding PlayerCount}"
+                    Style="{StaticResource ModernComboBox}" />
+            </DockPanel>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="10,0,20,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="150" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                FontWeight="SemiBold"
+                Foreground="#AAAAAA"
+                Text="RANK" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding SortCommand}"
+                CommandParameter="Username"
+                Style="{StaticResource LeaderboardHeaderButtonStyle}">
+                <DockPanel>
+                    <TextBlock Text="USERNAME" />
+                    <TextBlock Margin="5,0,0,0" Text="{Binding UsernameSortIcon}" />
+                </DockPanel>
+            </Button>
+            <Button
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                Command="{Binding SortCommand}"
+                CommandParameter="Elo"
+                Style="{StaticResource LeaderboardHeaderButtonStyle}">
+                <DockPanel>
+                    <TextBlock Text="ELO RATING" />
+                    <TextBlock Margin="5,0,0,0" Text="{Binding EloSortIcon}" />
+                </DockPanel>
+            </Button>
+            <Button
+                Grid.Column="3"
+                Command="{Binding SortCommand}"
+                CommandParameter="Wins"
+                Style="{StaticResource LeaderboardHeaderButtonStyle}">
+                <DockPanel>
+                    <TextBlock Text="WINS" />
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        Foreground="#666666"
+                        Text="(All-Modes)" />
+                    <TextBlock Margin="5,0,0,0" Text="{Binding WinsSortIcon}" />
+                </DockPanel>
+            </Button>
+        </Grid>
+        <ScrollViewer
+            Grid.Row="2"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto">
+            <ItemsControl AlternationCount="101" ItemsSource="{Binding Users}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="0,0,10,8"
+                            Padding="10,15"
+                            Background="#252526"
+                            CornerRadius="6">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#2D2D30" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="150" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="0"
+                                    Width="30"
+                                    Height="30"
+                                    HorizontalAlignment="Center"
+                                    Background="{StaticResource Brush.AccentHover}"
+                                    BorderBrush="#1E1E1E"
+                                    BorderThickness="2"
+                                    CornerRadius="15">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Foreground="White"
+                                        Text="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource AddOne}}" />
+                                </Border>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Foreground="White"
+                                    Text="{Binding Username}" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Foreground="{StaticResource Brush.AccentHover}"
+                                    Text="{Binding Elo}" />
+                                <TextBlock
+                                    Grid.Column="3"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Foreground="{StaticResource Brush.AccentHover}"
+                                    Text="{Binding Wins}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

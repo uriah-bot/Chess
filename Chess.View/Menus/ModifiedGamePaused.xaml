@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="Transparent"
     mc:Ignorable="d">
     <Border
         Width="275"
@@ -31,21 +32,19 @@
                 Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
                 Text="GAME PAUSED" />
             <Button
-                Name="ResignButton"
                 Grid.Row="1"
                 Width="80"
                 Height="30"
-                Click="Restart_Click"
+                Command="{Binding RestartCommand}"
                 Content="Restart"
                 Style="{StaticResource ResourceKey=MenuButtonStyle}" />
 
             <Button
-                Name="ContinueButton"
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="80"
                 Height="30"
-                Click="Continue_Click"
+                Command="{Binding ContinueCommand}"
                 Content="CONTINUE"
                 Style="{StaticResource ResourceKey=MenuButtonStyle}" />
         </Grid>

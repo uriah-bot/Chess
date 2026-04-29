@@ -58,6 +58,7 @@ namespace Chess.ViewModel
 				OnPropertyChanged(nameof(Username));
 
                 ClearErrors();
+                ClearErrors(nameof(RegisterCommand));
                 if (string.IsNullOrWhiteSpace(Username))
                 {
                     AddError("Username is a required field.");
@@ -90,6 +91,7 @@ namespace Chess.ViewModel
 				OnPropertyChanged(nameof(Password));
 
                 ClearErrors();
+                ClearErrors(nameof(RegisterCommand));
                 if (string.IsNullOrWhiteSpace(Username))
                 {
                     AddError("Password is a required field.");

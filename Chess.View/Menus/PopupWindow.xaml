@@ -5,5 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Chess.View.Menus"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    AllowsTransparency="True"
+    Background="Transparent"
+    ResizeMode="NoResize"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterOwner"
     WindowStyle="None"
-    mc:Ignorable="d" />
+    mc:Ignorable="d">
+    <ContentPresenter Content="{Binding}">
+        <ContentPresenter.LayoutTransform>
+            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+        </ContentPresenter.LayoutTransform>
+    </ContentPresenter>
+</Window>

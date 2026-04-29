@@ -23,11 +23,17 @@ namespace Chess.ViewModel
             _navigationStore = navigationStore;
             _navigationStore.PropertyChanged += NavigationStore_PropertyChanged;
             _decorStore.CurrentSongChanged += OnSongChanged;
+            _decorStore.VolumeChanged += OnVolumeChanged;
 
             NavigateRadioButtonCommand = new RelayCommand(o => NavigateToUserControl(o));
             _navigationStore.CurrentViewModel = hvm;
 
             _decorStore.CurrentSong = new Uri(Path.Combine(AppConstants.BASE_PATH, "DefaultMusic.mp3"), UriKind.RelativeOrAbsolute); //TODO: change
+        }
+
+        private void OnVolumeChanged()
+        {
+            OnPropertyChanged(nameof(Volume));
         }
 
         private void NavigateToUserControl(object o)
@@ -71,6 +77,8 @@ namespace Chess.ViewModel
 
         public Uri MusicUri => _decorStore.CurrentSong;
 
+        public double Volume => _decorStore.CurrentVolume;
+
         private void NavigationStore_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(_navigationStore.CurrentViewModel))
@@ -89,6 +97,7 @@ namespace Chess.ViewModel
             _userStore.CurrentUserChanged -= OnUserChanged;
             _navigationStore.PropertyChanged -= NavigationStore_PropertyChanged;
             _decorStore.CurrentSongChanged -= OnSongChanged;
+            _decorStore.VolumeChanged -= OnVolumeChanged;
 
             base.Dispose();
         }
@@ -97,6 +106,7 @@ namespace Chess.ViewModel
         {
             OnPropertyChanged(nameof(Username));
             OnPropertyChanged(nameof(EloText));
+            OnPropertyChanged(nameof(Role));
         }
     }
 }

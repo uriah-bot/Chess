@@ -12,6 +12,7 @@ namespace Chess.ViewModel.ViewModelHelper
         DateTime Time { get; set; }
         PlayerColor CurrentTurn { get; set; }
         bool IsBoardReactive => CurrentTurn == UserColor;
+        Move LastMove { get; set; }
         Game ConfigurateGame(List<ModifierType> modifiers);
         Task EndGameAsync(Game game);
     }
@@ -29,6 +30,7 @@ namespace Chess.ViewModel.ViewModelHelper
         public DateTime Time { get; set; }
         public PlayerColor CurrentTurn { get; set; }
         public List<ModifierType> Modifiers { get; set; } = new List<ModifierType>();
+        public Move LastMove { get; set; }
 
         public GameManagerService(IGameHistoryStore gameHistoryStore, IUserStore userStore, StockfishCommunicationService stockfishCommunicationService, StockfishHelper stockfishHelper)
         {

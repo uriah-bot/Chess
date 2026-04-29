@@ -40,7 +40,9 @@
     <DataTemplate DataType="{x:Type vm:HelpViewModel}">
         <views:Help />
     </DataTemplate>
-
+    <DataTemplate DataType="{x:Type vm:LeaderboardViewModel}">
+        <views:Leaderboard />
+    </DataTemplate>
 
     <DataTemplate DataType="{x:Type vm:GamePausedMenuViewModel}">
         <menus:GamePausedMenu />
