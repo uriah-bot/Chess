@@ -58,18 +58,19 @@ namespace Chess.Data
             await DbConnectionProvider.ExecuteCommandAsync(sql, new OleDbParameter("@Id", user.Id));
         }
 
-        public async Task<List<UserEntity>> GetLeaderboardAsync(int count, string property, bool ascending)
+        public async Task<List<LeaderboardEntry>> GetLeaderboardAsync(int count, string property, bool ascending)
         {
-            string sql = $"SELECT TOP {count} Username, Elo, Wins FROM Users ORDER BY [{property}] {(ascending ? "ASC" : "DESC")}";
+            string sql = $"SELECT TOP {count} Username, Elo, Wins FROM Users ORDER BY [{property}] {(ascending ? "ASC" : "DESC")}, ID ASC";
             // wont let me parameterize the column name or order direction, so I have to interpolate them directly into the query string
+
             DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql);
 
-            List<UserEntity> users = new List<UserEntity>();
+            List<LeaderboardEntry> users = new List<LeaderboardEntry>();
             if (dt.Rows.Count != 0)
             {
                 foreach (DataRow user in dt.Rows)
                 {
-                    UserEntity userEntity = new UserEntity()
+                    LeaderboardEntry userEntity = new LeaderboardEntry
                     {
                         Username = user["Username"].ToString(),
                         Elo = (int)user["Elo"],
@@ -83,6 +84,24 @@ namespace Chess.Data
             }
 
             return null;
+        }
+
+        public async Task UpdateUserAsync(UserEntity user)
+        {
+            string sql = "UPDATE Users SET Username=?, PasswordHash=?, PasswordSalt=?, Elo=?, PeakElo=?, Wins=?, Draws=?, Losses=?, Role=? WHERE ID=?";
+
+            await DbConnectionProvider.ExecuteCommandAsync(sql,
+                new OleDbParameter("@username", user.Username),
+                new OleDbParameter("@passwordHash", user.PasswordHash),
+                new OleDbParameter("@passwordSalt", user.PasswordSalt),
+                new OleDbParameter("@elo", user.Elo),
+                new OleDbParameter("@peakElo", user.PeakElo),
+                new OleDbParameter("@wins", user.Wins),
+                new OleDbParameter("@draws", user.Draws),
+                new OleDbParameter("@losses", user.Losses),
+                new OleDbParameter("@role", user.Role.ToString()),
+                new OleDbParameter("@id", user.Id)
+            );
         }
     }
 }

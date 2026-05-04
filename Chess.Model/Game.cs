@@ -8,7 +8,6 @@ namespace Chess.Model
 {
     public class Game
     {
-        public GameMode Mode;
         private readonly List<IModifier> ActiveModifiers = new List<IModifier>();
 
         public delegate void PieceMovedHandler(Move move);
@@ -47,6 +46,8 @@ namespace Chess.Model
 
         private void ApplyModifiers(List<ModifierType> selectedModifiers)
         {
+            if (selectedModifiers.Count == 0) return;
+
             foreach (var modType in selectedModifiers)
             {
                 IModifier modifier = ModifierFactory.Create(modType);

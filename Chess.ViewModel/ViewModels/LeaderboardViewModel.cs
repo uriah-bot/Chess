@@ -1,4 +1,6 @@
 ﻿using Chess.Model;
+using Chess.ViewModel.Stores;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using static Chess.Data.Repositories;
@@ -8,11 +10,12 @@ namespace Chess.ViewModel
     public class LeaderboardViewModel : ViewModelBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUserStore _userStore;
         public ICommand SortCommand { get; private set; }
 
         public List<int> PlayerCountOptions { get; } = new List<int> { 10, 50, 100, 200, 500 };
-        private ObservableCollection<UserEntity> _users;
-        public ObservableCollection<UserEntity> Users
+        private ObservableCollection<LeaderboardEntry> _users;
+        public ObservableCollection<LeaderboardEntry> Users
         {
             get => _users;
             set
@@ -39,9 +42,11 @@ namespace Chess.ViewModel
         public string EloSortIcon => GetSortIcon("Elo");
         public string WinsSortIcon => GetSortIcon("Wins");
 
-        public LeaderboardViewModel(IUserRepository userRepository)
+        public LeaderboardViewModel(IUserRepository userRepository, IUserStore userStore)
         {
             _userRepository = userRepository;
+            _userStore = userStore;
+
             SortCommand = new RelayCommand(o => ExecuteSort(o));
             _ = LoadUsersAsync();
         }
@@ -70,13 +75,29 @@ namespace Chess.ViewModel
         private string GetSortIcon(string column)
         {
             if (SortBy != column) return ""; // No arrow if not sorted by this
-            return IsAscending ? " ▲" : " ▼";
-        }
+            return IsAscending ? " ▲" : " ▼";        }
 
         private async Task LoadUsersAsync()
         {
             var users = await _userRepository.GetLeaderboardAsync(PlayerCount, SortBy, IsAscending);
-            Users = new ObservableCollection<UserEntity>(users);
+
+            int index = users.FindIndex(u => u.Username == _userStore.CurrentUser?.Username);
+
+            if (index != -1) // -1 means not found
+            {
+                var entry = users[index];
+                entry.IsCurrentUser = true;
+                users[index] = entry;
+            }
+
+            //if (!users.Any(u => u.Username == _userStore.CurrentUser.Username))
+            //{
+            //    users.RemoveAt(users.Count - 1);
+            //    users.Add(_userStore.CurrentUser);
+            //}
+
+
+            Users = new ObservableCollection<LeaderboardEntry>(users);
         }
     }
 }

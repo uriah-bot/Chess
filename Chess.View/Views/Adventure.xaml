@@ -40,7 +40,7 @@
             CanContentScroll="False"
             HorizontalScrollBarVisibility="Hidden"
             PanningMode="HorizontalOnly"
-            PreviewMouseWheel="{Binding PreviewMouseWheel}"
+            PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
             VerticalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Horizontal">
                 <Border Style="{StaticResource ModifierCard}">
@@ -73,10 +73,11 @@
                         </StackPanel>
 
                         <CheckBox
-                            x:Uid="ModifierCheck"
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
+                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                            CommandParameter="KingPromotion"
                             Content="Select"
                             Foreground="White" />
                     </Grid>
@@ -112,10 +113,11 @@
                         </StackPanel>
 
                         <CheckBox
-                            x:Uid="ModifierCheck"
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
+                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                            CommandParameter="TimeLimit"
                             Content="Select"
                             Foreground="White" />
                     </Grid>
@@ -151,10 +153,11 @@
                         </StackPanel>
 
                         <CheckBox
-                            x:Uid="ModifierCheck"
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
+                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                            CommandParameter="Poof"
                             Content="Select"
                             Foreground="White" />
                     </Grid>
@@ -190,10 +193,11 @@
                         </StackPanel>
 
                         <CheckBox
-                            x:Uid="ModifierCheck"
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
+                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                            CommandParameter="FogOfWar"
                             Content="Select"
                             Foreground="White" />
                     </Grid>
@@ -229,10 +233,11 @@
                         </StackPanel>
 
                         <CheckBox
-                            x:Uid="ModifierCheck"
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
+                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                            CommandParameter="Wormholes"
                             Content="Select"
                             Foreground="White" />
                     </Grid>
@@ -268,10 +273,11 @@
                         </StackPanel>
 
                         <CheckBox
-                            x:Uid="ModifierCheck"
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
+                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                            CommandParameter="DoubleMove"
                             Content="Select"
                             Foreground="White" />
                     </Grid>
@@ -290,32 +296,45 @@
                     <TextBlock
                         FontSize="16"
                         FontWeight="SemiBold"
-                        Foreground="#888"
+                        Foreground="{StaticResource Brush.AccentHover}"
                         Text="Modifiers Active: " />
                     <TextBlock
                         FontSize="16"
                         FontWeight="Bold"
                         Foreground="{StaticResource Brush.Accent}"
-                        Text="0" />
+                        Text="{Binding ModifierCount}" />
                 </StackPanel>
-
+                <ItemsControl Margin="150,0,225,0" ItemsSource="{Binding (Validation.Errors), ElementName=InitiateGame}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,2" Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    Foreground="#FF5555"
+                                    Text="&#xE783;" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    Foreground="#FF5555"
+                                    Text="{Binding ErrorContent}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <Button
+                    x:Name="InitiateGame"
                     Width="200"
                     Height="45"
                     HorizontalAlignment="Right"
-                    Background="{StaticResource Brush.Accent}"
-                    BorderThickness="0"
                     Command="{Binding StartModifiedGameCommand}"
                     Content="INITIATE GAME"
                     FontSize="16"
                     FontWeight="Bold"
-                    Foreground="White">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="8" />
-                        </Style>
-                    </Button.Resources>
-                </Button>
+                    Style="{StaticResource DefaultButton}"
+                    Tag="{Binding SelectedModifiers, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    Validation.ErrorTemplate="{x:Null}" />
             </Grid>
         </Border>
         <Grid

@@ -7,13 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+    <None Remove="Engines\stockfish-windows-x86-64-avx2.exe" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Engines\stockfish-windows-x86-64-avx2.exe">
+    <Content Include="Engines\stockfish-windows-x86-64-avx2.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup>

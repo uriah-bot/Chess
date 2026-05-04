@@ -22,6 +22,15 @@ namespace Chess.ViewModel.Stores
 
     public class DecorStore : IDecorStore
     {
+        private readonly IUserStore _userStore;
+
+        public DecorStore(IUserStore userStore)
+        {
+            _userStore = userStore;
+
+            //_currentVolume = _userStore.CurrentUser.Settings.Volume;
+        }
+
         private Uri _currentSong;
         public Uri CurrentSong
         {
@@ -57,7 +66,7 @@ namespace Chess.ViewModel.Stores
             }
         }
 
-        private double _currentVolume = 0.8;
+        private double _currentVolume;
         public double CurrentVolume
         {
             get => _currentVolume;

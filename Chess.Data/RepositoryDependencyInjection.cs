@@ -1,9 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Chess.Data.Repositories;
 
 namespace Chess.Data
@@ -17,6 +12,7 @@ namespace Chess.Data
             services.AddSingleton<IPieceThemeRepository, PieceThemeRepo>();
             services.AddSingleton<IBoardThemeRepository, BoardThemeRepo>();
             services.AddSingleton<IRadioChannelRepository, RadioChannelRepo>();
+            //services.AddSingleton<ISettingsRepository, SettingsRepo>();
 
             return services;
         }

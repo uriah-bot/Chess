@@ -8,7 +8,6 @@
     Title="Chess"
     Background="#000000"
     Icon="/Assets/icon.ico"
-    ResizeMode="CanMinimize"
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">

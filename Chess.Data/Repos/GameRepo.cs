@@ -44,12 +44,11 @@ namespace Chess.Data
 
         public async Task AddGameAsync(GameEntity newGame)
         {
-            string sql = "INSERT INTO Games (Username, GameFENs, GameMode, UserPlayedAs, BotRating, Result, DatePlayed) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            string sql = "INSERT INTO Games (Username, GameFENs, UserPlayedAs, BotRating, Result, DatePlayed) VALUES (?, ?, ?, ?, ?, ?)";
 
             await DbConnectionProvider.ExecuteCommandAsync(sql,
                 new OleDbParameter("@username", newGame.Username),
                 new OleDbParameter("@gameFENs", newGame.GameFENs),
-                new OleDbParameter("@gameMode", newGame.GameMode),
                 new OleDbParameter("@userPlayedAs", newGame.UserPlayedAs),
                 new OleDbParameter("@botRating", newGame.BotRating),
                 new OleDbParameter("@result", newGame.Result.ToString()),

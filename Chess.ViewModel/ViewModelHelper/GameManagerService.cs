@@ -6,15 +6,16 @@ namespace Chess.ViewModel.ViewModelHelper
 {
     public interface IGameManagerService
     {
-        GameMode Mode { get; set; }
+        Game Game { get; set; }
+        Move LastMove { get; set; }
         PlayerColor UserColor { get; set; }
         int? BotRating { get; set; }
         DateTime Time { get; set; }
-        PlayerColor CurrentTurn { get; set; }
-        bool IsBoardReactive => CurrentTurn == UserColor;
-        Move LastMove { get; set; }
-        Game ConfigurateGame(List<ModifierType> modifiers);
+        bool IsBoardReactive { get; set; }
+        Game ConfigurateGame(List<ModifierType> modifiers, int? botRating = null);
         Task EndGameAsync(Game game);
+        void HumanMoveAsync(Move move);
+        Task StockfishMoveAsync();
     }
 
     public class GameManagerService : IGameManagerService
@@ -22,17 +23,18 @@ namespace Chess.ViewModel.ViewModelHelper
         private readonly IGameHistoryStore _gameHistoryStore;
         private readonly IUserStore _userStore;
         private readonly StockfishCommunicationService _stockfishCommunicationService;
-        private readonly StockfishHelper _stockfishHelper;
+        private readonly GameLogicHelper _stockfishHelper;
 
         public GameMode Mode { get; set; } = GameMode.Classical;
         public PlayerColor UserColor { get; set; } = PlayerColor.White;
+        public bool IsBoardReactive { get; set; }
         public int? BotRating { get; set; }
         public DateTime Time { get; set; }
-        public PlayerColor CurrentTurn { get; set; }
-        public List<ModifierType> Modifiers { get; set; } = new List<ModifierType>();
         public Move LastMove { get; set; }
+        public List<ModifierType> Modifiers { get; set; } = new List<ModifierType>();
+        public Game Game { get; set; }
 
-        public GameManagerService(IGameHistoryStore gameHistoryStore, IUserStore userStore, StockfishCommunicationService stockfishCommunicationService, StockfishHelper stockfishHelper)
+        public GameManagerService(IGameHistoryStore gameHistoryStore, IUserStore userStore, StockfishCommunicationService stockfishCommunicationService, GameLogicHelper stockfishHelper)
         {
             _gameHistoryStore = gameHistoryStore;
             _userStore = userStore;
@@ -40,12 +42,18 @@ namespace Chess.ViewModel.ViewModelHelper
             _stockfishHelper = stockfishHelper;
         }
 
-        public Game ConfigurateGame(List<ModifierType> modifiers = null)
+        public Game ConfigurateGame(List<ModifierType> modifiers = null, int? botRating = null)
         {
             Game game = new Game(PlayerColor.White, Board.Initial());
-            game.Mode = Mode;
+            Game = game;
+            Mode = modifiers != null ? GameMode.Modified : GameMode.Classical;
             Time = DateTime.Now;
             Modifiers = modifiers ?? new List<ModifierType>();
+            BotRating = botRating;
+            IsBoardReactive = Mode != GameMode.Classical || UserColor == PlayerColor.White;
+
+            _stockfishCommunicationService.StartEngine(AppConstants.STOCKFISH_PATH_TO_EXE);
+            Game.StartMatch(Modifiers);
 
             return game;
         }
@@ -55,16 +63,43 @@ namespace Chess.ViewModel.ViewModelHelper
             GameEntity currentGame = new GameEntity
             {
                 Username = _userStore.CurrentUser.Username,
-                GameMode = game.Mode,
-                UserPlayedAs = game.Mode == GameMode.Classical ? UserColor : null,
-                BotRating = game.Mode == GameMode.Classical ? BotRating : null,
-                //Result = null,
+                UserPlayedAs = Mode == GameMode.Classical ? UserColor : null,
+                BotRating = Mode == GameMode.Classical ? BotRating : null,
+                Result = game.Result.winner switch
+                {
+                    var winner when winner == UserColor => "Win",
+                    PlayerColor.None => "Draw",
+                    _ => "Loss"
+                },
                 DatePlayed = Time
             };
 
             await _gameHistoryStore.SaveGameAsync(currentGame);
 
             Cleanup();
+        }
+
+        public void HumanMoveAsync(Move move)
+        {
+            if (!IsBoardReactive)
+                return;
+
+            Game.MakeMove(move);
+            LastMove = Game.Result == null ? move : null;
+        }
+
+        public async Task StockfishMoveAsync()
+        {
+            if (IsBoardReactive)
+                return;
+
+            var fen = new FEN(Game.Board, Game.CurrentPlayer);
+
+            string bestMove = await _stockfishCommunicationService.GetBotMoveAsync(fen, BotRating);
+
+            var move = _stockfishHelper.ParseMove(Game.Board, bestMove);
+            Game.MakeMove(move);
+            LastMove = Game.Result == null ? move : null;
         }
 
         public void Cleanup()

@@ -1,0 +1,209 @@
+﻿<UserControl
+    x:Class="Chess.View.Menus.AccountModificationPopupMenu"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Chess.View.Menus"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="DynamicGridStyle" TargetType="Grid">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+    </UserControl.Resources>
+    <Border
+        Width="400"
+        Background="#1E1E1E"
+        BorderBrush="#333"
+        BorderThickness="1"
+        CornerRadius="12">
+        <Border.Effect>
+            <DropShadowEffect
+                BlurRadius="15"
+                Direction="270"
+                Opacity="0.5"
+                ShadowDepth="5"
+                Color="Black" />
+        </Border.Effect>
+        <StackPanel Margin="25">
+            <StackPanel>
+                <Button
+                    HorizontalAlignment="Left"
+                    Command="{Binding NavigateBackCommand}"
+                    FontSize="12"
+                    Style="{StaticResource BackButtonStyle}">
+                    <DockPanel>
+                        <TextBlock VerticalAlignment="Center" Text="&#xE72B;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            FontFamily="Segoe UI"
+                            FontStyle="Italic"
+                            Foreground="White"
+                            Text="Back" />
+                    </DockPanel>
+                </Button>
+                <TextBlock
+                    Margin="15,0,0,0"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="Account Management" />
+            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <Grid.Style>
+                    <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PopupMode}" Value="Username">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <TextBlock
+                    Margin="0,0,0,5"
+                    FontSize="11"
+                    FontWeight="SemiBold"
+                    Foreground="#888"
+                    Text="CHANGE USERNAME" />
+                <Grid Grid.Row="1" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Height="35"
+                        Padding="10,8"
+                        VerticalContentAlignment="Center"
+                        Background="#252526"
+                        BorderBrush="#444"
+                        BorderThickness="1"
+                        Foreground="White"
+                        Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button
+                        Grid.Column="1"
+                        Width="80"
+                        Height="35"
+                        Margin="10,0,0,0"
+                        Command="{Binding ChangeUsernameCommand}"
+                        Content="Update"
+                        Style="{StaticResource DefaultButton}" />
+                </Grid>
+            </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <Grid.Style>
+                    <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PopupMode}" Value="Password">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <TextBlock
+                    Margin="0,0,0,5"
+                    FontSize="11"
+                    FontWeight="SemiBold"
+                    Foreground="#888"
+                    Text="CHANGE PASSWORD" />
+                <Grid Grid.Row="1" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Height="35"
+                        Padding="10,8"
+                        Foreground="White"
+                        Style="{StaticResource MenuTextBlockStyle}"
+                        Text="{Binding CurrentPassword}" />
+                    <PasswordBox
+                        Height="35"
+                        Padding="10,8"
+                        VerticalContentAlignment="Center"
+                        Foreground="White"
+                        Style="{StaticResource PasswordBoxStyle}" />
+                    <Button
+                        Grid.Column="1"
+                        Width="80"
+                        Height="35"
+                        Margin="10,0,0,0"
+                        Command="{Binding ChangePasswordCommand}"
+                        CommandParameter="{Binding ElementName=NewPasswordBox}"
+                        Content="Update"
+                        Style="{StaticResource DefaultButton}" />
+                </Grid>
+            </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <Grid.Style>
+                    <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PopupMode}" Value="Role">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <TextBlock
+                    Margin="0,0,0,10"
+                    FontSize="11"
+                    FontWeight="SemiBold"
+                    Foreground="#888"
+                    Text="REQUEST A ROLE" />
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="0,0,0,15"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <RadioButton
+                        Margin="0,0,10,0"
+                        GroupName="Roles"
+                        Style="{StaticResource RoleCardStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                FontFamily="Segoe MDL2 Assets"
+                                Text="&#xE7EF;" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Text="Moderator" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Roles" Style="{StaticResource RoleCardStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                FontFamily="Segoe MDL2 Assets"
+                                Text="&#xE7E8;" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Text="Admin" />
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+                <Button
+                    Grid.Row="1"
+                    Height="35"
+                    Command="{Binding RequestRoleCommand}"
+                    Content="Send Request"
+                    Style="{StaticResource DefaultButton}" />
+            </Grid>
+        </StackPanel>
+    </Border>
+</UserControl>

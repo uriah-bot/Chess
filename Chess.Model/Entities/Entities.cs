@@ -16,13 +16,13 @@
         public int Losses { get; set; } = 0;
         public int PeakElo { get; set; } = AppConstants.DEFAULT_ELO;
         public UserRole Role { get; set; } // Role.ToString() for db
+        public SettingsModel Settings { get; set;}
     }
 
     public class GameEntity : DBEntity
     {
         public string Username { get; set; }
         public List<string> GameFENs { get; set; }
-        public GameMode GameMode { get; set; }
         public PlayerColor? UserPlayedAs { get; set; }
         public int? BotRating { get; set; }
         public string Result { get; set; } // playercolor -> User
@@ -48,5 +48,14 @@
         public int? UserId { get; set; }
         public string ChannelName { get; set; }
         public string ChannelPath { get; set; }
+    }
+
+    public class SettingsModel : DBEntity
+    {
+        public int UserId { get; set; }
+        public bool SoundEffectOnMove { get; set; }
+        public double Volume { get; set; } = AppConstants.DEFAULT_VOLUME;
+        public bool StopRadioOnMatches { get; set; }
+        public bool DisplayCoordinates { get; set; }
     }
 }

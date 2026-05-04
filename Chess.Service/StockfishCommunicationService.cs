@@ -1,12 +1,13 @@
-﻿using System.Diagnostics;
+﻿using Chess.Model;
+using System.Diagnostics;
 
 namespace Chess.Service
 {
     public class StockfishCommunicationService : IDisposable
     {
-        private Process _stockfishProcess = default!;
-        private StreamWriter _engineInput = default!;
-        private StreamReader _engineOutput = default!;
+        private Process _stockfishProcess = default;
+        private StreamWriter _engineInput = default;
+        private StreamReader _engineOutput = default;
 
         public void StartEngine(string pathToExe)
         {
@@ -28,7 +29,7 @@ namespace Chess.Service
             _engineInput.WriteLine("uci");
         }
 
-        public void SetEngineOption(string optionName, string optionValue)
+        private void SetEngineOption(string optionName, string optionValue)
         {
             if (_stockfishProcess == null || _stockfishProcess.HasExited)
             {
@@ -50,7 +51,7 @@ namespace Chess.Service
             SetEngineOption("UCI_Elo", $"{estimatedElo}");
         }
 
-        public async Task<string> GetBotMoveAsync(string FEN, int? elo = null)
+        public async Task<string> GetBotMoveAsync(FEN FEN, int? elo = null)
         {
             if (_stockfishProcess == null || _stockfishProcess.HasExited)
             {
@@ -70,7 +71,7 @@ namespace Chess.Service
                 }
             }
 
-            await _engineInput.WriteLineAsync($"position fen {FEN}");
+            await _engineInput.WriteLineAsync($"position fen {FEN.ToString()}");
 
             while (true)
             {

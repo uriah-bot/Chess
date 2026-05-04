@@ -7,9 +7,7 @@ namespace Chess.Service
     {
         List<T> dbEntities { get; set; }
 
-        Task GetItemsForUserAsync(UserEntity user);
-        Task AddItemAsync(UserEntity user, T entity);
-        Task DeleteItemAsync(UserEntity user, T entity);
+        Task GetDefaultItemsAsync(UserEntity user);
     }
 
     public class RadioPlayer : ICustomizableDecorManager<RadioChannelEntity>
@@ -23,23 +21,11 @@ namespace Chess.Service
             _radioRepo = radioRepo;
         }
 
-        public async Task AddItemAsync(UserEntity user, RadioChannelEntity entity)
-        {
-            await _radioRepo.AddChannelAsync(entity);
-            dbEntities.Add(entity);
-        }
-
-        public async Task DeleteItemAsync(UserEntity user, RadioChannelEntity entity)
-        {
-            await _radioRepo.RemoveChannelAsync(entity);
-            dbEntities.Remove(entity);
-        }
-
-        public async Task GetItemsForUserAsync(UserEntity user)
+        public async Task GetDefaultItemsAsync(UserEntity user)
         {
             dbEntities.Clear();
 
-            var iEnu = await _radioRepo.GetUserChannelsAsync(user);
+            var iEnu = await _radioRepo.GetDefaultChannelsAsync(user);
 
             dbEntities = iEnu.ToList();
         }
@@ -55,20 +41,7 @@ namespace Chess.Service
         {
             _boardRepo = boardRepo;
         }
-
-        public async Task AddItemAsync(UserEntity user, BoardThemeEntity entity)
-        {
-            await _boardRepo.AddThemeAsync(entity);
-            dbEntities.Add(entity);
-        }
-
-        public async Task DeleteItemAsync(UserEntity user, BoardThemeEntity entity)
-        {
-            await _boardRepo.RemoveThemeAsync(entity);
-            dbEntities.Remove(entity);
-        }
-
-        public async Task GetItemsForUserAsync(UserEntity user)
+        public async Task GetDefaultItemsAsync(UserEntity user)
         {
             dbEntities.Clear();
 
@@ -89,19 +62,7 @@ namespace Chess.Service
             _pieceThemeRepo = pieceThemeRepo;
         }
 
-        public async Task AddItemAsync(UserEntity user, PieceThemeEntity entity)
-        {
-            await _pieceThemeRepo.AddThemeAsync(entity);
-            dbEntities.Add(entity);
-        }
-
-        public async Task DeleteItemAsync(UserEntity user, PieceThemeEntity entity)
-        {
-            await _pieceThemeRepo.RemoveThemeAsync(entity);
-            dbEntities.Remove(entity);
-        }
-
-        public async Task GetItemsForUserAsync(UserEntity user)
+        public async Task GetDefaultItemsAsync(UserEntity user)
         {
             dbEntities.Clear();
 

@@ -8,6 +8,8 @@
         public const int MIN_PASSWORD_LENGTH = 6;
         public const int MAX_PASSWORD_LENGTH = 64; // cryptography mustnt break in DB, never tested tho
 
+        public const double DEFAULT_VOLUME = 0.8;
+
         public const int MAX_ELO = 3300;
         public const int DEFAULT_ELO = 500;
 
@@ -22,5 +24,7 @@
 
         // Domain
         public const int BOARD_SIZE = 8; // 8*8
+
+        public static string STOCKFISH_PATH_TO_EXE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Engines" , "stockfish-windows-x86-64-avx2.exe");
     }
 }

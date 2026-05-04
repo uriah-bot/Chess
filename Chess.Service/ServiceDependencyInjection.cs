@@ -13,8 +13,8 @@ namespace Chess.Service
             // Other services
             services.AddSingleton<IEmailService, EmailService>();
             services.AddSingleton<IGameService, GameService>();
-            services.AddSingleton<StockfishCommunicationService>();
-            services.AddSingleton<StockfishHelper>();
+            services.AddTransient<StockfishCommunicationService>();
+            services.AddSingleton<GameLogicHelper>();
 
             // Customizable decors
             services.AddSingleton<ICustomizableDecorManager<RadioChannelEntity>, RadioPlayer>();

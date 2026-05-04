@@ -21,6 +21,7 @@ namespace Chess.View
             var services = new ServiceCollection();
 
             services.AddSingleton<IWindowService, WindowService>();
+            services.AddSingleton<IFileService, FileService>();
             services.AddTransient<MainWindow>();
             services.AddTransient<AppBase>();
             services.AddTransient<PopupWindow>();

@@ -6,8 +6,9 @@ namespace Chess.ViewModel.Stores
     {
         public UserEntity CurrentUser { get; set; }
         public bool IsLoggedIn => CurrentUser != null;
-
+        public string AppendingPropertyChange { get; set; }
         public event Action CurrentUserChanged;
+        public void Update(Action<UserEntity> runUpdate);
     }
 
     public class UserStore : IUserStore
@@ -24,6 +25,8 @@ namespace Chess.ViewModel.Stores
             }
         }
 
+        public string AppendingPropertyChange { get; set; }
+
         public void Logout() => CurrentUser = null;
 
         public void Update(Action<UserEntity> runUpdate)
@@ -32,7 +35,7 @@ namespace Chess.ViewModel.Stores
 
             runUpdate(CurrentUser);
 
-            CurrentUser = CurrentUser; // re-assigned for invoking CurrentUserChanged
+            CurrentUserChanged?.Invoke(); // re-assigned for invoking CurrentUserChanged
         }
     }
 }

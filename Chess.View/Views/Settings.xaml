@@ -184,10 +184,10 @@
                                 IsSnapToTickEnabled="True"
                                 Maximum="100"
                                 TickFrequency="5"
-                                Value="{Binding Volume, Mode=OneWayToSource, FallbackValue=80}" />
+                                Value="{Binding Volume}" />
                         </DockPanel>
-                        <CheckBox Content="Mute Radio during matches" />
-                        <CheckBox Content="Play sound effects on move" />
+                        <CheckBox Content="Stop Radio On Matches" />
+                        <CheckBox Command="{Binding PlaySoundEffectOnMoveCommand}" Content="Play sound effects on move" />
                         <Border
                             Margin="10"
                             Padding="10"
@@ -240,7 +240,7 @@
                                         Height="35"
                                         Padding="10,5"
                                         BorderThickness="0"
-                                        Command="{Binding AddMusicMP3}"
+                                        Command="{Binding AddMusicCommand}"
                                         Content="+ Add Music as .mp3"
                                         Cursor="Hand"
                                         Foreground="White"
@@ -290,7 +290,7 @@
                                     BorderThickness="0"
                                     Foreground="{StaticResource Brush.TextSecondary}"
                                     IsEnabled="False"
-                                    Text="{Binding Username}" />
+                                    Text="{Binding Username, Mode=OneWay}" />
                             </Border>
                             <Button
                                 Width="20"
@@ -383,21 +383,18 @@
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
                                 Command="{Binding DeleteUserCommand}"
-                                Content="DELETE USER"
-                                Cursor="Hand">
+                                Content="DELETE USER">
                                 <Button.Style>
-                                    <Style TargetType="Button">
+                                    <Style BasedOn="{StaticResource DefaultButton}" TargetType="Button">
                                         <Setter Property="Background" Value="#990000" />
-                                        <Setter Property="Foreground" Value="White" />
                                         <Setter Property="FontWeight" Value="Bold" />
-                                        <Setter Property="BorderThickness" Value="0" />
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="Button">
                                                     <Border
                                                         x:Name="border"
                                                         Background="{TemplateBinding Background}"
-                                                        CornerRadius="4">
+                                                        CornerRadius="7">
                                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                     </Border>
                                                     <ControlTemplate.Triggers>

@@ -75,7 +75,7 @@
                 CommandParameter="Wins"
                 Style="{StaticResource LeaderboardHeaderButtonStyle}">
                 <DockPanel>
-                    <TextBlock Text="WINS" />
+                    <TextBlock Margin="5,0,0,0" Text="WINS" />
                     <TextBlock
                         Margin="5,0,0,0"
                         Foreground="#666666"
@@ -84,24 +84,26 @@
                 </DockPanel>
             </Button>
         </Grid>
-        <ScrollViewer
-            Grid.Row="2"
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Auto">
-            <ItemsControl AlternationCount="101" ItemsSource="{Binding Users}">
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden">
+            <ItemsControl AlternationCount="501" ItemsSource="{Binding Users}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border
                             Margin="0,0,10,8"
                             Padding="10,15"
-                            Background="#252526"
+                            BorderThickness="2"
                             CornerRadius="6">
                             <Border.Style>
                                 <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#252526" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Background" Value="#2D2D30" />
                                         </Trigger>
+                                        <DataTrigger Binding="{Binding IsCurrentUser}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource Brush.AccentHover}" />
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>

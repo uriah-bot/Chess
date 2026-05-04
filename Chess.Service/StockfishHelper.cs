@@ -3,14 +3,15 @@ using System.Text.RegularExpressions;
 
 namespace Chess.Service
 {
-    public class StockfishHelper
+    public class GameLogicHelper
     {
         /*  the format for stockfish output is:
                         ex: e2e4, e1e2, h7h8q etc. 
                      unfortunately, my code isnt as smart - so it has to check for the stockfish output
                      and then make a move based on that... yeah i know right?   */
 
-        public Move ParseStockfishMove(Board board, string stockfishOutput)
+        // Will be used for DataBase too, to convert chess notation to position and vice versa
+        public Move ParseMove(Board board, string stockfishOutput)
         {
             if (string.IsNullOrWhiteSpace(stockfishOutput) || stockfishOutput.Length < 4)
                 throw new ArgumentException("Invalid Stockfish output.");
@@ -73,7 +74,7 @@ namespace Chess.Service
             return new PawnPromotion(fromPosition, toPosition, newPieceType);
         }
 
-        private Position ChessNotationToPosition(string chessNotation)
+        private static Position ChessNotationToPosition(string chessNotation)
         {
             int rank = '8' - chessNotation[1]; // row
             int file = chessNotation[0] - 'a'; // column

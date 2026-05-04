@@ -18,19 +18,18 @@ namespace Chess.ViewModel
             _userStore.CurrentUserChanged += OnUserChanged;
 
             _ = ReloadDataAsync();
-            
         }
 
         private async Task ReloadDataAsync()
         {
             GameHistory.Clear();
 
-            await _gameHistoryStore.LoadGamesAsync();
-
             if (_userStore.CurrentUser == null)
             {
                 return;
             }
+
+            await _gameHistoryStore.LoadGamesAsync();
 
             foreach (var game in _gameHistoryStore.UserGames)
             {
@@ -81,36 +80,6 @@ namespace Chess.ViewModel
         {
             _userStore.CurrentUserChanged -= OnUserChanged;
             base.Dispose();
-        }
-    }
-
-    public readonly record struct GameRecord
-    {
-        public GameRecord(GameEntity game)
-        {
-            GameMode = game.BotRating == null ? "Player vs Player" : "Player vs AI";
-            AIName = game.BotRating == null ? string.Empty :"Stockfish" + game.BotRating.ToString();
-            UserColor = game.BotRating == null ? string.Empty : game.UserPlayedAs.ToString();
-            Result = game.BotRating == null ? "(friendly game)" : game.Result.ToString();
-            Date = game.DatePlayed.ToString("yy-MM-dd--hh--mm");
-        }
-
-        public string GameMode { get; }
-        public string AIName { get; }
-        public string Result { get; }
-        public string Date { get; }
-        public string UserColor { get; }
-        public string ResultColor {
-            get
-            {
-                return Result switch
-                {
-                    "Win" => "Green",
-                    "Loss" => "Red",
-                    "Draw" => "Yellow",
-                    _ => "Black"
-                };
-            }
         }
     }
 }

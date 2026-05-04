@@ -11,8 +11,6 @@ namespace Chess.ViewModel
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
         private readonly IGameManagerService _gameManagerService;
-        public ICommand NavigateToSettingsCommand { get; }
-        public ICommand StartClassicalGameCommand { get; }
 
         public ClassicalViewModel(INavigationService navigationService, IWindowService windowService, IGameManagerService gameManagerService)
         {
@@ -21,13 +19,29 @@ namespace Chess.ViewModel
             _gameManagerService = gameManagerService;
             NavigateToSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigationService);
             StartClassicalGameCommand = new RelayCommand(o => ExecuteStartClassicalGame());
+            SelectColorCommand = new RelayCommand(o => SelectColor(o));
         }
+
+        public ICommand NavigateToSettingsCommand { get; }
+        public ICommand StartClassicalGameCommand { get; }
+        public ICommand SelectColorCommand { get; }
 
         public PlayerColor UserColor { get; set; } // TODO: change this to user selected color
 
+        private void SelectColor(object o)
+        {
+            var color = o as string;
+
+            UserColor = color switch
+            {
+                "White" => PlayerColor.White,
+                "Black" => PlayerColor.Black,
+                _ => RandomizePlayerColor(),
+            };
+        }
+
         public void ExecuteStartClassicalGame()
         {
-            _gameManagerService.Mode = GameMode.Classical;
             _gameManagerService.UserColor = UserColor;
 
             _navigationService.NavigateTo<GameViewModel>();

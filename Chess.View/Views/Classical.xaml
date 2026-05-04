@@ -121,7 +121,11 @@
                         Foreground="White"
                         Text="I want to play as:" />
                     <UniformGrid Margin="0,0,0,30" Columns="3">
-                        <RadioButton GroupName="ColorGroup" Style="{StaticResource SelectionCard}">
+                        <RadioButton
+                            Command="{Binding SelectColorCommand}"
+                            CommandParameter="White"
+                            GroupName="ColorGroup"
+                            Style="{StaticResource SelectionCard}">
                             <StackPanel>
                                 <TextBlock
                                     HorizontalAlignment="Center"
@@ -137,6 +141,8 @@
                         </RadioButton>
 
                         <RadioButton
+                            Command="{Binding SelectColorCommand}"
+                            CommandParameter="Random"
                             GroupName="ColorGroup"
                             IsChecked="True"
                             Style="{StaticResource SelectionCard}">
@@ -154,7 +160,11 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <RadioButton GroupName="ColorGroup" Style="{StaticResource SelectionCard}">
+                        <RadioButton
+                            Command="{Binding SelectColorCommand}"
+                            CommandParameter="Black"
+                            GroupName="ColorGroup"
+                            Style="{StaticResource SelectionCard}">
                             <StackPanel>
                                 <TextBlock
                                     HorizontalAlignment="Center"
@@ -178,55 +188,61 @@
                         Text="Stockfish Difficulty:" />
                     <UniformGrid Margin="0,0,0,30" Columns="2">
                         <RadioButton
+                            Command="{Binding BotEloSelectedCommand}"
+                            CommandParameter="800"
                             GroupName="EloGroup"
-                            Style="{StaticResource SelectionCard}"
-                            Tag="800">
+                            Style="{StaticResource SelectionCard}">
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
                                 Text="Beginner (800)" />
                         </RadioButton>
                         <RadioButton
+                            Command="{Binding BotEloSelectedCommand}"
+                            CommandParameter="1200"
                             GroupName="EloGroup"
                             IsChecked="True"
-                            Style="{StaticResource SelectionCard}"
-                            Tag="1200">
+                            Style="{StaticResource SelectionCard}">
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
                                 Text="Amateur (1200)" />
                         </RadioButton>
                         <RadioButton
+                            Command="{Binding BotEloSelectedCommand}"
+                            CommandParameter="1600"
                             GroupName="EloGroup"
-                            Style="{StaticResource SelectionCard}"
-                            Tag="1600">
+                            Style="{StaticResource SelectionCard}">
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
                                 Text="Intermediate (1600)" />
                         </RadioButton>
                         <RadioButton
+                            Command="{Binding BotEloSelectedCommand}"
+                            CommandParameter="2000"
                             GroupName="EloGroup"
-                            Style="{StaticResource SelectionCard}"
-                            Tag="2000">
+                            Style="{StaticResource SelectionCard}">
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
                                 Text="Advanced (2000)" />
                         </RadioButton>
                         <RadioButton
+                            Command="{Binding BotEloSelectedCommand}"
+                            CommandParameter="2500"
                             GroupName="EloGroup"
-                            Style="{StaticResource SelectionCard}"
-                            Tag="2500">
+                            Style="{StaticResource SelectionCard}">
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
                                 Text="Master (2500)" />
                         </RadioButton>
                         <RadioButton
+                            Command="{Binding BotEloSelectedCommand}"
+                            CommandParameter="3200"
                             GroupName="EloGroup"
-                            Style="{StaticResource SelectionCard}"
-                            Tag="3200">
+                            Style="{StaticResource SelectionCard}">
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
@@ -234,43 +250,9 @@
                                 Text="Grandmaster (3200)" />
                         </RadioButton>
                     </UniformGrid>
-
-                    <TextBlock
-                        Margin="5,0,0,10"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        Foreground="White"
-                        Text="Time Control:" />
-                    <UniformGrid Margin="0,0,0,20" Columns="3">
-                        <RadioButton GroupName="TimeGroup" Style="{StaticResource SelectionCard}">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                FontSize="14"
-                                FontWeight="Bold"
-                                Text="10 min" />
-                        </RadioButton>
-                        <RadioButton
-                            GroupName="TimeGroup"
-                            IsChecked="True"
-                            Style="{StaticResource SelectionCard}">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                FontSize="14"
-                                FontWeight="Bold"
-                                Text="15 | 10" />
-                        </RadioButton>
-                        <RadioButton GroupName="TimeGroup" Style="{StaticResource SelectionCard}">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                FontSize="14"
-                                FontWeight="Bold"
-                                Text="30 min" />
-                        </RadioButton>
-                    </UniformGrid>
                 </StackPanel>
             </Border>
         </ScrollViewer>
-
         <Button
             Grid.Row="2"
             Height="50"

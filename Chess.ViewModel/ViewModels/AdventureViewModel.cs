@@ -1,12 +1,8 @@
 ﻿using Chess.ViewModel.ViewModelHelper;
 using Microsoft.Windows.Input;
 using Chess.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 
 namespace Chess.ViewModel
 {
@@ -14,31 +10,93 @@ namespace Chess.ViewModel
     {
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
-        private readonly GameManagerService _gameManagerService;
+        private readonly IGameManagerService _gameManagerService;
 
-        public IPreviewCommand PreviewMouseWheel { get; }
-        public ICommand ShowModifierInfoCommand { get; }
-        public ICommand HideModifierInfoCommand { get; }
-        public ICommand StartModifiedGameCommand { get; }
-
-        private List<ModifierType> SelectedModifiers { get; set; } = new List<ModifierType>();
-        public bool HasConflicts => CheckForConflicts();
-
-        public AdventureViewModel(INavigationService navigationService, IWindowService windowService, GameManagerService gameManagerService)
+        public AdventureViewModel(INavigationService navigationService, IWindowService windowService, IGameManagerService gameManagerService)
         {
             _navigationService = navigationService;
             _windowService = windowService;
             _gameManagerService = gameManagerService;
+
+            _selectedModifiers = new ObservableCollection<ModifierType>();
             //PreviewMouseWheel = new RelayCommand();
             ShowModifierInfoCommand = new RelayCommand(o => ShowModifierInfo());
-            StartModifiedGameCommand = new RelayCommand(o => StartModifiedGame(), o => !CheckForConflicts());
+            StartModifiedGameCommand = new RelayCommand(o => StartModifiedGame(), o => !HasErrors && SelectedModifiers.Count > 0);
+            ToggleModifierCommand = new RelayCommand(o => ToggleModifier(o));
+
+            ValidateModifiers();
+        }
+
+        public ObservableCollection<ModifierType> SelectedModifiers
+        {
+            get => _selectedModifiers;
+            set
+            {
+                _selectedModifiers = value;
+                OnPropertyChanged();
+
+                ClearErrors();
+                ClearErrors(nameof(StartModifiedGameCommand));
+                if (SelectedModifiers == null || SelectedModifiers.Count == 0)
+                {
+                    AddError("Must Choose At Least One Modifier.", nameof(SelectedModifiers));
+                }
+                if (SelectedModifiers.Contains(ModifierType.Wormholes) && SelectedModifiers.Contains(ModifierType.FogOfWar))
+                {
+                    AddError("Quantum Chess and Fog of War Cannot Be Selected Together.", nameof(SelectedModifiers));
+                }
+
+                OnPropertyChanged(nameof(StartModifiedGameCommand));
+            }
+        }
+
+        public ICommand ShowModifierInfoCommand { get; }
+        public ICommand HideModifierInfoCommand { get; }
+        public ICommand StartModifiedGameCommand { get; }
+        public ICommand ToggleModifierCommand { get; }
+
+        private ObservableCollection<ModifierType> _selectedModifiers { get; set; }
+
+        private void ToggleModifier(object o)
+        {
+            var mod = o as string;
+
+            if (Enum.TryParse(mod, out ModifierType modEnum))
+            {
+                if (SelectedModifiers.Contains(modEnum))
+                {
+                    SelectedModifiers.Remove(modEnum);
+                }
+                else
+                {
+                    SelectedModifiers.Add(modEnum);
+                }
+
+                ValidateModifiers();
+            }
+        }
+
+        private void ValidateModifiers()
+        {
+            ClearErrors(nameof(SelectedModifiers));
+            ClearErrors(nameof(StartModifiedGameCommand));
+
+            if (SelectedModifiers.Count == 0)
+            {
+                AddError("Must Choose At Least One Modifier.", nameof(SelectedModifiers));
+            }
+            else if (SelectedModifiers.Contains(ModifierType.Wormholes) && SelectedModifiers.Contains(ModifierType.FogOfWar))
+            {
+                AddError("\"Quantum Chess\" and \"Fog of War\" Cannot Be Selected Together.", nameof(SelectedModifiers));
+            }
+
+            OnPropertyChanged(nameof(SelectedModifiers));
+            OnPropertyChanged(nameof(StartModifiedGameCommand));
         }
 
         private void StartModifiedGame()
-        {   
-            _gameManagerService.Mode = GameMode.Modified;
-
-            var game = _gameManagerService.ConfigurateGame(SelectedModifiers);
+        {
+            var game = _gameManagerService.ConfigurateGame(SelectedModifiers.ToList());
 
             _navigationService.NavigateTo<GameViewModel>();
             _windowService.SwitchWindow<MainViewModel>();
@@ -48,17 +106,5 @@ namespace Chess.ViewModel
         {
             throw new NotImplementedException();
         }
-
-        private bool CheckForConflicts()
-        {
-            if (SelectedModifiers.Contains(ModifierType.Wormholes) && SelectedModifiers.Contains(ModifierType.FogOfWar))
-            {
-                AddError("Wormholes cannot be combined with Fog of War.");
-                return true;
-            }
-
-            return false;
-        }
-
     }
 }
