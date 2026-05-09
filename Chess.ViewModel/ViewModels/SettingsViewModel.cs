@@ -145,8 +145,8 @@ namespace Chess.ViewModel
 
 			if (path != null)
 			{
-                var destination = _fileService.SaveFileForUser(path, _userStore.CurrentUser);
-				MusicChannels.Add(new RadioChannelEntity { ChannelName = Path.GetFileName(destination), ChannelPath = destination});
+                var destination = _fileService.SaveFileForUser<RadioChannelEntity>(path, _userStore.CurrentUser);
+				MusicChannels.Add(new RadioChannelEntity { ChannelName = Path.GetFileNameWithoutExtension(destination), ChannelPath = destination});
             }
         }
 
@@ -162,7 +162,7 @@ namespace Chess.ViewModel
         private async Task LoadChannelsAsync()
         {
 			await _radioChannel.GetDefaultItemsAsync(_userStore.CurrentUser);
-			_radioChannel.dbEntities.AddRange(_fileService.GetUserFiles(_userStore.CurrentUser));
+			_radioChannel.dbEntities.AddRange(_fileService.GetUserRadioFiles(_userStore.CurrentUser));
 
             MusicChannels = new ObservableCollection<RadioChannelEntity>(_radioChannel.dbEntities);
         }

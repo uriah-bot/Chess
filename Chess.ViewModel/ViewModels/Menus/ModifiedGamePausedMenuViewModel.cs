@@ -8,8 +8,10 @@ using System.Windows.Input;
 
 namespace Chess.ViewModel
 {
-    public class ModifiedGamePausedMenuViewModel : DialogViewModel
+    public class ModifiedGamePausedMenuViewModel : ViewModelBase, IDialogViewModel
     {
+        public Action RequestClose { get; set; }
+
         private readonly INavigationService _navigationService;
         public ICommand ExitCommand { get; }
         public ICommand RestartCommand { get; }

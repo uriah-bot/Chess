@@ -1,8 +1,8 @@
 ﻿using Chess.ViewModel.ViewModelHelper;
-using Microsoft.Windows.Input;
 using Chess.Model;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using Chess.ViewModel.Stores;
 
 namespace Chess.ViewModel
 {
@@ -11,51 +11,61 @@ namespace Chess.ViewModel
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
         private readonly IGameManagerService _gameManagerService;
+        private readonly IModifierStore _modifierStore;
 
-        public AdventureViewModel(INavigationService navigationService, IWindowService windowService, IGameManagerService gameManagerService)
+        private readonly Dictionary<ModifierType, ActiveModifier> _modifierStates = new Dictionary<ModifierType, ActiveModifier>();
+
+        public AdventureViewModel(INavigationService navigationService, IWindowService windowService, IGameManagerService gameManagerService, IModifierStore modifierStore)
         {
             _navigationService = navigationService;
             _windowService = windowService;
             _gameManagerService = gameManagerService;
+            _modifierStore = modifierStore;
 
-            _selectedModifiers = new ObservableCollection<ModifierType>();
-            //PreviewMouseWheel = new RelayCommand();
-            ShowModifierInfoCommand = new RelayCommand(o => ShowModifierInfo());
+            _selectedModifiers = new ObservableCollection<ActiveModifier>();
+            ShowModifierInfoCommand = new RelayCommand(o => ShowModifierInfo(o));
             StartModifiedGameCommand = new RelayCommand(o => StartModifiedGame(), o => !HasErrors && SelectedModifiers.Count > 0);
             ToggleModifierCommand = new RelayCommand(o => ToggleModifier(o));
 
             ValidateModifiers();
         }
 
-        public ObservableCollection<ModifierType> SelectedModifiers
+        private ObservableCollection<ActiveModifier> _selectedModifiers { get; set; }
+        public ObservableCollection<ActiveModifier> SelectedModifiers
         {
             get => _selectedModifiers;
             set
             {
                 _selectedModifiers = value;
                 OnPropertyChanged();
-
-                ClearErrors();
-                ClearErrors(nameof(StartModifiedGameCommand));
-                if (SelectedModifiers == null || SelectedModifiers.Count == 0)
-                {
-                    AddError("Must Choose At Least One Modifier.", nameof(SelectedModifiers));
-                }
-                if (SelectedModifiers.Contains(ModifierType.Wormholes) && SelectedModifiers.Contains(ModifierType.FogOfWar))
-                {
-                    AddError("Quantum Chess and Fog of War Cannot Be Selected Together.", nameof(SelectedModifiers));
-                }
-
-                OnPropertyChanged(nameof(StartModifiedGameCommand));
             }
         }
 
+        public int ModifierCount => _selectedModifiers.Count;
+
         public ICommand ShowModifierInfoCommand { get; }
-        public ICommand HideModifierInfoCommand { get; }
         public ICommand StartModifiedGameCommand { get; }
         public ICommand ToggleModifierCommand { get; }
 
-        private ObservableCollection<ModifierType> _selectedModifiers { get; set; }
+        private ActiveModifier GetModifierState(ModifierType mod)
+        {
+            if (!_modifierStates.ContainsKey(mod))
+            {
+                _modifierStates[mod] = new ActiveModifier
+                {
+                    Modifier = mod,
+                    SelectedParameter = mod switch
+                    {
+                        ModifierType.Poof => AppConstants.POOF_DEFAULT_MOVES.ToString(),
+                        ModifierType.TimeLimit => AppConstants.TIME_LIMIT_DEFAULT_TIME.ToString(),
+                        ModifierType.MoveMultiplier => AppConstants.MOVE_MULTIPLIER_DEFAULT_MULTIPLIER.ToString(),
+                        ModifierType.Wormholes => AppConstants.WORMHOLES_DEFAULT_PORTALS.ToString(),
+                        _ => null,
+                    }
+                };
+            }
+            return _modifierStates[mod];
+        }
 
         private void ToggleModifier(object o)
         {
@@ -63,15 +73,18 @@ namespace Chess.ViewModel
 
             if (Enum.TryParse(mod, out ModifierType modEnum))
             {
-                if (SelectedModifiers.Contains(modEnum))
+                var toRemove = SelectedModifiers.FirstOrDefault(m => m.Modifier == modEnum);
+
+                if (toRemove != null)
                 {
-                    SelectedModifiers.Remove(modEnum);
+                    SelectedModifiers.Remove(toRemove);
                 }
                 else
                 {
-                    SelectedModifiers.Add(modEnum);
+                    SelectedModifiers.Add(GetModifierState(modEnum));
                 }
 
+                OnPropertyChanged(nameof(ModifierCount));
                 ValidateModifiers();
             }
         }
@@ -81,13 +94,13 @@ namespace Chess.ViewModel
             ClearErrors(nameof(SelectedModifiers));
             ClearErrors(nameof(StartModifiedGameCommand));
 
-            if (SelectedModifiers.Count == 0)
+            if (SelectedModifiers == null || SelectedModifiers.Count == 0)
             {
                 AddError("Must Choose At Least One Modifier.", nameof(SelectedModifiers));
             }
-            else if (SelectedModifiers.Contains(ModifierType.Wormholes) && SelectedModifiers.Contains(ModifierType.FogOfWar))
+            if (SelectedModifiers.Any(m => m.Modifier == ModifierType.Wormholes) && SelectedModifiers.Any(m => m.Modifier == ModifierType.FogOfWar))
             {
-                AddError("\"Quantum Chess\" and \"Fog of War\" Cannot Be Selected Together.", nameof(SelectedModifiers));
+                AddError("Quantum Chess and Fog of War Cannot Be Selected Together.", nameof(SelectedModifiers));
             }
 
             OnPropertyChanged(nameof(SelectedModifiers));
@@ -102,9 +115,16 @@ namespace Chess.ViewModel
             _windowService.SwitchWindow<MainViewModel>();
         }
 
-        private void ShowModifierInfo()
+        private void ShowModifierInfo(object parameter)
         {
-            throw new NotImplementedException();
+            var modStr = parameter as string;
+
+            if(Enum.TryParse(modStr, out ModifierType mod))
+            {
+                _modifierStore.ActiveModifier = GetModifierState(mod);
+
+                _windowService.ShowDialog<ModifierInfoOverlayViewModel>();
+            }
         }
     }
 }

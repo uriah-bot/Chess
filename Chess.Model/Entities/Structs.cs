@@ -59,4 +59,23 @@ namespace Chess.Model
         public int Wins { get; set; }
         public bool IsCurrentUser { get; set; }
     }
+
+    public record ModifierData
+    {
+        public string Name { get; set; }
+        public string IconName { get; set; }
+        public string IconHexColor { get; set; }
+        public string FontFamilyName { get; set; }
+        public string Type { get; set; }
+        public string Duration { get; set; }
+        public string Description { get; set; }
+        public bool IsDynamic { get; set; }
+        public List<string> DynamicItems { get; set; }
+    }
+
+    public record ActiveModifier
+    {
+        public ModifierType Modifier { get; set; }
+        public string SelectedParameter { get; set; }
+    }
 }

@@ -3,6 +3,7 @@ using Chess.Service;
 using Chess.View.Menus;
 using Chess.View.Services;
 using Chess.ViewModel;
+using Chess.ViewModel.Stores;
 using Chess.ViewModel.ViewModelHelper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
@@ -22,6 +23,7 @@ namespace Chess.View
 
             services.AddSingleton<IWindowService, WindowService>();
             services.AddSingleton<IFileService, FileService>();
+
             services.AddTransient<MainWindow>();
             services.AddTransient<AppBase>();
             services.AddTransient<PopupWindow>();

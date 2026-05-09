@@ -4,8 +4,21 @@
     {
         private Game _game; // so Result can be set
         private readonly Random rnd = new Random();
+        private int PoofCycle;
 
         public List<ModifierType> Conflicts => null;
+        
+        public Poof(int? param)
+        {
+            if (param != null)
+            {
+                PoofCycle = param.Value;
+            }
+            else
+            {
+                PoofCycle = AppConstants.POOF_DEFAULT_MOVES;
+            }
+        }
 
         public void Apply(Game game)
         {
@@ -23,7 +36,7 @@
 
         public void PoofPiece(Move move)
         {
-            if (_game.HalfMoves % 10 != 9 &&  _game.HalfMoves % 10 != 0)
+            if (_game.HalfMoves % 2*PoofCycle != 2*PoofCycle-1 && _game.HalfMoves % 2*PoofCycle != 0)
             {
                 return;
             }

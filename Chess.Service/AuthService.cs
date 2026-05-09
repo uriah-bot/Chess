@@ -84,7 +84,7 @@ namespace Chess.Service
             return Convert.ToBase64String(saltBytes);
         }
 
-        private static string HashPassword(string password, string salt)
+        public static string HashPassword(string password, string salt)
         {
             // Hash the password with the salt using SHA256
             using (SHA256 sha = SHA256.Create())

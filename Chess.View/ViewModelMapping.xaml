@@ -59,4 +59,7 @@
     <DataTemplate DataType="{x:Type vm:AccountModificationMenuViewModel}">
         <menus:AccountModificationPopupMenu />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:ModifierInfoOverlayViewModel}">
+        <menus:ModifierInfoOverlay />
+    </DataTemplate>
 </ResourceDictionary>

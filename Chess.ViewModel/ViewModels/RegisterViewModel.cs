@@ -92,7 +92,7 @@ namespace Chess.ViewModel
 
                 ClearErrors();
                 ClearErrors(nameof(RegisterCommand));
-                if (string.IsNullOrWhiteSpace(Username))
+                if (string.IsNullOrWhiteSpace(Password))
                 {
                     AddError("Password is a required field.");
                 }

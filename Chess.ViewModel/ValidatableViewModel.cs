@@ -13,6 +13,11 @@ namespace Chess.ViewModel
 
         public IEnumerable GetErrors(string propertyName)
         {
+            if (string.IsNullOrEmpty(propertyName))
+            {
+                return null;
+            }
+
             return _propertyErrors.GetValueOrDefault(propertyName, null);
 
             // _propertyErrors[propertyName] bad because may not exist yet

@@ -22,7 +22,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
             <TextBlock
                 FontSize="32"
@@ -34,7 +33,6 @@
                 Foreground="#888"
                 Text="Select your modifier(s) for this run." />
         </StackPanel>
-
         <ScrollViewer
             Grid.Row="1"
             CanContentScroll="False"
@@ -45,8 +43,7 @@
             <StackPanel Orientation="Horizontal">
                 <Border Style="{StaticResource ModifierCard}">
                     <Grid>
-                        <Button Style="{StaticResource InfoBtn}" Tag="The King's Journey" />
-
+                        <Button CommandParameter="KingPromotion" Style="{StaticResource InfoBtn}" />
                         <StackPanel Margin="20" VerticalAlignment="Center">
                             <TextBlock
                                 Margin="0,0,0,15"
@@ -55,7 +52,6 @@
                                 FontSize="48"
                                 Foreground="#D3AF37"
                                 Text="&#xE734;" />
-
                             <TextBlock
                                 Margin="0,0,0,10"
                                 HorizontalAlignment="Center"
@@ -63,7 +59,6 @@
                                 FontWeight="Bold"
                                 Foreground="White"
                                 Text="The King's Journey" />
-
                             <TextBlock
                                 FontSize="13"
                                 Foreground="#AAAAAA"
@@ -71,7 +66,6 @@
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-
                         <CheckBox
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
@@ -82,12 +76,13 @@
                             Foreground="White" />
                     </Grid>
                 </Border>
-
                 <Border Style="{StaticResource ModifierCard}">
                     <Grid>
-                        <Button Style="{StaticResource InfoBtn}" Tag="Time Limit" />
-
-                        <StackPanel Margin="20" VerticalAlignment="Center">
+                        <Button CommandParameter="TimeLimit" Style="{StaticResource InfoBtn}" />
+                        <StackPanel
+                            Grid.Row="1"
+                            Margin="20,121,20,0"
+                            VerticalAlignment="Top">
                             <TextBlock
                                 Margin="0,0,0,15"
                                 HorizontalAlignment="Center"
@@ -95,7 +90,6 @@
                                 FontSize="48"
                                 Foreground="PapayaWhip"
                                 Text="&#x23F2;" />
-
                             <TextBlock
                                 Margin="0,0,0,10"
                                 HorizontalAlignment="Center"
@@ -103,7 +97,6 @@
                                 FontWeight="Bold"
                                 Foreground="White"
                                 Text="Under The Gun" />
-
                             <TextBlock
                                 FontSize="13"
                                 Foreground="#AAAAAA"
@@ -111,22 +104,20 @@
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-
                         <CheckBox
-                            Margin="0,0,0,20"
+                            Grid.Row="1"
+                            Margin="0,360,0,0"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
+                            VerticalAlignment="Top"
                             Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
                             CommandParameter="TimeLimit"
                             Content="Select"
                             Foreground="White" />
                     </Grid>
                 </Border>
-
                 <Border Style="{StaticResource ModifierCard}">
                     <Grid>
-                        <Button Style="{StaticResource InfoBtn}" Tag="Poof" />
-
+                        <Button CommandParameter="Poof" Style="{StaticResource InfoBtn}" />
                         <StackPanel Margin="20" VerticalAlignment="Center">
                             <TextBlock
                                 Margin="0,0,0,15"
@@ -135,7 +126,6 @@
                                 FontSize="48"
                                 Foreground="#cb353d"
                                 Text="&#x2728;" />
-
                             <TextBlock
                                 Margin="0,0,0,10"
                                 HorizontalAlignment="Center"
@@ -143,7 +133,6 @@
                                 FontWeight="Bold"
                                 Foreground="White"
                                 Text="POOF!" />
-
                             <TextBlock
                                 FontSize="13"
                                 Foreground="#AAAAAA"
@@ -151,7 +140,6 @@
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-
                         <CheckBox
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
@@ -162,11 +150,9 @@
                             Foreground="White" />
                     </Grid>
                 </Border>
-
                 <Border Style="{StaticResource ModifierCard}">
                     <Grid>
-                        <Button Style="{StaticResource InfoBtn}" Tag="Fog Of War" />
-
+                        <Button CommandParameter="FogOfWar" Style="{StaticResource InfoBtn}" />
                         <StackPanel Margin="20" VerticalAlignment="Center">
                             <TextBlock
                                 Margin="0,0,0,15"
@@ -175,7 +161,6 @@
                                 FontSize="48"
                                 Foreground="#888888"
                                 Text="&#xE753;" />
-
                             <TextBlock
                                 Margin="0,0,0,10"
                                 HorizontalAlignment="Center"
@@ -183,7 +168,6 @@
                                 FontWeight="Bold"
                                 Foreground="White"
                                 Text="Fog of War" />
-
                             <TextBlock
                                 FontSize="13"
                                 Foreground="#AAAAAA"
@@ -191,7 +175,6 @@
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-
                         <CheckBox
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
@@ -202,11 +185,9 @@
                             Foreground="White" />
                     </Grid>
                 </Border>
-
                 <Border Style="{StaticResource ModifierCard}">
                     <Grid>
-                        <Button Style="{StaticResource InfoBtn}" Tag="Wormholes" />
-
+                        <Button CommandParameter="Wormholes" Style="{StaticResource InfoBtn}" />
                         <StackPanel Margin="20" VerticalAlignment="Center">
                             <TextBlock
                                 Margin="0,0,0,15"
@@ -215,7 +196,6 @@
                                 FontSize="48"
                                 Foreground="#00A8FF"
                                 Text="&#xE895;" />
-
                             <TextBlock
                                 Margin="0,0,0,10"
                                 HorizontalAlignment="Center"
@@ -223,7 +203,6 @@
                                 FontWeight="Bold"
                                 Foreground="White"
                                 Text="Quantum Chess" />
-
                             <TextBlock
                                 FontSize="13"
                                 Foreground="#AAAAAA"
@@ -231,7 +210,6 @@
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-
                         <CheckBox
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
@@ -242,36 +220,31 @@
                             Foreground="White" />
                     </Grid>
                 </Border>
-
                 <Border Style="{StaticResource ModifierCard}">
                     <Grid>
-                        <Button Style="{StaticResource InfoBtn}" Tag="Double Moves" />
-
+                        <Button CommandParameter="MoveMultiplier" Style="{StaticResource InfoBtn}" />
                         <StackPanel Margin="20" VerticalAlignment="Center">
                             <TextBlock
                                 Margin="0,0,0,15"
                                 HorizontalAlignment="Center"
-                                FontFamily="Segoe UI"
+                                FontFamily="Cambria Math"
                                 FontSize="48"
                                 Foreground="{StaticResource Brush.Accent}"
-                                Text="X2" />
-
+                                Text="∏" />
                             <TextBlock
                                 Margin="0,0,0,10"
                                 HorizontalAlignment="Center"
                                 FontSize="20"
                                 FontWeight="Bold"
                                 Foreground="White"
-                                Text="Double-Tap" />
-
+                                Text="Multi-Tap" />
                             <TextBlock
                                 FontSize="13"
                                 Foreground="#AAAAAA"
-                                Text="Each Player gets two moves per turn."
+                                Text="Each Player gets multiple moves per turn."
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-
                         <CheckBox
                             Margin="0,0,0,20"
                             HorizontalAlignment="Center"
@@ -284,7 +257,6 @@
                 </Border>
             </StackPanel>
         </ScrollViewer>
-
         <Border
             Grid.Row="2"
             Padding="20"
@@ -303,26 +275,29 @@
                         FontWeight="Bold"
                         Foreground="{StaticResource Brush.Accent}"
                         Text="{Binding ModifierCount}" />
+                    <ItemsControl
+                        Margin="15,0,0,0"
+                        VerticalAlignment="Bottom"
+                        ItemsSource="{Binding (Validation.Errors), ElementName=InitiateGame}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,2" Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        FontFamily="Segoe MDL2 Assets"
+                                        Foreground="#FF5555"
+                                        Text="&#xE783;" />
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Foreground="#FF5555"
+                                        Text="{Binding ErrorContent}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
-                <ItemsControl Margin="150,0,225,0" ItemsSource="{Binding (Validation.Errors), ElementName=InitiateGame}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,2" Orientation="Horizontal">
-                                <TextBlock
-                                    Margin="0,0,5,0"
-                                    VerticalAlignment="Center"
-                                    FontFamily="Segoe MDL2 Assets"
-                                    Foreground="#FF5555"
-                                    Text="&#xE783;" />
-                                <TextBlock
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    Foreground="#FF5555"
-                                    Text="{Binding ErrorContent}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
                 <Button
                     x:Name="InitiateGame"
                     Width="200"
@@ -337,159 +312,5 @@
                     Validation.ErrorTemplate="{x:Null}" />
             </Grid>
         </Border>
-        <Grid
-            x:Name="InfoOverlay"
-            Grid.RowSpan="3"
-            Panel.ZIndex="100"
-            Visibility="Collapsed">
-
-            <Border Background="#E6000000" MouseDown="CloseOverlay_Click" />
-
-            <Border
-                Width="400"
-                Padding="25"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Background="#1E1E1E"
-                BorderBrush="#333"
-                BorderThickness="1"
-                CornerRadius="12">
-                <Border.Effect>
-                    <DropShadowEffect
-                        BlurRadius="30"
-                        Opacity="0.8"
-                        ShadowDepth="5"
-                        Color="Black" />
-                </Border.Effect>
-
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal">
-                        <Border
-                            Width="50"
-                            Height="50"
-                            Background="#2A2A2A"
-                            CornerRadius="8">
-                            <TextBlock
-                                x:Name="PopupIcon"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="28" />
-                        </Border>
-                        <TextBlock
-                            x:Name="PopupTitle"
-                            Margin="15,0,0,0"
-                            VerticalAlignment="Center"
-                            FontSize="24"
-                            FontWeight="Bold"
-                            Foreground="White" />
-                    </StackPanel>
-
-                    <Border
-                        Margin="0,0,0,20"
-                        Padding="15"
-                        Background="#151515"
-                        BorderBrush="#2A2A2A"
-                        BorderThickness="1"
-                        CornerRadius="8">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="90" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="0,0,0,10"
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                FontWeight="Bold"
-                                Foreground="#888"
-                                Text="TYPE:" />
-                            <TextBlock
-                                x:Name="PopupType"
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="0,0,0,10"
-                                VerticalAlignment="Center"
-                                FontWeight="SemiBold"
-                                Foreground="White" />
-
-                            <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="0,0,0,10"
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                FontWeight="Bold"
-                                Foreground="#888"
-                                Text="DURATION:" />
-                            <TextBlock
-                                x:Name="PopupDuration"
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Margin="0,0,0,10"
-                                VerticalAlignment="Center"
-                                FontWeight="SemiBold"
-                                Foreground="White" />
-
-                            <TextBlock
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                FontWeight="Bold"
-                                Foreground="#888"
-                                Text="COST:" />
-                            <TextBlock
-                                x:Name="PopupCost"
-                                Grid.Row="2"
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold"
-                                Foreground="{StaticResource Brush.Accent}"
-                                Text="1 Point" />
-                        </Grid>
-                    </Border>
-
-                    <TextBlock
-                        Margin="0,0,0,8"
-                        FontSize="12"
-                        FontWeight="Bold"
-                        Foreground="#888"
-                        Text="MECHANICS" />
-                    <TextBlock
-                        x:Name="PopupDescription"
-                        Margin="0,0,0,25"
-                        FontSize="14"
-                        Foreground="#DDDDDD"
-                        LineHeight="22"
-                        Text="Detailed mechanics description goes here."
-                        TextWrapping="Wrap" />
-
-                    <Button
-                        Height="40"
-                        Background="#333"
-                        BorderThickness="0"
-                        Click="CloseOverlay_Click"
-                        Content="CLOSE"
-                        Cursor="Hand"
-                        FontWeight="Bold"
-                        Foreground="White">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="6" />
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-                </StackPanel>
-            </Border>
-        </Grid>
     </Grid>
 </UserControl>

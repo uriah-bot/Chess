@@ -1,18 +1,18 @@
 ﻿using Chess.Model;
 using Microsoft.Win32;
 using System.IO;
-using System.Windows.Media.TextFormatting;
 
 namespace Chess.Service
 {
     public class FileService : IFileService
     {
-        public IEnumerable<RadioChannelEntity> GetUserFiles(UserEntity user)
+        public IEnumerable<RadioChannelEntity> GetUserRadioFiles(UserEntity user)
         {
             if (user == null) return Enumerable.Empty<RadioChannelEntity>();
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets", "Users", user.Id.ToString());
+            string safeSalt = user.PasswordSalt.Replace("/", "_").Replace("+", "-").Replace("=", "");
+            string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets", "Users", nameof(RadioChannelEntity) , safeSalt);
 
             if (!Directory.Exists(userDirectory))
             {
@@ -27,33 +27,34 @@ namespace Chess.Service
                 channels.Add(new RadioChannelEntity
                 {
                     ChannelPath = path,
-                    ChannelName = Path.GetFileName(path)
+                    ChannelName = Path.GetFileNameWithoutExtension(path)
                 });
             }
 
             return channels;
         }
 
-        public string SaveFileForUser(string sourceFilePath, UserEntity user)
+        public string SaveFileForUser<T>(string sourceFilePath, UserEntity user) where T : DBEntity
         {
             if (user == null) return null;
 
-            // 1.Get the hidden Windows AppData folder(C: \Users\Name\AppData\Local)
+            // Gets the hidden Windows AppData folder
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-            // 2. Build a unique folder just for this user: \Local\ChessApp\Users\JohnDoe\
-            string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets" , "Users", user.Id.ToString());
+            string safeSalt = user.PasswordSalt.Replace("/", "_").Replace("+", "-").Replace("=", "");
+            // Gets a unique folder just for this user (the hash is one-time and doesn't change)
+            string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets" , "Users", nameof(T) , safeSalt);
 
-            // Ensure the folder actually exists on the hard drive
+            // Ensures the folder actually exists on the hard drive
             Directory.CreateDirectory(userDirectory);
 
-            // 3. Get just the file name (e.g., "avatar.png")
+            // Gets just the file name (e.g., "avatar.png")
             string fileName = Path.GetFileName(sourceFilePath);
 
-            // 4. Create the final destination path
+            // Creates the final destination path
             string destinationPath = Path.Combine(userDirectory, fileName);
 
-            // 5. Copy the file into our safe zone! (overwrite: true just in case they upload the exact same file name again)
+            // Copies the file into safe zone! (overwrite: true just in case they upload the exact same file name again)
             File.Copy(sourceFilePath, destinationPath, overwrite: true);
 
             return destinationPath;

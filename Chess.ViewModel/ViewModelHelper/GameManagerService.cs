@@ -7,12 +7,13 @@ namespace Chess.ViewModel.ViewModelHelper
     public interface IGameManagerService
     {
         Game Game { get; set; }
+        GameMode Mode { get; set; }
         Move LastMove { get; set; }
         PlayerColor UserColor { get; set; }
         int? BotRating { get; set; }
         DateTime Time { get; set; }
         bool IsBoardReactive { get; set; }
-        Game ConfigurateGame(List<ModifierType> modifiers, int? botRating = null);
+        Game ConfigurateGame(List<ActiveModifier> modifiers, int? botRating = null);
         Task EndGameAsync(Game game);
         void HumanMoveAsync(Move move);
         Task StockfishMoveAsync();
@@ -31,7 +32,7 @@ namespace Chess.ViewModel.ViewModelHelper
         public int? BotRating { get; set; }
         public DateTime Time { get; set; }
         public Move LastMove { get; set; }
-        public List<ModifierType> Modifiers { get; set; } = new List<ModifierType>();
+        public List<ActiveModifier> Modifiers { get; set; } = new List<ActiveModifier>();
         public Game Game { get; set; }
 
         public GameManagerService(IGameHistoryStore gameHistoryStore, IUserStore userStore, StockfishCommunicationService stockfishCommunicationService, GameLogicHelper stockfishHelper)
@@ -42,13 +43,13 @@ namespace Chess.ViewModel.ViewModelHelper
             _stockfishHelper = stockfishHelper;
         }
 
-        public Game ConfigurateGame(List<ModifierType> modifiers = null, int? botRating = null)
+        public Game ConfigurateGame(List<ActiveModifier> modifiers = null, int? botRating = null)
         {
             Game game = new Game(PlayerColor.White, Board.Initial());
             Game = game;
             Mode = modifiers != null ? GameMode.Modified : GameMode.Classical;
             Time = DateTime.Now;
-            Modifiers = modifiers ?? new List<ModifierType>();
+            Modifiers = modifiers ?? new List<ActiveModifier>();
             BotRating = botRating;
             IsBoardReactive = Mode != GameMode.Classical || UserColor == PlayerColor.White;
 

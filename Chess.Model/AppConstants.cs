@@ -17,6 +17,7 @@
         public const int PAPA_MOR_USER_ID = 4;
 
         public static string BASE_PATH = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Music");
+        public static string STOCKFISH_PATH_TO_EXE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Engines" , "stockfish-windows-x86-64-avx2.exe");
 
         // Email
         public const string APP_EMAIL = "uribitmap2010@gmail.com";
@@ -24,7 +25,9 @@
 
         // Domain
         public const int BOARD_SIZE = 8; // 8*8
-
-        public static string STOCKFISH_PATH_TO_EXE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Engines" , "stockfish-windows-x86-64-avx2.exe");
+        public const int TIME_LIMIT_DEFAULT_TIME = 10;
+        public const int POOF_DEFAULT_MOVES = 5;
+        public const int WORMHOLES_DEFAULT_PORTALS = 2;
+        public const int MOVE_MULTIPLIER_DEFAULT_MULTIPLIER = 2;
     }
 }

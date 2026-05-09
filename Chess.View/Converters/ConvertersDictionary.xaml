@@ -7,4 +7,6 @@
     <conv:RoleToVisibilityConverter x:Key="RoleToVis" />
     <conv:ViewModelToBooleanConverter x:Key="VMToBool" />
     <conv:AddOneConverter x:Key="AddOne" />
+    <conv:StringToBrushConverter x:Key="StringToBrush" />
+    <conv:StringToFontFamilyConverter x:Key="StringToFontFamily" />
 </ResourceDictionary>

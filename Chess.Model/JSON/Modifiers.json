@@ -1,0 +1,88 @@
+﻿{
+  "FogOfWar": {
+    "Name": "Fog Of War",
+    "IconName": "\uE753",
+    "IconHexColor": "#888888",
+    "FontFamilyName": "Segoe Fluent Icons",
+    "Type": "Environmental",
+    "Duration": "Throughout all game",
+    "Description": "Hides pieces that are not in the direct line of sight.",
+    "IsDynamic": false,
+    "DynamicItems": []
+  },
+  "Poof": {
+    "Name": "POOF!",
+    "IconName": "\u2728",
+    "IconHexColor": "#cb353d",
+    "FontFamilyName": "Segoe Emoji",
+    "Type": "Environmental",
+    "Duration": "Every x moves",
+    "Description": "A random piece, is removed every x moves.",
+    "IsDynamic": true,
+    "DynamicItems": [
+      "1",
+      "3",
+      "5",
+      "10"
+    ]
+  },
+  "MoveMultiplier": {
+    "Name": "Multi-Tap",
+    "IconName": "∏",
+    "IconHexColor": "#7C5CFF",
+    "FontFamilyName": "Cambria Math",
+    "Type": "Player Boosters",
+    "Duration": "Throughout all game",
+    "Description": "Each Player gets x moves in a row.",
+    "IsDynamic": true,
+    "DynamicItems": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ]
+  },
+  "Wormholes": {
+    "Name": "Quantum Chess",
+    "IconName": "\uE895",
+    "IconHexColor": "#00A8FF",
+    "FontFamilyName": "Segoe Fluent Icons",
+    "Type": "Environmental",
+    "Duration": "Throughout all game",
+    "Description": "Creates two connected portals on random empty squares.",
+    "IsDynamic": true,
+    "DynamicItems": [
+      "2",
+      "4",
+      "6"
+    ]
+  },
+  "TimeLimit": {
+    "Name": "Under The Gun",
+    "IconName": "\u23F2",
+    "IconHexColor": "#FFEFD5",
+    "FontFamilyName": "Segoe UI Emoji",
+    "Type": "Win Conditions",
+    "Duration": "Throughout all game",
+    "Description": "Each Player gets a Timer that's active while it's his turn. Once a Player's time runs out, they will lose.",
+    "IsDynamic": true,
+    "DynamicItems": [
+      "1",
+      "5",
+      "10",
+      "15",
+      "30"
+    ]
+  },
+  "KingPromotion": {
+    "Name": "The King's Journey",
+    "IconName": "\uE734",
+    "IconHexColor": "#D3AF37",
+    "FontFamilyName": "Segoe Fluent Icons",
+    "Type": "Win Conditions",
+    "Duration": "On game end",
+    "Description": "When a Player's King reaches a Promotion Rank, the player wins. Normal Chess rules still apply - so be careful of Checkmate!",
+    "IsDynamic": false,
+    "DynamicItems": []
+  }
+}

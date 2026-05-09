@@ -3,6 +3,6 @@
     public interface IWindowService
     {
         void SwitchWindow<TViewModel>() where TViewModel : ViewModelBase;
-        void ShowDialog<TViewModel>() where TViewModel : DialogViewModel;
+        void ShowDialog<TViewModel>() where TViewModel : IDialogViewModel;
     }
 }

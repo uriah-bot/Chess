@@ -6,12 +6,27 @@ namespace Chess.Model
     public class TimeLimit : IModifier
     {
         private Game _game;
+        private int Time;
+        private TimeSpan WhiteTime;
+        private TimeSpan BlackTime;
+        public Dictionary<PlayerColor, Timer> Timers { get; private set; } = new Dictionary<PlayerColor, Timer>();
+
         public List<ModifierType> Conflicts => null;
 
-        private TimeSpan WhiteTime = TimeSpan.FromMinutes(10);
-        private TimeSpan BlackTime = TimeSpan.FromMinutes(10);
+        public TimeLimit(int? param)
+        {
+            if (param != null)
+            {
+                Time = param.Value;
+            }
+            else
+            {
+                Time = AppConstants.TIME_LIMIT_DEFAULT_TIME;
+            }
 
-        public Dictionary<PlayerColor, Timer> Timers { get; private set; } = new Dictionary<PlayerColor, Timer>();
+            WhiteTime = TimeSpan.FromMinutes(Time);
+            BlackTime = TimeSpan.FromMinutes(Time);
+        }
 
         public void Apply(Game game)
         {
@@ -81,7 +96,6 @@ namespace Chess.Model
                         return;
                     }
                     break;
-
                 case PlayerColor.Black:
                     BlackTime = BlackTime.Subtract(TimeSpan.FromSeconds(1));
                     _game.BroadcastModifierData("BlackTime", BlackTime.ToString(@"mm\:ss"));

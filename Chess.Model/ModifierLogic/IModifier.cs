@@ -6,7 +6,7 @@
         Wormholes,
         Poof,
         FogOfWar,
-        DoubleMoves,
+        MoveMultiplier,
         TimeLimit,
     }
     public interface IModifier

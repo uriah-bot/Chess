@@ -1,19 +1,8 @@
 ﻿using Chess.Model;
-using Chess.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Chess.View
@@ -33,9 +22,10 @@ namespace Chess.View
 
         private Game Game;
         private Position selectedPosition = null;
-        List<ModifierType> chosenRules = new List<ModifierType>()
+        List<ActiveModifier> chosenRules = new List<ActiveModifier>()
         {
-            ModifierType.TimeLimit
+            new ActiveModifier{Modifier = ModifierType.TimeLimit, SelectedParameter="1"},
+            new ActiveModifier{Modifier = ModifierType.Poof, SelectedParameter="1"}
         };
 
         private Move lastMove = null; // only for UI
@@ -170,7 +160,6 @@ namespace Chess.View
 
             if (Game.IsGameOver())
             {
-                Game.RemoveModifiers(); // TODO: TEMPPPPP
                 ShowGameOver();
             }
         }
@@ -293,7 +282,6 @@ namespace Chess.View
             //        MenuContainer.Content = null;
             //        RestartGame();
             //    }
-            //};
         }
 
         private void RestartGame()

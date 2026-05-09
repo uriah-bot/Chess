@@ -36,7 +36,7 @@ namespace Chess.View.Services
             }
         }
 
-        public void ShowDialog<TViewModel>() where TViewModel : DialogViewModel
+        public void ShowDialog<TViewModel>() where TViewModel : IDialogViewModel
         {
             var dialogWindow = _serviceProvider.GetRequiredService<PopupWindow>();
 

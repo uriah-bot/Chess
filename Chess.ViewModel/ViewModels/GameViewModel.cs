@@ -1,47 +1,24 @@
 ﻿using Chess.Model;
 using Chess.ViewModel.Stores;
+using Chess.ViewModel.ViewModelHelper;
 
 namespace Chess.ViewModel
 {
-    public partial class GameViewModel : ViewModelBase, IDisposable
+    public partial class GameViewModel : ViewModelBase
     {
 		private readonly IUserStore _userStore;
-		public GameViewModel(IUserStore userStore)
+		private readonly IGameManagerService _gameManager;
+
+		public GameViewModel(IUserStore userStore, IGameManagerService gameManagerService)
 		{
 			_userStore = userStore;
-
+			_gameManager = gameManagerService;
 			
         }
 
         public string Username => _userStore.CurrentUser?.Username ?? "Stranger";
-
-		private string _AIName = string.Empty;
-		public string AIName
-		{
-			get
-			{
-				return _AIName;
-			}
-			set
-			{
-				_AIName = value;
-				OnPropertyChanged(nameof(AIName));
-			}
-		}
-
-		private bool _isClassicalGame;
-		public bool IsClassicalGame
-		{
-			get
-			{
-				return _isClassicalGame;
-			}
-			set
-			{
-				_isClassicalGame = value;
-				OnPropertyChanged(nameof(IsClassicalGame));
-			}
-		}
+		public string AIName => _gameManager.BotRating?.ToString() ?? string.Empty;
+		public bool IsClassicalGame => _gameManager.Mode == GameMode.Classical;
 
 		private string _whiteUserTimerText = "10:00";
 		public string WhiteUserTimerText

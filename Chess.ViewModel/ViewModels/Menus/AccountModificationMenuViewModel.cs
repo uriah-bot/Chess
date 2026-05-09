@@ -1,7 +1,10 @@
-﻿using Chess.ViewModel.Stores;
+﻿using Chess.Model;
+using Chess.Service;
+using Chess.ViewModel.Stores;
 using Chess.ViewModel.ViewModelHelper;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,18 +13,22 @@ using static Chess.Data.Repositories;
 
 namespace Chess.ViewModel
 {
-    public class AccountModificationMenuViewModel : DialogViewModel
+    public class AccountModificationMenuViewModel : ValidatableViewModel, IDialogViewModel
     {
+        public Action RequestClose { get; set; }
+
         private readonly IUserStore _userStore;
         private readonly IUserRepository _userRepo;
+        private readonly IAuthService _authService;
 
-        public AccountModificationMenuViewModel(IUserStore userStore, IUserRepository userRepository)
+        public AccountModificationMenuViewModel(IUserStore userStore, IUserRepository userRepository, IAuthService authService)
         {
             _userStore = userStore;
             _userRepo = userRepository;
+            _authService = authService;
 
             ChangeUsernameCommand = new RelayCommand(o => ChangeUsername());
-            ChangePasswordCommand = new RelayCommand(o => ChangePassword(o));
+            ChangePasswordCommand = new RelayCommand(o => ChangePasswordAsync(), o => CanChangePassword());
             RequestRoleCommand = new RelayCommand(o => RequestRole(o));
             NavigateBackCommand = new RelayCommand(o => RequestClose?.Invoke());
         }
@@ -40,6 +47,69 @@ namespace Chess.ViewModel
             }
         }
 
+        private string _password;
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                _password = value;
+                OnPropertyChanged(nameof(Password));
+
+                ClearErrors();
+                ClearErrors(nameof(ChangePasswordCommand));
+                if (string.IsNullOrWhiteSpace(Password))
+                {
+                    AddError("Confirmation Password is a required field.");
+                }
+
+                OnPropertyChanged(nameof(ChangePasswordCommand));
+            }
+        }
+
+        private string _newPassword;
+        public string NewPassword
+        {
+            get
+            {
+                return _newPassword;
+            }
+            set
+            {
+                _newPassword = value;
+                OnPropertyChanged(nameof(NewPassword));
+
+                ClearErrors();
+                ClearErrors(nameof(ChangePasswordCommand));
+                if (string.IsNullOrWhiteSpace(NewPassword))
+                {
+                    AddError("New Password is a required field.");
+                }
+
+                if (NewPassword.Length < AppConstants.MIN_PASSWORD_LENGTH)
+                {
+                    AddError($"Password is too short ({AppConstants.MIN_PASSWORD_LENGTH})");
+                }
+
+                if (NewPassword.Length > AppConstants.MAX_PASSWORD_LENGTH)
+                {
+                    AddError($"Password exceeds maximum length ({AppConstants.MAX_PASSWORD_LENGTH})");
+                }
+
+                OnPropertyChanged(nameof(ChangePasswordCommand));
+            }
+        }
+
+        public string PopupMode => _userStore.AppendingPropertyChange;
+
+        public ICommand ChangeUsernameCommand { get; }
+        public ICommand ChangePasswordCommand { get; }
+        public ICommand RequestRoleCommand { get; }
+        public ICommand NavigateBackCommand { get; }
+
         private void RequestRole(object o)
         {
             throw new NotImplementedException();
@@ -55,16 +125,22 @@ namespace Chess.ViewModel
             RequestClose?.Invoke();
         }
 
-        private void ChangePassword(object o)
+        private async void ChangePasswordAsync()
         {
-            throw new NotImplementedException();
+            (UserEntity successPassword, bool userExists) = await _authService.LoginAsync(_userStore.CurrentUser.Username, Password);
+
+            if (successPassword == null)
+            {
+                AddError("Incorrect Confirmation Password", nameof(ChangePasswordCommand));
+                OnPropertyChanged(nameof(ChangePasswordCommand));
+                return;
+            }
+
+            _userStore.Update(u => u.PasswordHash = AuthService.HashPassword(NewPassword, _userStore.CurrentUser.PasswordSalt));
+            await _userRepo.UpdateUserAsync(_userStore.CurrentUser);
+            RequestClose?.Invoke();
         }
 
-        public string PopupMode => _userStore.AppendingPropertyChange;
-
-        public ICommand ChangeUsernameCommand { get; }
-        public ICommand ChangePasswordCommand { get; }
-        public ICommand RequestRoleCommand { get; }
-        public ICommand NavigateBackCommand { get; }
+        private bool CanChangePassword() => !HasErrors && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(NewPassword);
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess.Model
+﻿namespace Chess.Model
 {
     public class Game
     {
@@ -27,7 +21,6 @@ namespace Chess.Model
 
         private readonly Dictionary<string, int> stateHistory = new Dictionary<string, int>();
 
-
         public event Action<string, string> OnModifierDataUpdated;
         public void BroadcastModifierData(string key, string value)
         {
@@ -44,13 +37,13 @@ namespace Chess.Model
             stateHistory[gameStateString] = 1;
         }
 
-        private void ApplyModifiers(List<ModifierType> selectedModifiers)
+        private void ApplyModifiers(List<ActiveModifier> selectedModifiers)
         {
             if (selectedModifiers.Count == 0) return;
 
-            foreach (var modType in selectedModifiers)
+            foreach (var mod in selectedModifiers)
             {
-                IModifier modifier = ModifierFactory.Create(modType);
+                IModifier modifier = ModifierFactory.Create(mod.Modifier, mod.SelectedParameter);
                 if (modifier != null)
                 {
                     ActiveModifiers.Add(modifier);
@@ -59,19 +52,7 @@ namespace Chess.Model
             }
         }
 
-        public void RemoveModifiers()
-        {
-            foreach (var modifier in ActiveModifiers)
-            {
-                if (modifier != null)
-                {
-                    ActiveModifiers.Remove(modifier);
-                    modifier.Remove(this);
-                }
-            }
-        }
-
-        public void StartMatch(List<ModifierType> selectedModifiers)
+        public void StartMatch(List<ActiveModifier> selectedModifiers)
         {
             ApplyModifiers(selectedModifiers);
             OnBoardSetup?.Invoke(Board);

@@ -10,8 +10,10 @@ using System.Windows.Input;
 
 namespace Chess.ViewModel
 {
-    public class PromotionMenuViewModel : DialogViewModel
+    public class PromotionMenuViewModel : ViewModelBase, IDialogViewModel
     {
+        public Action RequestClose { get; set; }
+
         private readonly IGameManagerService _gameManager;
         private Action<PieceType> OnPieceSelected;
         public ICommand PieceSelectedCommand { get; }

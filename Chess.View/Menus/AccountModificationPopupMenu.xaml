@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Chess.View.Menus"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:passwordbox="clr-namespace:Chess.View"
     Background="Transparent"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -76,6 +77,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <TextBox
+                        x:Name="UsernameTextBox"
                         Height="35"
                         Padding="10,8"
                         VerticalContentAlignment="Center"
@@ -84,6 +86,26 @@
                         BorderThickness="1"
                         Foreground="White"
                         Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}" />
+                    <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=UsernameTextBox}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,2" Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        FontFamily="Segoe MDL2 Assets"
+                                        Foreground="#FF5555"
+                                        Text="&#xE783;" />
+
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Foreground="#FF5555"
+                                        Text="{Binding ErrorContent}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                     <Button
                         Grid.Column="1"
                         Width="80"
@@ -95,10 +117,6 @@
                 </Grid>
             </Grid>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="2*" />
-                </Grid.RowDefinitions>
                 <Grid.Style>
                     <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
                         <Style.Triggers>
@@ -108,39 +126,130 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-                <TextBlock
-                    Margin="0,0,0,5"
-                    FontSize="11"
-                    FontWeight="SemiBold"
-                    Foreground="#888"
-                    Text="CHANGE PASSWORD" />
-                <Grid Grid.Row="1" Margin="0,0,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+
+                <StackPanel>
                     <TextBlock
-                        Height="35"
-                        Padding="10,8"
+                        Margin="0,0,0,20"
+                        FontSize="16"
+                        FontWeight="Bold"
                         Foreground="White"
-                        Style="{StaticResource MenuTextBlockStyle}"
-                        Text="{Binding CurrentPassword}" />
-                    <PasswordBox
-                        Height="35"
-                        Padding="10,8"
-                        VerticalContentAlignment="Center"
-                        Foreground="White"
-                        Style="{StaticResource PasswordBoxStyle}" />
-                    <Button
-                        Grid.Column="1"
-                        Width="80"
-                        Height="35"
-                        Margin="10,0,0,0"
-                        Command="{Binding ChangePasswordCommand}"
-                        CommandParameter="{Binding ElementName=NewPasswordBox}"
-                        Content="Update"
-                        Style="{StaticResource DefaultButton}" />
-                </Grid>
+                        Text="Change Password" />
+
+                    <StackPanel Margin="0,0,0,15">
+                        <TextBlock
+                            Margin="0,0,0,6"
+                            FontSize="11"
+                            FontWeight="SemiBold"
+                            Foreground="#AAAAAA"
+                            Text="CONFIRM CURRENT PASSWORD" />
+
+                        <PasswordBox
+                            x:Name="OldPassword"
+                            Height="35"
+                            Padding="10,8"
+                            VerticalContentAlignment="Center"
+                            passwordbox:PasswordService.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                            Foreground="White"
+                            Style="{StaticResource PasswordBoxStyle}" />
+
+                        <ItemsControl Margin="0,4,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=OldPassword}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,2" Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,5,0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Foreground="#FF5555"
+                                            Text="&#xE783;" />
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Foreground="#FF5555"
+                                            Text="{Binding ErrorContent}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,25">
+                        <TextBlock
+                            Margin="0,0,0,6"
+                            FontSize="11"
+                            FontWeight="SemiBold"
+                            Foreground="#AAAAAA"
+                            Text="NEW PASSWORD" />
+
+                        <PasswordBox
+                            x:Name="NewPassword"
+                            Height="35"
+                            Padding="10,8"
+                            VerticalContentAlignment="Center"
+                            passwordbox:PasswordService.BoundPassword="{Binding NewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                            Foreground="White"
+                            Style="{StaticResource PasswordBoxStyle}" />
+
+                        <ItemsControl Margin="0,4,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=NewPassword}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,2" Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,5,0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Foreground="#FF5555"
+                                            Text="&#xE783;" />
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Foreground="#FF5555"
+                                            Text="{Binding ErrorContent}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding (Validation.Errors), ElementName=ChangePasswordButton}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,2" Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,5,0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Foreground="#FF5555"
+                                            Text="&#xE783;" />
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Foreground="#FF5555"
+                                            Text="{Binding ErrorContent}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Button
+                            x:Name="ChangePasswordButton"
+                            Grid.Column="1"
+                            Width="100"
+                            Height="35"
+                            Command="{Binding ChangePasswordCommand}"
+                            Content="Update"
+                            Style="{StaticResource DefaultButton}"
+                            Validation.ErrorTemplate="{x:Null}" />
+                    </Grid>
+
+                </StackPanel>
             </Grid>
             <Grid>
                 <Grid.RowDefinitions>
