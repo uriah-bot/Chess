@@ -52,10 +52,6 @@
                     Text="Account Management" />
             </StackPanel>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="2*" />
-                </Grid.RowDefinitions>
                 <Grid.Style>
                     <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
                         <Style.Triggers>
@@ -65,56 +61,86 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-                <TextBlock
-                    Margin="0,0,0,5"
-                    FontSize="11"
-                    FontWeight="SemiBold"
-                    Foreground="#888"
-                    Text="CHANGE USERNAME" />
-                <Grid Grid.Row="1" Margin="0,0,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <TextBox
-                        x:Name="UsernameTextBox"
-                        Height="35"
-                        Padding="10,8"
-                        VerticalContentAlignment="Center"
-                        Background="#252526"
-                        BorderBrush="#444"
-                        BorderThickness="1"
-                        Foreground="White"
-                        Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}" />
-                    <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=UsernameTextBox}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="0,2" Orientation="Horizontal">
-                                    <TextBlock
-                                        Margin="0,0,5,0"
-                                        VerticalAlignment="Center"
-                                        FontFamily="Segoe MDL2 Assets"
-                                        Foreground="#FF5555"
-                                        Text="&#xE783;" />
-
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        FontSize="12"
-                                        Foreground="#FF5555"
-                                        Text="{Binding ErrorContent}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                    <Button
-                        Grid.Column="1"
-                        Width="80"
-                        Height="35"
-                        Margin="10,0,0,0"
-                        Command="{Binding ChangeUsernameCommand}"
-                        Content="Update"
-                        Style="{StaticResource DefaultButton}" />
-                </Grid>
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,20"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="#888"
+                        Text="Change Username" />
+                    <StackPanel Margin="0,0,0,25">
+                        <TextBlock
+                            Margin="0,0,0,6"
+                            FontSize="11"
+                            FontWeight="SemiBold"
+                            Foreground="#AAAAAA"
+                            Text="NEW USERNAME" />
+                        <TextBox
+                            x:Name="UsernameTextBox"
+                            Height="35"
+                            Padding="10,8"
+                            VerticalContentAlignment="Center"
+                            Background="#252526"
+                            BorderBrush="#444"
+                            BorderThickness="1"
+                            Foreground="White"
+                            Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                        <ItemsControl Margin="0,4,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=UsernameTextBox}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,2" Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,5,0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Foreground="#FF5555"
+                                            Text="&#xE783;" />
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Foreground="#FF5555"
+                                            Text="{Binding ErrorContent}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding (Validation.Errors), ElementName=ChangeUsernameButton}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,2" Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,5,0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Foreground="#FF5555"
+                                            Text="&#xE783;" />
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Foreground="#FF5555"
+                                            Text="{Binding ErrorContent}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button
+                            x:Name="ChangeUsernameButton"
+                            Grid.Column="1"
+                            Width="100"
+                            Height="35"
+                            Command="{Binding ChangeUsernameCommand}"
+                            Content="Update"
+                            Style="{StaticResource DefaultButton}"
+                            Validation.ErrorTemplate="{x:Null}" />
+                    </Grid>
+                </StackPanel>
             </Grid>
             <Grid>
                 <Grid.Style>
@@ -126,15 +152,13 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-
                 <StackPanel>
                     <TextBlock
                         Margin="0,0,0,20"
                         FontSize="16"
                         FontWeight="Bold"
-                        Foreground="White"
+                        Foreground="#888"
                         Text="Change Password" />
-
                     <StackPanel Margin="0,0,0,15">
                         <TextBlock
                             Margin="0,0,0,6"
@@ -142,7 +166,6 @@
                             FontWeight="SemiBold"
                             Foreground="#AAAAAA"
                             Text="CONFIRM CURRENT PASSWORD" />
-
                         <PasswordBox
                             x:Name="OldPassword"
                             Height="35"
@@ -172,7 +195,6 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
-
                     <StackPanel Margin="0,0,0,25">
                         <TextBlock
                             Margin="0,0,0,6"
@@ -180,7 +202,6 @@
                             FontWeight="SemiBold"
                             Foreground="#AAAAAA"
                             Text="NEW PASSWORD" />
-
                         <PasswordBox
                             x:Name="NewPassword"
                             Height="35"
@@ -189,7 +210,6 @@
                             passwordbox:PasswordService.BoundPassword="{Binding NewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                             Foreground="White"
                             Style="{StaticResource PasswordBoxStyle}" />
-
                         <ItemsControl Margin="0,4,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=NewPassword}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -210,7 +230,6 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
-
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />

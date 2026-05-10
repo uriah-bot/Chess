@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Chess.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    MinWidth="500"
     Background="Transparent"
     FontFamily="Segoe UI"
     mc:Ignorable="d">
@@ -12,7 +13,7 @@
         <Style x:Key="DashboardCard" TargetType="Border">
             <Setter Property="Background" Value="#202020" />
             <Setter Property="CornerRadius" Value="12" />
-            <Setter Property="Padding" Value="20" />
+            <Setter Property="Padding" Value="25" />
             <Setter Property="Margin" Value="0,0,20,20" />
             <Setter Property="Effect">
                 <Setter.Value>
@@ -26,7 +27,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -47,54 +48,47 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Border
                 Grid.Row="0"
                 Grid.Column="0"
                 Style="{StaticResource DashboardCard}">
-                <Grid>
-                    <StackPanel Margin="0,0,0,10" VerticalAlignment="Bottom">
-                        <TextBlock
-                            FontSize="24"
-                            FontWeight="Bold"
-                            Foreground="White"
-                            Text="Classical Mode" />
-                        <TextBlock
-                            Margin="0,5,0,15"
-                            Foreground="{StaticResource Brush.TextSecondary}"
-                            Text="Rated match versus Engine" />
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBlock
+                        FontSize="32"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Text="Classical Mode" />
+                    <TextBlock
+                        Margin="0,5,0,25"
+                        FontSize="16"
+                        Foreground="#AAAAAA"
+                        Text="Rated match versus Engine" />
 
-                        <StackPanel Orientation="Horizontal">
-                            <Button
-                                Width="120"
-                                Height="40"
-                                HorizontalAlignment="Left"
-                                Command="{Binding NavigateToClassicalCommand}"
-                                Content="Start Match"
-                                Style="{StaticResource DefaultButton}" />
-                            <TextBlock
-                                Margin="10,5,0,0"
-                                HorizontalAlignment="Center"
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="30"
-                                Foreground="{StaticResource Brush.Accent}"
-                                Text="&#xEA18;" />
-                            <Image
-                                Width="40"
-                                Height="40"
-                                Margin="10,0,0,0"
-                                RenderOptions.BitmapScalingMode="HighQuality"
-                                Source="/Assets/Stockfish_icon.png"
-                                Visibility="Collapsed" />
-                        </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Width="140"
+                            Height="45"
+                            Command="{Binding NavigateToClassicalCommand}"
+                            Content="Start Match"
+                            FontSize="16"
+                            Style="{StaticResource DefaultButton}" />
+                        <TextBlock
+                            Margin="20,0,0,0"
+                            VerticalAlignment="Center"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="30"
+                            Foreground="{StaticResource Brush.Accent}"
+                            Text="&#xEA18;" />
                     </StackPanel>
-                </Grid>
+                </StackPanel>
             </Border>
 
             <Border
@@ -102,33 +96,31 @@
                 Grid.Column="1"
                 Background="#2D2D30"
                 Style="{StaticResource DashboardCard}">
-                <StackPanel
-                    Margin="0,0,0,5"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock
-                        Margin="-2,0,0,5"
+                        Margin="0,0,0,10"
                         HorizontalAlignment="Center"
                         FontFamily="Segoe MDL2 Assets"
-                        FontSize="30"
+                        FontSize="40"
                         Foreground="{StaticResource Brush.Accent}"
                         Text="&#xE819;" />
                     <TextBlock
                         HorizontalAlignment="Center"
-                        FontSize="18"
+                        FontSize="20"
                         FontWeight="Bold"
                         Foreground="White"
                         Text="Adventure Mode" />
                     <TextBlock
-                        Margin="0,5,0,10"
-                        FontSize="11"
+                        Margin="0,5,0,20"
+                        FontSize="12"
                         Foreground="Gray"
                         Text="Discover new ways to play Chess"
                         TextAlignment="Center"
                         TextWrapping="Wrap" />
 
                     <Button
-                        Height="20"
+                        Height="35"
+                        Padding="15,0"
                         Command="{Binding NavigateToAdventureCommand}"
                         Content="Modifier Selection"
                         FontFamily="Segoe UI"
@@ -139,76 +131,81 @@
             <Border
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
-                Margin="0,0,20,0"
                 Style="{StaticResource DashboardCard}">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <DockPanel>
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                FontSize="15"
-                                FontWeight="SemiBold"
-                                Foreground="{StaticResource Brush.TextPrimary}"
-                                Text="Click" />
-                            <Button
-                                Margin="0,0,5,0"
-                                Padding="0"
-                                BorderThickness="0"
-                                Command="{Binding NavigateToLeaderboardCommand}"
-                                Cursor="Hand"
-                                FontSize="15">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="Transparent">
-                                            <TextBlock Style="{StaticResource LinkTextStyle}" Text="Here" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <TextBlock
-                                Margin="0,0,5,0"
-                                FontSize="15"
-                                FontWeight="SemiBold"
-                                Foreground="{StaticResource Brush.TextPrimary}"
-                                Text="To Go To Leaderboard" />
-                        </DockPanel>
-                        <TextBlock
-                            Margin="0,10,0,0"
-                            FontSize="15"
-                            FontWeight="SemiBold"
-                            Foreground="#6C5CE7"
-                            Text="" />
-                    </StackPanel>
 
-                    <StackPanel
-                        Grid.Column="1"
+                    <Border
+                        Grid.Column="0"
+                        Width="50"
                         Height="50"
-                        VerticalAlignment="Bottom"
+                        Margin="0,0,20,0"
+                        Background="#2A2A35"
+                        CornerRadius="25">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="24"
+                            Foreground="Gold"
+                            Text="&#x1F3C6;" />
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="Global Leaderboard" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="13"
+                            Foreground="#888"
+                            Text="See where you rank against the best players in the world." />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
                         Orientation="Horizontal">
-                        <Rectangle
-                            Width="10"
-                            Height="30"
-                            Margin="2"
-                            Fill="#333" />
-                        <Rectangle
-                            Width="10"
-                            Height="45"
-                            Margin="2"
-                            Fill="#6C5CE7" />
-                        <Rectangle
-                            Width="10"
-                            Height="20"
-                            Margin="2"
-                            Fill="#333" />
-                        <Rectangle
-                            Width="10"
+                        <StackPanel
                             Height="40"
-                            Margin="2"
-                            Fill="#6C5CE7" />
+                            Margin="10,0,5,0"
+                            VerticalAlignment="Center"
+                            Opacity="0.6"
+                            Orientation="Horizontal">
+                            <Rectangle
+                                Width="8"
+                                Height="20"
+                                Margin="2"
+                                VerticalAlignment="Bottom"
+                                Fill="#333" />
+                            <Rectangle
+                                Width="8"
+                                Height="35"
+                                Margin="2"
+                                VerticalAlignment="Bottom"
+                                Fill="{StaticResource Brush.Accent}" />
+                            <Rectangle
+                                Width="8"
+                                Height="15"
+                                Margin="2"
+                                VerticalAlignment="Bottom"
+                                Fill="#333" />
+                            <Rectangle
+                                Width="8"
+                                Height="40"
+                                Margin="2"
+                                VerticalAlignment="Bottom"
+                                Fill="{StaticResource Brush.Accent}" />
+                        </StackPanel>
+                        <Button
+                            Width="130"
+                            Height="40"
+                            Command="{Binding NavigateToLeaderboardCommand}"
+                            Content="View Rankings"
+                            Style="{StaticResource DefaultButton}" />
                     </StackPanel>
                 </Grid>
             </Border>

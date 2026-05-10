@@ -8,12 +8,13 @@
     Title="Chess"
     Background="#000000"
     Icon="/Assets/icon.ico"
+    ResizeMode="CanResize"
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <ContentControl x:Name="MainContentArea" Content="{Binding CurrentViewModel}">
-        <ContentControl.LayoutTransform>
-            <ScaleTransform ScaleX="0.9" ScaleY="0.9" />
-        </ContentControl.LayoutTransform>
-    </ContentControl>
+    <ContentControl
+        x:Name="MainContentArea"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Content="{Binding CurrentViewModel}" />
 </Window>

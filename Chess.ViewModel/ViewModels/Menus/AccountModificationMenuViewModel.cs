@@ -27,8 +27,8 @@ namespace Chess.ViewModel
             _userRepo = userRepository;
             _authService = authService;
 
-            ChangeUsernameCommand = new RelayCommand(o => ChangeUsername());
-            ChangePasswordCommand = new RelayCommand(o => ChangePasswordAsync(), o => CanChangePassword());
+            ChangeUsernameCommand = new RelayCommand(o => ChangeUsername(), o => !HasErrors && !string.IsNullOrWhiteSpace(NewUsername));
+            ChangePasswordCommand = new RelayCommand(o => ChangePasswordAsync(), o => !HasErrors && !string.IsNullOrWhiteSpace(NewPassword) && !string.IsNullOrWhiteSpace(Password));
             RequestRoleCommand = new RelayCommand(o => RequestRole(o));
             NavigateBackCommand = new RelayCommand(o => RequestClose?.Invoke());
         }
@@ -44,6 +44,26 @@ namespace Chess.ViewModel
             {
                 _newUsername = value;
                 OnPropertyChanged(nameof(NewUsername));
+
+                ClearErrors();
+                ClearErrors(nameof(ChangeUsernameCommand));
+
+                if (string.IsNullOrWhiteSpace(NewUsername))
+                {
+                    AddError("Username is a required field.");
+                }
+
+                if (NewUsername.Length < AppConstants.MIN_USERNAME_LENGTH)
+                {
+                    AddError($"Username is too short ({AppConstants.MIN_USERNAME_LENGTH})");
+                }
+
+                if (NewUsername.Length > AppConstants.MAX_USERNAME_LENGTH)
+                {
+                    AddError($"Username exceeds maximum length ({AppConstants.MAX_USERNAME_LENGTH})");
+                }
+
+                OnPropertyChanged(nameof(ChangeUsernameCommand));
             }
         }
 
@@ -117,7 +137,13 @@ namespace Chess.ViewModel
 
         private async void ChangeUsername()
         {
-            if (_userStore.CurrentUser.Username == NewUsername || string.IsNullOrEmpty(NewUsername) || string.IsNullOrWhiteSpace(NewUsername) || NewUsername.Length < 5) return; // TODO: temp
+            var existingUser = await _userRepo.GetUserByUsernameAsync(NewUsername);
+
+            if (existingUser != null)
+            {
+                AddError("User of this name already exists", nameof(ChangeUsernameCommand));
+                return;
+            }
 
             _userStore.Update(user => user.Username = NewUsername);
             await _userRepo.UpdateUserAsync(_userStore.CurrentUser);
@@ -140,7 +166,5 @@ namespace Chess.ViewModel
             await _userRepo.UpdateUserAsync(_userStore.CurrentUser);
             RequestClose?.Invoke();
         }
-
-        private bool CanChangePassword() => !HasErrors && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(NewPassword);
     }
 }

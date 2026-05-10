@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <Grid>
         <Border
-            Width="420"
+            MinWidth="420"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Style="{StaticResource CardStyle}">

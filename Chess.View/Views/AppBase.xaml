@@ -5,15 +5,13 @@
     xmlns:local="clr-namespace:Chess.View"
     xmlns:vm="clr-namespace:Chess.ViewModel;assembly=Chess.ViewModel"
     Title="Chess Master"
-    Width="1080"
-    Height="720"
+    MinWidth="900"
+    MinHeight="700"
     Background="{StaticResource Brush.Background}"
     FontFamily="Segoe UI"
     Icon="/Assets/icon.ico"
-    ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
-    WindowState="Maximized"
-    WindowStyle="None">
+    WindowState="Maximized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
