@@ -9,10 +9,8 @@ namespace Chess.Data
         {
             services.AddSingleton<IUserRepository, UserRepo>();
             services.AddSingleton<IGameRepository, GameRepo>();
-            services.AddSingleton<IPieceThemeRepository, PieceThemeRepo>();
-            services.AddSingleton<IBoardThemeRepository, BoardThemeRepo>();
             services.AddSingleton<IRadioChannelRepository, RadioChannelRepo>();
-            //services.AddSingleton<ISettingsRepository, SettingsRepo>();
+            services.AddSingleton<ISettingsRepository, SettingsRepo>();
 
             return services;
         }

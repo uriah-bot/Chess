@@ -59,12 +59,19 @@
                     Margin="0,10,0,5"
                     Style="{StaticResource InputLabelStyle}"
                     Text="PASSWORD" />
+                <TextBox
+                    Margin="0,0,0,5"
+                    FontSize="18"
+                    Style="{StaticResource InfoInputTextBoxStyle}"
+                    Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolToVis}}" />
                 <PasswordBox
                     x:Name="PasswordBox"
                     Margin="0,0,0,5"
                     local:PasswordService.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                     FontSize="18"
-                    Style="{StaticResource PasswordBoxStyle}" />
+                    Style="{StaticResource PasswordBoxStyle}"
+                    Visibility="{Binding IsPasswordVisible, Converter={StaticResource InverseBoolToVis}}" />
                 <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=PasswordBox}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -86,12 +93,14 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <CheckBox
-                    x:Name="PasswordVisibilityCheckBox"
-                    Margin="0,0,0,25"
+                    Margin="0,0,0,5"
+                    Command="{Binding TogglePasswordVisibilityCommand}"
+                    CommandParameter="{Binding ElementName=PasswordBox}"
                     Content="Show Password"
                     Foreground="White" />
                 <Button
                     x:Name="RegisterButton"
+                    Margin="0,0,0,0"
                     Command="{Binding RegisterCommand}"
                     Content="CREATE ACCOUNT"
                     Style="{StaticResource DefaultButton}"

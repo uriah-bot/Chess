@@ -318,7 +318,7 @@
                                     FontStyle="Italic"
                                     Foreground="{StaticResource Brush.TextSecondary}"
                                     IsEnabled="False"
-                                    Text="-Hidden-  To View/Change Password -&gt;" />
+                                    Text="-Hidden-       To Change Password -&gt;" />
                             </Border>
                             <Button
                                 Width="20"

@@ -14,16 +14,18 @@ namespace Chess.Service
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepo;
+        private readonly ISettingsRepository _settingsRepo;
 
-        public AuthService(IUserRepository userRepo)
+        public AuthService(IUserRepository userRepo, ISettingsRepository settingsRepo)
         {
             _userRepo = userRepo;
+            _settingsRepo = settingsRepo;
         }
 
         public async Task<(UserEntity, bool)> LoginAsync(string username, string password)
         {
             var user = await _userRepo.GetUserByUsernameAsync(username);
-            
+
             if (user == null)
             {
                 return (null, false);
@@ -33,6 +35,7 @@ namespace Chess.Service
 
             if (user.PasswordHash == hash)
             {
+                user.Settings = await _settingsRepo.GetUserSettingAsync(user);
                 return (user, true);
             }
 
@@ -59,16 +62,17 @@ namespace Chess.Service
                 role = UserRole.Moderator;
             }
 
-            // creating user and adding to the database
+            // creating (the needed properties in) user and adding to the database
             var newUser = new UserEntity
             {
                 Username = username,
                 PasswordSalt = salt,
                 PasswordHash = hash,
-                Role = role
+                Role = role,
             };
 
-            await _userRepo.AddUserAsync(newUser);
+            newUser.Id = await _userRepo.AddUserAsync(newUser);
+            await _settingsRepo.AddUserSettingsAsync(newUser);
 
             return true;
         }

@@ -11,9 +11,6 @@ namespace Chess.ViewModel
         private readonly IUserStore _userStore;
         private readonly IWindowService _windowService;
         private readonly INavigationService _navigationService;
-
-        public ICommand LoginCommand { get; }
-        public ICommand NavigateToRegisterCommand { get; }
         
         public LoginViewModel(IAuthService authService, IUserStore userStore, IWindowService windowService, INavigationService navigationService)
         {
@@ -23,30 +20,14 @@ namespace Chess.ViewModel
             _navigationService = navigationService;
             LoginCommand = new RelayCommand(o => Login(), o => CanUserLogIn());
             NavigateToRegisterCommand = new NavigateCommand<RegisterViewModel>(_navigationService);
+            ContinueWithoutLoggingInCommand = new RelayCommand( o => _windowService.SwitchWindow<AppBaseViewModel>());
+            TogglePasswordVisibilityCommand = new RelayCommand(o => TogglePasswordVisibility());
         }
 
-        private async void Login()
-        {
-            (var user, bool exists) = await _authService.LoginAsync(Username, Password);
-
-            if (user != null)
-            {
-                _userStore.CurrentUser = user;
-
-                _windowService.SwitchWindow<AppBaseViewModel>();
-                return;
-            }
-
-            if (exists)
-            {
-                AddError("Password is incorrect.", nameof(LoginCommand));
-                return;
-            }
-
-            AddError("No user found of this name.", nameof(LoginCommand));
-        }
-
-        private bool CanUserLogIn() => !HasErrors && !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
+        public ICommand LoginCommand { get; }
+        public ICommand NavigateToRegisterCommand { get; }
+        public ICommand ContinueWithoutLoggingInCommand { get; }
+        public ICommand TogglePasswordVisibilityCommand { get; }
 
         private string _username;
         public string Username
@@ -92,6 +73,37 @@ namespace Chess.ViewModel
 
                 OnPropertyChanged(nameof(LoginCommand));
             }
+        }
+
+        public bool IsPasswordVisible { get; set; }
+
+        private async void Login()
+        {
+            (var user, bool exists) = await _authService.LoginAsync(Username, Password);
+
+            if (user != null)
+            {
+                _userStore.CurrentUser = user;
+
+                _windowService.SwitchWindow<AppBaseViewModel>();
+                return;
+            }
+
+            if (exists)
+            {
+                AddError("Password is incorrect.", nameof(LoginCommand));
+                return;
+            }
+
+            AddError("No user found of this name.", nameof(LoginCommand));
+        }
+
+        private bool CanUserLogIn() => !HasErrors && !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
+
+        private void TogglePasswordVisibility()
+        {
+            IsPasswordVisible = !IsPasswordVisible;
+            OnPropertyChanged(nameof(IsPasswordVisible));
         }
 
         public override void Dispose()

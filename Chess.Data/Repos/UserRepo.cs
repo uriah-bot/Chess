@@ -34,11 +34,11 @@ namespace Chess.Data
             return null;
         }
 
-        public async Task AddUserAsync(UserEntity newUser)
+        public async Task<int> AddUserAsync(UserEntity newUser)
         {
             string sql = "INSERT INTO Users (Username, PasswordHash, PasswordSalt, Elo, PeakElo, Wins, Draws, Losses, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            await DbConnectionProvider.ExecuteCommandAsync(sql,
+            return await DbConnectionProvider.ExecuteCommandGetIDAsync(sql,
                 new OleDbParameter("@username", newUser.Username),
                 new OleDbParameter("@passwordHash", newUser.PasswordHash),
                 new OleDbParameter("@passwordSalt", newUser.PasswordSalt),

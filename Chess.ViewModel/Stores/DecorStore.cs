@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess.ViewModel.Stores
+﻿namespace Chess.ViewModel.Stores
 {
     public interface IDecorStore
     {
@@ -12,12 +6,6 @@ namespace Chess.ViewModel.Stores
         double CurrentVolume { get; set; }
         event Action CurrentSongChanged;
         event Action VolumeChanged;
-
-        List<Uri> CurrentPieces { get; set; }
-        event Action CurrentPiecesChanged;
-
-        Uri CurrentBoard { get; set; }
-        event Action CurrentBoardChanged;
     }
 
     public class DecorStore : IDecorStore
@@ -27,8 +15,6 @@ namespace Chess.ViewModel.Stores
         public DecorStore(IUserStore userStore)
         {
             _userStore = userStore;
-
-            //_currentVolume = _userStore.CurrentUser.Settings.Volume;
         }
 
         private Uri _currentSong;
@@ -42,30 +28,6 @@ namespace Chess.ViewModel.Stores
             }
         }
         public event Action CurrentSongChanged;
-
-        private List<Uri> _currentPieces;
-        public List<Uri> CurrentPieces
-        {
-            get => _currentPieces;
-            set
-            {
-                _currentPieces = value;
-                CurrentPiecesChanged?.Invoke();
-            }
-        }
-        public event Action CurrentPiecesChanged;
-
-        private Uri _currentBoard;
-        public Uri CurrentBoard
-        {
-            get => _currentBoard;
-            set
-            {
-                _currentBoard = value;
-                CurrentBoardChanged?.Invoke();
-            }
-        }
-
         private double _currentVolume;
         public double CurrentVolume
         {
@@ -76,8 +38,6 @@ namespace Chess.ViewModel.Stores
                 VolumeChanged?.Invoke();
             }
         }
-
-        public event Action CurrentBoardChanged;
         public event Action VolumeChanged;
     }
 }

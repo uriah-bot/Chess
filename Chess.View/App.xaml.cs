@@ -3,7 +3,6 @@ using Chess.Service;
 using Chess.View.Menus;
 using Chess.View.Services;
 using Chess.ViewModel;
-using Chess.ViewModel.Stores;
 using Chess.ViewModel.ViewModelHelper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
@@ -45,6 +44,7 @@ namespace Chess.View
             var navService = _serviceProvider.GetRequiredService<INavigationService>();
 
             //windowService.SwitchWindow<AppBaseViewModel>();
+            //navService.NavigateTo<GameViewModel>();
             navService.NavigateTo<LoginViewModel>();
             windowService.SwitchWindow<MainViewModel>();
         }

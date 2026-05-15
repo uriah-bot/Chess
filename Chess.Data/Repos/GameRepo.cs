@@ -55,12 +55,5 @@ namespace Chess.Data
                 new OleDbParameter("@date", newGame.DatePlayed)
             );
         }
-
-        public async Task DeleteAllUserGamesAsync(UserEntity user)
-        {
-            string sql = "DELETE FROM Games WHERE UserID =?";
-
-            await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter("@userId", user.Id));
-        }
     }
 }

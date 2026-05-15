@@ -29,6 +29,12 @@
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="Background" Value="{StaticResource Brush.AccentPressed}" />
                         </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource Brush.AccentPressed}" />
+                            <Setter Property="Foreground" Value="#888888" />
+                            <Setter Property="Opacity" Value="0.6" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

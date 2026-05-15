@@ -7,11 +7,11 @@ namespace Chess.Data
 {
     public class RadioChannelRepo : IRadioChannelRepository
     {
-        public async Task<IEnumerable<RadioChannelEntity>> GetDefaultChannelsAsync(UserEntity user)
+        public async Task<IEnumerable<RadioChannelEntity>> GetDefaultChannelsAsync()
         {
             string sql = "SELECT * FROM RadioChannels WHERE UserID IS NULL";
 
-            DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter("@userId", user.Id));
+            DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql);
 
             List<RadioChannelEntity> channels = new List<RadioChannelEntity>();
             if (dt.Rows.Count != 0)

@@ -13,119 +13,131 @@
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Border
-            Grid.Column="0"
-            Background="{StaticResource Brush.Surface}"
-            BorderBrush="#2A2A2A"
-            BorderThickness="0,0,1,0">
-            <Grid Margin="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
-                    <StackPanel Margin="0,20,0,40" Orientation="Horizontal">
-                        <Border
-                            Width="32"
-                            Height="32"
-                            Background="{StaticResource Brush.Accent}"
-                            CornerRadius="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            MinHeight="30"
+            HorizontalAlignment="Center"
+            FontSize="20"
+            Foreground="Red"
+            Text="Since you're not logged in, many features may be disabled"
+            Visibility="{Binding IsLoggedIn, Converter={StaticResource InverseBoolToVis}}" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border
+                Grid.Column="0"
+                Background="{StaticResource Brush.Surface}"
+                BorderBrush="#2A2A2A"
+                BorderThickness="0,0,1,0">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <StackPanel Margin="0,20,0,40" Orientation="Horizontal">
+                            <Border
+                                Width="32"
+                                Height="32"
+                                Background="{StaticResource Brush.Accent}"
+                                CornerRadius="8">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="20"
+                                    Foreground="White"
+                                    Text="♟" />
+                            </Border>
                             <TextBlock
-                                HorizontalAlignment="Center"
+                                Margin="10,0,0,0"
                                 VerticalAlignment="Center"
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Foreground="{StaticResource Brush.TextPrimary}"
+                                Text="CHESS MASTER" />
+                        </StackPanel>
+                        <RadioButton
+                            Command="{Binding NavigateRadioButtonCommand}"
+                            CommandParameter="Home"
+                            Content="Home"
+                            IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:HomeViewModel}, Mode=OneWay}"
+                            Style="{StaticResource NavButtonStyle}"
+                            Tag="&#xE7FC;" />
+                        <RadioButton
+                            Command="{Binding NavigateRadioButtonCommand}"
+                            CommandParameter="Stats"
+                            Content="Statistics"
+                            IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:StatsViewModel}, Mode=OneWay}"
+                            Style="{StaticResource NavButtonStyle}"
+                            Tag="&#xE9D2;" />
+                        <RadioButton
+                            Command="{Binding NavigateRadioButtonCommand}"
+                            CommandParameter="Settings"
+                            Content="Settings"
+                            IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:SettingsViewModel}, Mode=OneWay}"
+                            Style="{StaticResource NavButtonStyle}"
+                            Tag="&#xE713;" />
+                        <RadioButton
+                            Command="{Binding NavigateRadioButtonCommand}"
+                            CommandParameter="AdvancedSettings"
+                            Content="Advanced Settings"
+                            Style="{StaticResource NavButtonStyle}"
+                            Tag="&#xE7BA;"
+                            Visibility="{Binding Role, Converter={StaticResource RoleToVis}, ConverterParameter=Admin|Moderator}" />
+                        <RadioButton
+                            Command="{Binding NavigateRadioButtonCommand}"
+                            CommandParameter="Help"
+                            Content="Help"
+                            Style="{StaticResource NavButtonStyle}"
+                            Tag="&#xE783;" />
+                    </StackPanel>
+                    <Border
+                        Grid.Row="1"
+                        Padding="10"
+                        Background="{StaticResource Brush.SurfaceElevated}"
+                        CornerRadius="8">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse
+                                Width="35"
+                                Height="35"
+                                Fill="{StaticResource Brush.Accent}" />
+                            <TextBlock
+                                Margin="-24,6,0,0"
+                                FontFamily="Segoe Emoji"
                                 FontSize="20"
                                 Foreground="White"
-                                Text="♟" />
-                        </Border>
-                        <TextBlock
-                            Margin="10,0,0,0"
-                            VerticalAlignment="Center"
-                            FontSize="22"
-                            FontWeight="Bold"
-                            Foreground="{StaticResource Brush.TextPrimary}"
-                            Text="CHESS MASTER" />
-                    </StackPanel>
-                    <RadioButton
-                        Command="{Binding NavigateRadioButtonCommand}"
-                        CommandParameter="Home"
-                        Content="Home"
-                        IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:HomeViewModel}, Mode=OneWay}"
-                        Style="{StaticResource NavButtonStyle}"
-                        Tag="&#xE7FC;" />
-                    <RadioButton
-                        Command="{Binding NavigateRadioButtonCommand}"
-                        CommandParameter="Stats"
-                        Content="Statistics"
-                        IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:StatsViewModel}, Mode=OneWay}"
-                        Style="{StaticResource NavButtonStyle}"
-                        Tag="&#xE9D2;" />
-                    <RadioButton
-                        Command="{Binding NavigateRadioButtonCommand}"
-                        CommandParameter="Settings"
-                        Content="Settings"
-                        IsChecked="{Binding CurrentViewModel, Converter={StaticResource VMToBool}, ConverterParameter={x:Type vm:SettingsViewModel}, Mode=OneWay}"
-                        Style="{StaticResource NavButtonStyle}"
-                        Tag="&#xE713;" />
-                    <RadioButton
-                        Command="{Binding NavigateRadioButtonCommand}"
-                        CommandParameter="AdvancedSettings"
-                        Content="Advanced Settings"
-                        Style="{StaticResource NavButtonStyle}"
-                        Tag="&#xE7BA;"
-                        Visibility="{Binding Role, Converter={StaticResource RoleToVis}, ConverterParameter=Admin|Moderator}" />
-                    <RadioButton
-                        Command="{Binding NavigateRadioButtonCommand}"
-                        CommandParameter="Help"
-                        Content="Help"
-                        Style="{StaticResource NavButtonStyle}"
-                        Tag="&#xE783;" />
-                </StackPanel>
-                <Border
-                    Grid.Row="1"
-                    Padding="10"
-                    Background="{StaticResource Brush.SurfaceElevated}"
-                    CornerRadius="8">
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse
-                            Width="35"
-                            Height="35"
-                            Fill="{StaticResource Brush.Accent}" />
-                        <TextBlock
-                            Margin="-24,6,0,0"
-                            FontFamily="Segoe Emoji"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="𝕏" />
-                        <StackPanel Margin="10,0,0,0">
-                            <TextBlock
-                                FontWeight="SemiBold"
-                                Foreground="{StaticResource Brush.TextPrimary}"
-                                Text="{Binding Username}" />
-                            <TextBlock
-                                FontSize="12"
-                                Foreground="{StaticResource Brush.TextSecondary}"
-                                Text="{Binding EloText}" />
+                                Text="𝕏" />
+                            <StackPanel Margin="10,0,0,0">
+                                <TextBlock
+                                    FontWeight="SemiBold"
+                                    Foreground="{StaticResource Brush.TextPrimary}"
+                                    Text="{Binding Username}" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{StaticResource Brush.TextSecondary}"
+                                    Text="{Binding EloText}" />
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </Border>
-            </Grid>
-        </Border>
-        <ContentControl
-            x:Name="MainContentArea"
-            Grid.Column="1"
-            Margin="30"
-            Content="{Binding CurrentViewModel}" />
-        <MediaElement
-            x:Name="Radio"
-            LoadedBehavior="Play"
-            MediaEnded="Radio_MediaEnded"
-            Source="{Binding MusicUri}"
-            UnloadedBehavior="Stop"
-            Visibility="Collapsed"
-            Volume="{Binding Volume}" />
+                    </Border>
+                </Grid>
+            </Border>
+            <ContentControl
+                Grid.Column="1"
+                Margin="30"
+                Content="{Binding CurrentViewModel}" />
+            <MediaElement
+                x:Name="Radio"
+                LoadedBehavior="Play"
+                MediaEnded="Radio_MediaEnded"
+                Source="{Binding MusicUri}"
+                UnloadedBehavior="Stop"
+                Visibility="Collapsed"
+                Volume="{Binding Volume}" />
+        </Grid>
     </Grid>
 </Window>

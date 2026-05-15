@@ -18,8 +18,6 @@ namespace Chess.Service
 
             // Customizable decors
             services.AddSingleton<ICustomizableDecorManager<RadioChannelEntity>, RadioPlayer>();
-            services.AddSingleton<ICustomizableDecorManager<BoardThemeEntity>, BoardThemeManager>();
-            services.AddSingleton<ICustomizableDecorManager<PieceThemeEntity>, PieceThemeManager>();
 
             return services;
         }

@@ -1,4 +1,5 @@
-﻿using Chess.Model;
+﻿
+using Chess.Model;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,7 +26,6 @@ namespace Chess.View
         List<ActiveModifier> chosenRules = new List<ActiveModifier>()
         {
             new ActiveModifier{Modifier = ModifierType.TimeLimit, SelectedParameter="1"},
-            new ActiveModifier{Modifier = ModifierType.Poof, SelectedParameter="1"}
         };
 
         private Move lastMove = null; // only for UI
@@ -39,7 +39,6 @@ namespace Chess.View
             Game.StartMatch(chosenRules);
 
             DrawBoard(Game.Board);
-            SetCursor(Game.CurrentPlayer);
         }
 
         private void InitializeBoard()
@@ -156,7 +155,6 @@ namespace Chess.View
         {
             Game.MakeMove(move);
             DrawBoard(Game.Board);
-            SetCursor(Game.CurrentPlayer);
 
             if (Game.IsGameOver())
             {
@@ -247,21 +245,10 @@ namespace Chess.View
             highlights[lastMove.ToPosition.Row, lastMove.ToPosition.Column].Fill = Brushes.Transparent;
         }
 
-        private void SetCursor(PlayerColor player)
-        {
-            if (player == PlayerColor.White)
-            {
-                Cursor = ChessCursors.WhiteCursor;
-            }
-            else
-            {
-                Cursor = ChessCursors.BlackCursor;
-            }
-        }
-
         private bool IsMenuOpen()
         {
-            return MenuContainer.Content != null;
+            //return MenuContainer.Content != null;
+            return false;
         }
 
         private void ShowGameOver()
@@ -306,16 +293,15 @@ namespace Chess.View
             Game = new Game(PlayerColor.White, Board.Initial());
             Game.StartMatch(chosenRules);
             DrawBoard(Game.Board);
-            SetCursor(Game.CurrentPlayer);
         }
 
-        private void PauseMenu_Click(object sender, RoutedEventArgs e)
-        {
-            if (!IsMenuOpen())
-            {
-                ShowPauseMenu();
-            }
-        }
+        //private void PauseMenu_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (!IsMenuOpen())
+        //    {
+        //        ShowPauseMenu();
+        //    }
+        //}
 
         private void ShowPauseMenu()
         {

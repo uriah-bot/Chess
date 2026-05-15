@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:Chess.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="#000000"
-    Cursor="{Binding CurrentPlayer}"
+    Cursor="{Binding CurrentPlayer, Converter={StaticResource PlayerColorToCursor}}"
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -39,31 +39,21 @@
                 RenderOptions.BitmapScalingMode="HighQuality"
                 Rows="8" />
             <Canvas x:Name="DrawingCanvas" IsHitTestVisible="False" />
-            <UserControl Name="MenuContainer" />
         </Grid>
 
         <Border Grid.Row="0" Visibility="{Binding IsClassicalGame, Converter={StaticResource BoolToVis}}">
             <StackPanel>
                 <DockPanel Height="54" LastChildFill="True">
                     <Button
-                        Width="200"
-                        Height="35"
+                        MinWidth="200"
+                        MinHeight="35"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
-                        Background="#8A2BE2"
-                        Click="PauseMenu_Click"
+                        Command="{Binding PauseGameCommand}"
                         Content="&#xE769;"
-                        Cursor="Hand"
                         FontFamily="Segoe MDL2 Assets"
                         FontSize="16"
-                        FontWeight="Bold"
-                        Foreground="White">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="6" />
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                        Style="{StaticResource DefaultButton}" />
 
                     <TextBlock
                         Margin="30,3,10,0"
@@ -78,27 +68,13 @@
                         Foreground="White"
                         Text="{Binding AIName}" />
                 </DockPanel>
-                <TextBlock
-                    Margin="473,-30,0,0"
-                    VerticalAlignment="Top"
-                    FontSize="16"
-                    FontStyle="Italic"
-                    Foreground="White"
-                    Text="As Color" />
-                <TextBlock
-                    Margin="248,-30,0,0"
-                    VerticalAlignment="Top"
-                    FontSize="16"
-                    FontStyle="Italic"
-                    Foreground="White"
-                    Text="As Color" />
             </StackPanel>
         </Border>
 
         <Border
             Grid.Row="1"
             Grid.Column="1"
-            Width="200"
+            MinWidth="200"
             Padding="20"
             Background="#181818"
             Visibility="{Binding IsClassicalGame, Converter={StaticResource InverseBoolToVis}}">
@@ -125,7 +101,6 @@
                             Foreground="#888"
                             Text="GUEST" />
                         <TextBlock
-                            x:Name="TopTimerText"
                             HorizontalAlignment="Center"
                             FontSize="34"
                             FontWeight="SemiBold"
@@ -136,6 +111,7 @@
 
                 <StackPanel
                     Grid.Row="1"
+                    MinHeight="180"
                     Margin="0,60,0,60"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
@@ -147,29 +123,33 @@
                         Foreground="#888"
                         Text="ACTIVE MODIFIERS" />
 
-                    <UniformGrid />
-                    <Button Style="{StaticResource SidebarModifierInfo}" />
-                    <Button Style="{StaticResource SidebarModifierInfo}" />
+                    <ItemsControl ItemsSource="{Binding ActiveModifiers}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Margin="0,0,0,5"
+                                    Padding="10,5"
+                                    Background="#333333"
+                                    CornerRadius="4">
+                                    <TextBlock
+                                        FontSize="12"
+                                        Foreground="White"
+                                        Text="{Binding}" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
 
                 <Button
                     Grid.Row="2"
-                    Height="35"
+                    MinHeight="35"
                     Margin="0,0,0,15"
-                    Background="#8A2BE2"
-                    Cursor="Hand"
-                    Foreground="White">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="6" />
-                        </Style>
-                    </Button.Resources>
-                    <TextBlock
-                        FontFamily="Segoe MDL2 Assets"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="&#xE769;" />
-                </Button>
+                    Command="{Binding PauseGameCommand}"
+                    Content="&#xE769;"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="16"
+                    Style="{StaticResource DefaultButton}" />
 
                 <Border
                     Grid.Row="3"
@@ -178,7 +158,6 @@
                     CornerRadius="8">
                     <StackPanel>
                         <TextBlock
-                            x:Name="BottomTimerText"
                             HorizontalAlignment="Center"
                             FontSize="34"
                             FontWeight="SemiBold"

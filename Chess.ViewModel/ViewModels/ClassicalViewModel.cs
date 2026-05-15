@@ -11,14 +11,17 @@ namespace Chess.ViewModel
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
         private readonly IGameManagerService _gameManagerService;
+        private readonly IUserStore _userStore;
 
-        public ClassicalViewModel(INavigationService navigationService, IWindowService windowService, IGameManagerService gameManagerService)
+        public ClassicalViewModel(INavigationService navigationService, IWindowService windowService, IGameManagerService gameManagerService, IUserStore userStore)
         {
             _navigationService = navigationService;
             _windowService = windowService;
             _gameManagerService = gameManagerService;
+            _userStore = userStore;
+
             NavigateToSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigationService);
-            StartClassicalGameCommand = new RelayCommand(o => ExecuteStartClassicalGame());
+            StartClassicalGameCommand = new RelayCommand(o => ExecuteStartClassicalGame(), o => _userStore.IsLoggedIn);
             SelectColorCommand = new RelayCommand(o => SelectColor(o));
         }
 

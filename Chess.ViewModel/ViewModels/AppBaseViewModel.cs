@@ -28,7 +28,8 @@ namespace Chess.ViewModel
             NavigateRadioButtonCommand = new RelayCommand(o => NavigateToUserControl(o));
             _navigationStore.CurrentViewModel = hvm;
 
-            _decorStore.CurrentSong = new Uri(Path.Combine(AppConstants.BASE_PATH, "DefaultMusic.mp3"), UriKind.RelativeOrAbsolute); //TODO: change
+            _decorStore.CurrentVolume = _userStore.CurrentUser?.Settings?.Volume ?? 0.5;
+            _decorStore.CurrentSong = new Uri(Path.Combine(AppConstants.BASE_PATH, _userStore.CurrentUser?.Settings?.CurrentSong ?? "DefaultMusic.mp3"), UriKind.RelativeOrAbsolute);
         }
 
         private void OnVolumeChanged()
@@ -74,6 +75,7 @@ namespace Chess.ViewModel
         public UserRole Role => _userStore.CurrentUser?.Role ?? UserRole.User;
 
         public string EloText => $"Elo: {_userStore.CurrentUser?.Elo ?? -1}";
+        public bool IsLoggedIn => _userStore.IsLoggedIn;
 
         public Uri MusicUri => _decorStore.CurrentSong;
 
@@ -106,7 +108,7 @@ namespace Chess.ViewModel
         {
             OnPropertyChanged(nameof(Username));
             OnPropertyChanged(nameof(EloText));
-            OnPropertyChanged(nameof(Role));
+            OnPropertyChanged(nameof(IsLoggedIn));
         }
     }
 }

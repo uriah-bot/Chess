@@ -55,5 +55,23 @@ namespace Chess.Data
                 return await cmd.ExecuteNonQueryAsync();
             }
         }
+
+        public static async Task<int> ExecuteCommandGetIDAsync(string sql, params OleDbParameter[] parameters)
+        {
+            using (var con = GetConnection())
+            using (var cmd = new OleDbCommand(sql, con))
+            {
+                if (parameters != null && parameters.Length > 0)
+                    cmd.Parameters.AddRange(parameters);
+
+                await con.OpenAsync();
+
+                await cmd.ExecuteNonQueryAsync();
+
+                cmd.CommandText = "SELECT @@IDENTITY";
+
+                return (int) await cmd.ExecuteScalarAsync();
+            }
+        }
     }
 }

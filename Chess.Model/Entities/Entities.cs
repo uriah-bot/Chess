@@ -55,6 +55,7 @@
         public int UserId { get; set; }
         public bool SoundEffectOnMove { get; set; }
         public double Volume { get; set; } = AppConstants.DEFAULT_VOLUME;
+        public string CurrentSong { get; set; } = "DefaultMusic.mp3"; // the path
         public bool StopRadioOnMatches { get; set; }
         public bool DisplayCoordinates { get; set; }
     }

@@ -11,10 +11,11 @@ namespace Chess.ViewModel.ViewModelHelper
         Move LastMove { get; set; }
         PlayerColor UserColor { get; set; }
         int? BotRating { get; set; }
+        List<ActiveModifier> Modifiers { get; set; }
         DateTime Time { get; set; }
         bool IsBoardReactive { get; set; }
-        Game ConfigurateGame(List<ActiveModifier> modifiers, int? botRating = null);
-        Task EndGameAsync(Game game);
+        void ConfigurateGame(List<ActiveModifier> modifiers, int? botRating = null);
+        Task EndGameAsync();
         void HumanMoveAsync(Move move);
         Task StockfishMoveAsync();
     }
@@ -43,30 +44,28 @@ namespace Chess.ViewModel.ViewModelHelper
             _stockfishHelper = stockfishHelper;
         }
 
-        public Game ConfigurateGame(List<ActiveModifier> modifiers = null, int? botRating = null)
+        public void ConfigurateGame(List<ActiveModifier> modifiers, int? botRating = null)
         {
             Game game = new Game(PlayerColor.White, Board.Initial());
             Game = game;
-            Mode = modifiers != null ? GameMode.Modified : GameMode.Classical;
+            Mode = modifiers.Any() ? GameMode.Modified : GameMode.Classical;
             Time = DateTime.Now;
-            Modifiers = modifiers ?? new List<ActiveModifier>();
+            Modifiers = modifiers.Any() ? modifiers : new List<ActiveModifier>();
             BotRating = botRating;
             IsBoardReactive = Mode != GameMode.Classical || UserColor == PlayerColor.White;
 
             _stockfishCommunicationService.StartEngine(AppConstants.STOCKFISH_PATH_TO_EXE);
             Game.StartMatch(Modifiers);
-
-            return game;
         }
 
-        public async Task EndGameAsync(Game game)
+        public async Task EndGameAsync()
         {
             GameEntity currentGame = new GameEntity
             {
                 Username = _userStore.CurrentUser.Username,
                 UserPlayedAs = Mode == GameMode.Classical ? UserColor : null,
                 BotRating = Mode == GameMode.Classical ? BotRating : null,
-                Result = game.Result.winner switch
+                Result = Game.Result.winner switch
                 {
                     var winner when winner == UserColor => "Win",
                     PlayerColor.None => "Draw",

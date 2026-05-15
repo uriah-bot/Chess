@@ -12,19 +12,21 @@ namespace Chess.ViewModel
         private readonly IWindowService _windowService;
         private readonly IGameManagerService _gameManagerService;
         private readonly IModifierStore _modifierStore;
+        private readonly IUserStore _userStore;
 
         private readonly Dictionary<ModifierType, ActiveModifier> _modifierStates = new Dictionary<ModifierType, ActiveModifier>();
 
-        public AdventureViewModel(INavigationService navigationService, IWindowService windowService, IGameManagerService gameManagerService, IModifierStore modifierStore)
+        public AdventureViewModel(INavigationService navigationService, IWindowService windowService, IGameManagerService gameManagerService, IModifierStore modifierStore, IUserStore userStore)
         {
             _navigationService = navigationService;
             _windowService = windowService;
             _gameManagerService = gameManagerService;
             _modifierStore = modifierStore;
+            _userStore = userStore;
 
             _selectedModifiers = new ObservableCollection<ActiveModifier>();
             ShowModifierInfoCommand = new RelayCommand(o => ShowModifierInfo(o));
-            StartModifiedGameCommand = new RelayCommand(o => StartModifiedGame(), o => !HasErrors && SelectedModifiers.Count > 0);
+            StartModifiedGameCommand = new RelayCommand(o => StartModifiedGame(), o => !HasErrors && SelectedModifiers.Count > 0 && _userStore.IsLoggedIn);
             ToggleModifierCommand = new RelayCommand(o => ToggleModifier(o));
 
             ValidateModifiers();
@@ -109,7 +111,7 @@ namespace Chess.ViewModel
 
         private void StartModifiedGame()
         {
-            var game = _gameManagerService.ConfigurateGame(SelectedModifiers.ToList());
+            _gameManagerService.ConfigurateGame(SelectedModifiers.ToList());
 
             _navigationService.NavigateTo<GameViewModel>();
             _windowService.SwitchWindow<MainViewModel>();
@@ -121,7 +123,7 @@ namespace Chess.ViewModel
 
             if(Enum.TryParse(modStr, out ModifierType mod))
             {
-                _modifierStore.ActiveModifier = GetModifierState(mod);
+                _modifierStore.ActivelyInspectedModifier = GetModifierState(mod);
 
                 _windowService.ShowDialog<ModifierInfoOverlayViewModel>();
             }

@@ -11,6 +11,7 @@ namespace Chess.ViewModel.Stores
 {
     public interface IGameHistoryStore
     {
+        // TODO: Change to service
         ObservableCollection<GameEntity> UserGames { get; }
         Task LoadGamesAsync();
         Task SaveGameAsync(GameEntity newGame);

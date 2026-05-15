@@ -9,4 +9,5 @@
     <conv:AddOneConverter x:Key="AddOne" />
     <conv:StringToBrushConverter x:Key="StringToBrush" />
     <conv:StringToFontFamilyConverter x:Key="StringToFontFamily" />
+    <conv:PlayerColorToCursorConverter x:Key="PlayerColorToCursor" />
 </ResourceDictionary>

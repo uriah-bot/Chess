@@ -17,6 +17,14 @@ namespace Chess.View
             if (d is PasswordBox passwordBox)
             {
                 passwordBox.PasswordChanged -= PasswordBox_PasswordChanged;
+
+                // specifically for when shown password is updated. bad practice tho
+                string newPassword = (string)e.NewValue;
+                if (passwordBox.Password != newPassword)
+                {
+                    passwordBox.Password = newPassword ?? string.Empty;
+                }
+
                 passwordBox.PasswordChanged += PasswordBox_PasswordChanged;
             }
         }

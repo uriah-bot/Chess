@@ -59,12 +59,19 @@
                     Margin="0,20,0,5"
                     Style="{StaticResource InputLabelStyle}"
                     Text="PASSWORD" />
+                <TextBox
+                    Margin="0,0,0,5"
+                    FontSize="18"
+                    Style="{StaticResource InfoInputTextBoxStyle}"
+                    Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolToVis}}" />
                 <PasswordBox
                     x:Name="PasswordBox"
                     Margin="0,0,0,5"
                     local:PasswordService.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                     FontSize="18"
-                    Style="{StaticResource PasswordBoxStyle}" />
+                    Style="{StaticResource PasswordBoxStyle}"
+                    Visibility="{Binding IsPasswordVisible, Converter={StaticResource InverseBoolToVis}}" />
                 <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=PasswordBox}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -86,15 +93,10 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <CheckBox
-                    x:Name="PasswordVisibilityCheckBox"
                     Margin="0,0,0,5"
+                    Command="{Binding TogglePasswordVisibilityCommand}"
                     Content="Show Password"
                     Foreground="White" />
-                <TextBlock
-                    Margin="0,0,0,20"
-                    HorizontalAlignment="Right"
-                    Style="{StaticResource LinkTextStyle}"
-                    Text="Forgot Password?" />
                 <StackPanel>
                     <Button
                         x:Name="LoginButton"
@@ -131,7 +133,6 @@
                         Padding="0"
                         BorderThickness="0"
                         Command="{Binding NavigateToRegisterCommand}"
-                        Content="Sign Up"
                         Cursor="Hand">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
@@ -142,6 +143,20 @@
                         </Button.Template>
                     </Button>
                 </StackPanel>
+                <Button
+                    Padding="0"
+                    HorizontalAlignment="Center"
+                    BorderThickness="0"
+                    Command="{Binding ContinueWithoutLoggingInCommand}"
+                    Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="Transparent">
+                                <TextBlock Style="{StaticResource LinkTextStyle}" Text="Continue Without Logging In" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
             </StackPanel>
         </Border>
     </Grid>

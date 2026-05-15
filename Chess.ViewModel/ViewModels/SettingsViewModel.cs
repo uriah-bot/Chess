@@ -16,30 +16,28 @@ namespace Chess.ViewModel
 		private readonly IWindowService _windowService;
 		private readonly IUserRepository _userRepo;
 		private readonly IDecorStore _decorStore;
+		private readonly ISettingsRepository _settingsRepo;
 		private readonly IFileService _fileService;
-		private readonly ICustomizableDecorManager<BoardThemeEntity> _boardThemeManager;
-		private readonly ICustomizableDecorManager<PieceThemeEntity> _pieceThemeManager;
 		private readonly ICustomizableDecorManager<RadioChannelEntity> _radioChannel;
 
-        public SettingsViewModel(IUserStore userStore, INavigationService navigationService, IWindowService windowService, IUserRepository userRepository, IDecorStore decorStore, IFileService fileService,
-			ICustomizableDecorManager<BoardThemeEntity> boardThemeManager, ICustomizableDecorManager<PieceThemeEntity> pieceThemeManager, ICustomizableDecorManager<RadioChannelEntity> radioChannel)
+        public SettingsViewModel(IUserStore userStore, INavigationService navigationService, IWindowService windowService,IUserRepository userRepository,
+            IDecorStore decorStore, IFileService fileService, ISettingsRepository settingsRepo, ICustomizableDecorManager<RadioChannelEntity> radioChannel)
         {
             _userStore = userStore;
 			_navigationService = navigationService;
 			_windowService = windowService;
 			_userRepo = userRepository;
-			_boardThemeManager = boardThemeManager;
-			_pieceThemeManager = pieceThemeManager;
+            _settingsRepo = settingsRepo;
 			_radioChannel = radioChannel;
 			_decorStore = decorStore;
 			_fileService = fileService;
 
             _userStore.CurrentUserChanged += OnUserChanged;
 
-			DeleteUserCommand = new RelayCommand(o => DeleteUser(), o => CanDeleteUser());
-			PlaySelectedMusicCommand = new RelayCommand(o => PlayMusic(o));
-            ShowPopupCommand = new RelayCommand(o => ShowPopup(o));
-			AddMusicCommand = new RelayCommand(o => AddMusic());
+			DeleteUserCommand = new RelayCommand(o => DeleteUserAsync(), o => CanDeleteUser());
+			PlaySelectedMusicCommand = new RelayCommand(o => PlayMusicAsync(o));
+            ShowPopupCommand = new RelayCommand(o => ShowPopup(o), o => _userStore.IsLoggedIn);
+			AddMusicCommand = new RelayCommand(o => AddMusic(), o => _userStore.IsLoggedIn);
             _ = LoadChannelsAsync();
         }
 
@@ -152,8 +150,6 @@ namespace Chess.ViewModel
 
         private void ShowPopup(object o)
         {
-            if (_userStore.CurrentUser == null) return;
-
             var property = o as string;
             _userStore.AppendingPropertyChange = property;
             _windowService.ShowDialog<AccountModificationMenuViewModel>();
@@ -161,13 +157,17 @@ namespace Chess.ViewModel
 
         private async Task LoadChannelsAsync()
         {
-			await _radioChannel.GetDefaultItemsAsync(_userStore.CurrentUser);
-			_radioChannel.dbEntities.AddRange(_fileService.GetUserRadioFiles(_userStore.CurrentUser));
+            if (_userStore.IsLoggedIn)
+            {
+			    _radioChannel.dbEntities.AddRange(_fileService.GetUserRadioFiles(_userStore.CurrentUser));
+            }
+            
+            await _radioChannel.GetDefaultItemsAsync();
 
             MusicChannels = new ObservableCollection<RadioChannelEntity>(_radioChannel.dbEntities);
         }
 
-        private void PlayMusic(object content)
+        private async void PlayMusicAsync(object content)
         {
 			string musicName = content as string;
 			if (musicName != null)
@@ -176,6 +176,11 @@ namespace Chess.ViewModel
 				if (music != null)
 				{
                     _decorStore.CurrentSong = new Uri(Path.Combine(AppConstants.BASE_PATH, music.ChannelPath), UriKind.RelativeOrAbsolute);
+                    if (_userStore.IsLoggedIn)
+                    {
+                        _userStore.Update(u => u.Settings.CurrentSong = music.ChannelPath);
+                        await _settingsRepo.UpdateUserSettingsAsync(_userStore.CurrentUser);
+                    }
                 }
             }
 		}
@@ -198,7 +203,7 @@ namespace Chess.ViewModel
             return true;
         }
 
-        private async void DeleteUser()
+        private async void DeleteUserAsync()
         {
 			await _userRepo.DeleteUserAsync(_userStore.CurrentUser);
             _userStore.CurrentUser = null;

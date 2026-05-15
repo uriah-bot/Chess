@@ -13,9 +13,6 @@ namespace Chess.ViewModel
         private readonly IWindowService _windowService;
         private readonly INavigationService _navigationService;
 
-        public ICommand RegisterCommand { get; }
-        public ICommand NavigateToLoginCommand { get; }
-
         public RegisterViewModel(IAuthService authService, IUserStore userStore, IWindowService windowService, INavigationService navigationService)
         {
             _authService = authService;
@@ -24,26 +21,12 @@ namespace Chess.ViewModel
             _navigationService = navigationService;
             RegisterCommand = new RelayCommand(o => Register(), o => CanRegister());
             NavigateToLoginCommand = new NavigateCommand<LoginViewModel>(_navigationService);
+            TogglePasswordVisibilityCommand = new RelayCommand(o => TogglePasswordVisibility());
         }
 
-        private async void Register()
-        {
-            var success = await _authService.RegisterAsync(Username, Password);
-
-            if (success)
-            {
-                (var user, bool exists)  = await _authService.LoginAsync(Username, Password);
-
-                _userStore.CurrentUser = user;
-
-                _windowService.SwitchWindow<AppBaseViewModel>();
-                return;
-            }
-
-            AddError("A user of this name already exists.", nameof(RegisterCommand));
-        }
-
-        private bool CanRegister() => !HasErrors && !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
+        public ICommand RegisterCommand { get; }
+        public ICommand NavigateToLoginCommand { get; }
+        public ICommand TogglePasswordVisibilityCommand { get; }
 
         private string _username;
 		public string Username
@@ -110,6 +93,33 @@ namespace Chess.ViewModel
                 OnPropertyChanged(nameof(RegisterCommand));
             }
 		}
+
+        public bool IsPasswordVisible { get; set; }
+
+        private async void Register()
+        {
+            var success = await _authService.RegisterAsync(Username, Password);
+
+            if (success)
+            {
+                (var user, bool exists) = await _authService.LoginAsync(Username, Password);
+
+                _userStore.CurrentUser = user;
+
+                _windowService.SwitchWindow<AppBaseViewModel>();
+                return;
+            }
+
+            AddError("A user of this name already exists.", nameof(RegisterCommand));
+        }
+
+        private bool CanRegister() => !HasErrors && !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
+
+        private void TogglePasswordVisibility()
+        {
+            IsPasswordVisible = !IsPasswordVisible;
+            OnPropertyChanged(nameof(IsPasswordVisible));
+        }
 
         public override void Dispose()
         {

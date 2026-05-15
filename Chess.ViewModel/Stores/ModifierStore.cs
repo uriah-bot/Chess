@@ -4,11 +4,11 @@ namespace Chess.ViewModel.Stores
 {
     public interface IModifierStore
     {
-        ActiveModifier ActiveModifier { get; set; }
+        ActiveModifier ActivelyInspectedModifier { get; set; }
     }
 
     public class ModifierStore : IModifierStore
     {
-        public ActiveModifier ActiveModifier { get; set; }
+        public ActiveModifier ActivelyInspectedModifier { get; set; }
     }
 }

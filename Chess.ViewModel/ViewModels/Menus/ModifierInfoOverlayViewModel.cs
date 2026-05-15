@@ -17,8 +17,8 @@ namespace Chess.ViewModel
             _modifierRepo = modifierRepository;
             _modifierStore = modifierStore;
 
-            SelectedDynamicItem = _modifierStore.ActiveModifier.SelectedParameter;
-            Modifier = _modifierStore.ActiveModifier.Modifier;
+            SelectedDynamicItem = _modifierStore.ActivelyInspectedModifier.SelectedParameter;
+            Modifier = _modifierStore.ActivelyInspectedModifier.Modifier;
             CloseViewModelCommand = new RelayCommand(o => RequestClose?.Invoke());
         }
 
@@ -26,11 +26,11 @@ namespace Chess.ViewModel
 		{
 			get
 			{
-				return _modifierStore.ActiveModifier.Modifier;
+				return _modifierStore.ActivelyInspectedModifier.Modifier;
 			}
 			set
 			{
-				_modifierStore.ActiveModifier.Modifier = value;
+				_modifierStore.ActivelyInspectedModifier.Modifier = value;
                 _currentData = _modifierRepo.GetModifierData(Modifier);
                 OnPropertyChanged(string.Empty);
 			}
@@ -38,10 +38,10 @@ namespace Chess.ViewModel
 
         public string SelectedDynamicItem
         {
-            get => _modifierStore.ActiveModifier.SelectedParameter;
+            get => _modifierStore.ActivelyInspectedModifier.SelectedParameter;
             set
             {
-                _modifierStore.ActiveModifier.SelectedParameter = value;
+                _modifierStore.ActivelyInspectedModifier.SelectedParameter = value;
             }
         }
 
