@@ -1,11 +1,6 @@
 ﻿using Chess.Model;
-using Chess.Service;
 using Chess.ViewModel.ViewModelHelper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
@@ -14,25 +9,44 @@ namespace Chess.ViewModel
     {
         public Action RequestClose { get; set; }
 
+        public string PromotionColor { get; set; }
+        public string PromotionColorInverse { get; set; }
+        PlayerColor PlayerColor => _gameManager.Game.CurrentPlayer;
         private readonly IGameManagerService _gameManager;
-        private Action<PieceType> OnPieceSelected;
         public ICommand PieceSelectedCommand { get; }
+        public ObservableCollection<Piece> AvailablePromotions { get; } = new ObservableCollection<Piece>();
+
         public PromotionMenuViewModel(IGameManagerService gameManager)
         {
             _gameManager = gameManager;
 
-            PieceSelectedCommand = new RelayCommand(o => PieceSelected());
+            PromotionColor = PlayerColor == PlayerColor.White ? "White" : "Black";
+            PromotionColorInverse = PlayerColor == PlayerColor.White ? "Black" : "White";
+            AddOptions(AvailablePromotions);
+
+            PieceSelectedCommand = new RelayCommand(o => PieceSelected(o));
         }
 
-        public void PieceSelected()
+        private void AddOptions(ObservableCollection<Piece> collection)
         {
-            var move = _gameManager.LastMove;
+            collection.Add(new Queen(PlayerColor));
+            collection.Add(new Rook(PlayerColor));
+            collection.Add(new Bishop(PlayerColor));
+            collection.Add(new Knight(PlayerColor));
+        }
 
-            OnPieceSelected += pieceType =>
+        public void PieceSelected(object pieceType)
+        {
+            var PieceType = (PieceType)pieceType;
+            var finalMove = _gameManager.PendingPromotionMoves.OfType<PawnPromotion>().FirstOrDefault(p => p.promotedTo == PieceType);
+
+            if (finalMove != null)
             {
-                RequestClose?.Invoke();
-                Move promotionMove = new PawnPromotion(move.FromPosition, move.ToPosition, pieceType);
-            };
+                _gameManager.Game.MakeMove(finalMove);
+                _gameManager.PendingPromotionMoves = null;
+            }
+
+            RequestClose?.Invoke();
         }
     }
 }

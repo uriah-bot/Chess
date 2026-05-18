@@ -1,4 +1,5 @@
 ﻿using Chess.Model;
+using Chess.ViewModel.ViewModelHelper;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chess.Service
@@ -7,14 +8,12 @@ namespace Chess.Service
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            // Auth
+            // services
             services.AddSingleton<IAuthService, AuthService>();
-
-            // Other services
             services.AddSingleton<IEmailService, EmailService>();
             services.AddSingleton<IGameService, GameService>();
             services.AddTransient<StockfishCommunicationService>();
-            services.AddSingleton<GameLogicHelper>();
+            services.AddSingleton<IGameManagerService, GameManagerService>();
 
             // Customizable decors
             services.AddSingleton<ICustomizableDecorManager<RadioChannelEntity>, RadioPlayer>();

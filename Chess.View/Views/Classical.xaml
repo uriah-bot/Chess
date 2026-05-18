@@ -125,6 +125,7 @@
                             Command="{Binding SelectColorCommand}"
                             CommandParameter="White"
                             GroupName="ColorGroup"
+                            IsChecked="True"
                             Style="{StaticResource SelectionCard}">
                             <StackPanel>
                                 <TextBlock
@@ -144,7 +145,6 @@
                             Command="{Binding SelectColorCommand}"
                             CommandParameter="Random"
                             GroupName="ColorGroup"
-                            IsChecked="True"
                             Style="{StaticResource SelectionCard}">
                             <StackPanel>
                                 <TextBlock

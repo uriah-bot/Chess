@@ -129,6 +129,8 @@
             <ContentControl
                 Grid.Column="1"
                 Margin="30"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
                 Content="{Binding CurrentViewModel}" />
             <MediaElement
                 x:Name="Radio"

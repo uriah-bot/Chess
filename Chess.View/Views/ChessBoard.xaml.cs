@@ -1,424 +1,435 @@
-﻿
-using Chess.Model;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 
 namespace Chess.View
 {
-    /// <summary>
-    /// Interaction logic for ChessBoard.xaml
-    /// </summary>
+    //    /// <summary>
+    //    /// Interaction logic for ChessBoard.xaml
+    //    /// </summary>
     public partial class ChessBoard : UserControl
     {
-        private readonly Image[,] PieceImages = new Image[8, 8];
-        private readonly Rectangle[,] highlights = new Rectangle[8, 8];
-        private readonly Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
+        //        private readonly Image[,] PieceImages = new Image[8, 8];
+        //        private readonly Rectangle[,] highlights = new Rectangle[8, 8];
+        //        private readonly Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
 
-        private Position rightClickStart = null;
-        private List<Position> markedSquares = new List<Position>();
-        private List<(Position From, Position To)> plannedArrows = new List<(Position, Position)>();
+        //        private Position rightClickStart = null;
+        //        private List<Position> markedSquares = new List<Position>();
+        //        private List<(Position From, Position To)> plannedArrows = new List<(Position, Position)>();
 
-        private Game Game;
-        private Position selectedPosition = null;
-        List<ActiveModifier> chosenRules = new List<ActiveModifier>()
-        {
-            new ActiveModifier{Modifier = ModifierType.TimeLimit, SelectedParameter="1"},
-        };
+        //        private Game Game;
+        //        private Position selectedPosition = null;
+        //        List<ActiveModifier> chosenRules = new List<ActiveModifier>()
+        //        {
+        //            new ActiveModifier{Modifier = ModifierType.TimeLimit, SelectedParameter="1"},
+        //        };
 
-        private Move lastMove = null; // only for UI
+        //        private Move lastMove = null; // only for UI
 
         public ChessBoard()
         {
             InitializeComponent();
-            InitializeBoard();
+            //            InitializeBoard();
 
-            Game = new Game(PlayerColor.White, Board.Initial());
-            Game.StartMatch(chosenRules);
+            //            Game = new Game(PlayerColor.White, Board.Initial());
+            //            Game.OnModifierDataUpdated += TimersUpdated;
+            //            Game.StartMatch(chosenRules);
 
-            DrawBoard(Game.Board);
+            //            DrawBoard(Game.Board);
         }
 
-        private void InitializeBoard()
-        {
-            for (int row = 0; row < 8; row++)
-            {
-                for (int col = 0; col < 8; col++)
-                {
-                    var image = new Image();
-                    PieceImages[row, col] = image;
-                    PieceGrid.Children.Add(image);
+        //        private void TimersUpdated(string key, string value)
+        //        {
+        //            Application.Current.Dispatcher.BeginInvoke(() =>
+        //            {
+        //                switch (key)
+        //                {
+        //                    case "WhiteTime":
+        //                        WhiteUserTimerText.Text = value;
+        //                        break;
+        //                    case "BlackTime":
+        //                        BlackUserTimerText.Text = value;
+        //                        break;
+        //                }
+        //            });
+        //        }
 
-                    Rectangle highlight = new Rectangle();
-                    highlights[row, col] = highlight;
-                    HighlightGrid.Children.Add(highlight);
-                }
-            }
-        }
+        //        private void InitializeBoard()
+        //        {
+        //            //for (int row = 0; row < 8; row++)
+        //            //{
+        //            //    for (int col = 0; col < 8; col++)
+        //            //    {
+        //            //        var image = new Image();
+        //            //        PieceImages[row, col] = image;
+        //            //        PieceGrid.Children.Add(image);
 
-        private void DrawBoard(Board board)
-        {
-            for (int row = 0; row < 8; row++)
-            {
-                for (int col = 0; col < 8; col++)
-                {
-                    var piece = board[row, col];
-                    PieceImages[row, col].Source = Images.GetImage(piece);
-                }
-            }
-        }
+        //            //        Rectangle highlight = new Rectangle();
+        //            //        highlights[row, col] = highlight;
+        //            //        HighlightGrid.Children.Add(highlight);
+        //            //    }
+        //            //}
+        //        }
 
-        private void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (IsMenuOpen())
-            {
-                return; // Ignore chess board clicks when a menu is open
-            }
+        //        private void DrawBoard(Board board)
+        //        {
+        //            for (int row = 0; row < 8; row++)
+        //            {
+        //                for (int col = 0; col < 8; col++)
+        //                {
+        //                    var piece = board[row, col];
+        //                    PieceImages[row, col].Source = Images.GetImage(piece);
+        //                }
+        //            }
+        //        }
 
-            if (markedSquares.Any() || plannedArrows.Any())
-            {
-                markedSquares.Clear();
-                plannedArrows.Clear();
-                DrawingCanvas.Children.Clear();
-            }
+        //        private void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        //        {
+        //            if (IsMenuOpen())
+        //            {
+        //                return; // Ignore chess board clicks when a menu is open
+        //            }
 
-            Point point = e.GetPosition(BoardGrid);
-            Position pos = PointToCoordinates(point);
+        //            if (markedSquares.Any() || plannedArrows.Any())
+        //            {
+        //                markedSquares.Clear();
+        //                plannedArrows.Clear();
+        //                DrawingCanvas.Children.Clear();
+        //            }
 
-            if (selectedPosition == null)
-            {
-                OnFromPositionSelected(pos);
-            }
-            else
-            {
-                HideHighlightSelectedPosition(selectedPosition);
-                OnToPositionSelected(pos);
-            }
-        }
+        //            Point point = e.GetPosition(BoardGrid);
+        //            Position pos = PointToCoordinates(point);
 
-        private void OnFromPositionSelected(Position position) // helper
-        {
-            IEnumerable<Move> moves = Game.LegalMovesForPiece(position);
-            if (moves.Any())
-            {
-                selectedPosition = position;
-                CacheMoves(moves);
-                ShowHighlights();
-            }
-            HighlightSelectedPosition(selectedPosition);
-        }
+        //            if (selectedPosition == null)
+        //            {
+        //                OnFromPositionSelected(pos);
+        //            }
+        //            else
+        //            {
+        //                HideHighlightSelectedPosition(selectedPosition);
+        //                OnToPositionSelected(pos);
+        //            }
+        //        }
 
-        private void OnToPositionSelected(Position toPosition) // helper
-        {
-            selectedPosition = null;
-            HideHighlights();
+        //        private void OnFromPositionSelected(Position position) // helper
+        //        {
+        //            IEnumerable<Move> moves = Game.LegalMovesForPiece(position);
+        //            if (moves.Any())
+        //            {
+        //                selectedPosition = position;
+        //                CacheMoves(moves);
+        //                ShowHighlights();
+        //            }
+        //            HighlightSelectedPosition(selectedPosition);
+        //        }
 
-            if (!moveCache.TryGetValue(toPosition, out Move move))
-            {
-                OnFromPositionSelected(toPosition);
-                return;
-            }
+        //        private void OnToPositionSelected(Position toPosition) // helper
+        //        {
+        //            selectedPosition = null;
+        //            HideHighlights();
 
-            HideLastMoveHighlight();
+        //            if (!moveCache.TryGetValue(toPosition, out Move move))
+        //            {
+        //                OnFromPositionSelected(toPosition);
+        //                return;
+        //            }
 
-            if (move.Type == MoveType.Promotion)
-            {
-                HandlePromotion(move.FromPosition, move.ToPosition);
-            }
-            else
-            {
-                HandleMove(move);
-            }
+        //            HideLastMoveHighlight();
 
-            ShowLastMoveHighlight(move);
-        }
+        //            if (move.Type == MoveType.Promotion)
+        //            {
+        //                HandlePromotion(move.FromPosition, move.ToPosition);
+        //            }
+        //            else
+        //            {
+        //                HandleMove(move);
+        //            }
 
-        private void HandlePromotion(Position fromPosition, Position toPosition) // helper
-        {
-            PieceImages[toPosition.Row, toPosition.Column].Source = Images.GetImage(Game.CurrentPlayer, PieceType.Pawn);
-            PieceImages[fromPosition.Row, fromPosition.Column].Source = null;
+        //            ShowLastMoveHighlight(move);
+        //        }
 
-            //PromotionMenu promotionMenu = new PromotionMenu(Game.CurrentPlayer);
-            //MenuContainer.Content = promotionMenu;
+        //        private void HandlePromotion(Position fromPosition, Position toPosition) // helper
+        //        {
+        //            PieceImages[toPosition.Row, toPosition.Column].Source = Images.GetImage(Game.CurrentPlayer, PieceType.Pawn);
+        //            PieceImages[fromPosition.Row, fromPosition.Column].Source = null;
 
-            //promotionMenu.PieceSelected += pieceType =>
-            //{
-            //    MenuContainer.Content = null;
-            //    Move promotionMove = new PawnPromotion(fromPosition, toPosition, pieceType);
-            //    HandleMove(promotionMove);
-            //};
-        }
+        //            //PromotionMenu promotionMenu = new PromotionMenu(Game.CurrentPlayer);
+        //            //MenuContainer.Content = promotionMenu;
 
-        private void HandleMove(Move move) // helper
-        {
-            Game.MakeMove(move);
-            DrawBoard(Game.Board);
+        //            //promotionMenu.PieceSelected += pieceType =>
+        //            //{
+        //            //    MenuContainer.Content = null;
+        //            //    Move promotionMove = new PawnPromotion(fromPosition, toPosition, pieceType);
+        //            //    HandleMove(promotionMove);
+        //            //};
+        //        }
 
-            if (Game.IsGameOver())
-            {
-                ShowGameOver();
-            }
-        }
+        //        private void HandleMove(Move move) // helper
+        //        {
+        //            Game.MakeMove(move);
+        //            DrawBoard(Game.Board);
 
-        private Position PointToCoordinates(Point point) // helper
-        {
-            double squareSize = BoardGrid.ActualWidth / 8;
-            int row = (int)(point.Y / squareSize);
-            int column = (int)(point.X / squareSize);
-            return new Position(row, column);
-        }
+        //            if (Game.IsGameOver())
+        //            {
+        //                ShowGameOver();
+        //            }
+        //        }
 
-        private void CacheMoves(IEnumerable<Move> moves) // helper
-        {
-            moveCache.Clear();
-            foreach (Move move in moves)
-            {
-                moveCache[move.ToPosition] = move;
-            }
-        }
+        //        private Position PointToCoordinates(Point point) // helper
+        //        {
+        //            double squareSize = BoardGrid.ActualWidth / 8;
+        //            int row = (int)(point.Y / squareSize);
+        //            int column = (int)(point.X / squareSize);
+        //            return new Position(row, column);
+        //        }
 
-        private void ShowHighlights()
-        {
-            Color color = Color.FromArgb(150, 125, 255, 125);
+        //        private void CacheMoves(IEnumerable<Move> moves) // helper
+        //        {
+        //            moveCache.Clear();
+        //            foreach (Move move in moves)
+        //            {
+        //                moveCache[move.ToPosition] = move;
+        //            }
+        //        }
 
-            foreach (Position toPosition in moveCache.Keys)
-            {
-                highlights[toPosition.Row, toPosition.Column].Fill = new SolidColorBrush(color);
-            }
-        }
+        //        private void ShowHighlights()
+        //        {
+        //            Color color = Color.FromArgb(150, 125, 255, 125);
 
-        private void HideHighlights()
-        {
-            foreach (Position toPosition in moveCache.Keys)
-            {
-                highlights[toPosition.Row, toPosition.Column].Fill = Brushes.Transparent;
-            }
-        }
+        //            foreach (Position toPosition in moveCache.Keys)
+        //            {
+        //                highlights[toPosition.Row, toPosition.Column].Fill = new SolidColorBrush(color);
+        //            }
+        //        }
 
-        private void HighlightSelectedPosition(Position pos)
-        {
-            if (pos == null)
-            {
-                return;
-            }
+        //        private void HideHighlights()
+        //        {
+        //            foreach (Position toPosition in moveCache.Keys)
+        //            {
+        //                highlights[toPosition.Row, toPosition.Column].Fill = Brushes.Transparent;
+        //            }
+        //        }
 
-            Color color = Color.FromArgb(150, 170, 94, 220);
+        //        private void HighlightSelectedPosition(Position pos)
+        //        {
+        //            if (pos == null)
+        //            {
+        //                return;
+        //            }
 
-            highlights[pos.Row, pos.Column].Fill = new SolidColorBrush(color);
-        }
+        //            Color color = Color.FromArgb(150, 170, 94, 220);
 
-        private void HideHighlightSelectedPosition(Position pos)
-        {
-            if (pos == null)
-            {
-                return;
-            }
+        //            highlights[pos.Row, pos.Column].Fill = new SolidColorBrush(color);
+        //        }
 
-            highlights[pos.Row, pos.Column].Fill = Brushes.Transparent;
-        }
+        //        private void HideHighlightSelectedPosition(Position pos)
+        //        {
+        //            if (pos == null)
+        //            {
+        //                return;
+        //            }
 
-        private void ShowLastMoveHighlight(Move move)
-        {
-            if (move == null)
-            {
-                return;
-            }
+        //            highlights[pos.Row, pos.Column].Fill = Brushes.Transparent;
+        //        }
 
-            Color color = Color.FromArgb(150, 84, 198, 247);
+        //        private void ShowLastMoveHighlight(Move move)
+        //        {
+        //            if (move == null)
+        //            {
+        //                return;
+        //            }
 
-            highlights[move.FromPosition.Row, move.FromPosition.Column].Fill = new SolidColorBrush(color);
-            highlights[move.ToPosition.Row, move.ToPosition.Column].Fill = new SolidColorBrush(color);
+        //            Color color = Color.FromArgb(150, 84, 198, 247);
 
-            lastMove = move; // bad practice to set it here but it's only for UI handling ig
-        }
+        //            highlights[move.FromPosition.Row, move.FromPosition.Column].Fill = new SolidColorBrush(color);
+        //            highlights[move.ToPosition.Row, move.ToPosition.Column].Fill = new SolidColorBrush(color);
 
-        private void HideLastMoveHighlight()
-        {
-            if (lastMove == null)
-            {
-                return;
-            }
+        //            lastMove = move; // bad practice to set it here but it's only for UI handling ig
+        //        }
 
-            highlights[lastMove.FromPosition.Row, lastMove.FromPosition.Column].Fill = Brushes.Transparent;
-            highlights[lastMove.ToPosition.Row, lastMove.ToPosition.Column].Fill = Brushes.Transparent;
-        }
+        //        private void HideLastMoveHighlight()
+        //        {
+        //            if (lastMove == null)
+        //            {
+        //                return;
+        //            }
 
-        private bool IsMenuOpen()
-        {
-            //return MenuContainer.Content != null;
-            return false;
-        }
+        //            highlights[lastMove.FromPosition.Row, lastMove.FromPosition.Column].Fill = Brushes.Transparent;
+        //            highlights[lastMove.ToPosition.Row, lastMove.ToPosition.Column].Fill = Brushes.Transparent;
+        //        }
 
-        private void ShowGameOver()
-        {
-            //GameOverMenu gameOverMenu = new GameOverMenu(Game);
-            //MenuContainer.Content = gameOverMenu;
+        //        private bool IsMenuOpen()
+        //        {
+        //            //return MenuContainer.Content != null;
+        //            return false;
+        //        }
 
-            //gameOverMenu.OptionSelected += option =>
-            //{
-            //    if (option == MenuOption.Exit)
-            //    {
-            //        var home = new AppBase();
-            //        home.Show();
-            //        Window.GetWindow(this).Close();
-            //    }
-            //    else if (option == MenuOption.Restart)
-            //    {
-            //        MenuContainer.Content = null;
-            //        RestartGame();
-            //    }
-        }
+        //        private void ShowGameOver()
+        //        {
+        //            //GameOverMenu gameOverMenu = new GameOverMenu(Game);
+        //            //MenuContainer.Content = gameOverMenu;
 
-        private void RestartGame()
-        {
-            // simple highlights
-            selectedPosition = null;
-            HideHighlights();
-            HideLastMoveHighlight();
+        //            //gameOverMenu.OptionSelected += option =>
+        //            //{
+        //            //    if (option == MenuOption.Exit)
+        //            //    {
+        //            //        var home = new AppBase();
+        //            //        home.Show();
+        //            //        Window.GetWindow(this).Close();
+        //            //    }
+        //            //    else if (option == MenuOption.Restart)
+        //            //    {
+        //            //        MenuContainer.Content = null;
+        //            //        RestartGame();
+        //            //    }
+        //        }
 
-            // planned highlights or arrows
-            markedSquares.Clear();
-            plannedArrows.Clear();
-            DrawingCanvas.Children.Clear();
+        //        private void RestartGame()
+        //        {
+        //            // simple highlights
+        //            selectedPosition = null;
+        //            HideHighlights();
+        //            HideLastMoveHighlight();
 
-            moveCache.Clear();
-            
-            // selected position after restart
-            foreach (var rec in highlights) rec.Fill = Brushes.Transparent;
+        //            // planned highlights or arrows
+        //            markedSquares.Clear();
+        //            plannedArrows.Clear();
+        //            DrawingCanvas.Children.Clear();
 
-            // needed to happen before new game is made (for updated highlights & logic)
+        //            moveCache.Clear();
 
-            Game = new Game(PlayerColor.White, Board.Initial());
-            Game.StartMatch(chosenRules);
-            DrawBoard(Game.Board);
-        }
+        //            // selected position after restart
+        //            foreach (var rec in highlights) rec.Fill = Brushes.Transparent;
 
-        //private void PauseMenu_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (!IsMenuOpen())
-        //    {
-        //        ShowPauseMenu();
-        //    }
-        //}
+        //            // needed to happen before new game is made (for updated highlights & logic)
 
-        private void ShowPauseMenu()
-        {
-            //GamePausedMenu PauseMenu = new GamePausedMenu();
-            //MenuContainer.Content = PauseMenu;
+        //            Game = new Game(PlayerColor.White, Board.Initial());
+        //            Game.StartMatch(chosenRules);
+        //            DrawBoard(Game.Board);
+        //        }
 
-            //PauseMenu.OptionSelected += option =>
-            //{
-            //    MenuContainer.Content = null;
+        //        //private void PauseMenu_Click(object sender, RoutedEventArgs e)
+        //        //{
+        //        //    if (!IsMenuOpen())
+        //        //    {
+        //        //        ShowPauseMenu();
+        //        //    }
+        //        //}
 
-            //    if (option == MenuOption.Resign)
-            //    {
-            //        Game.HasResigned();
-            //        ShowGameOver();
-            //    }
-            //};
-        }
+        //        private void ShowPauseMenu()
+        //        {
+        //            //GamePausedMenu PauseMenu = new GamePausedMenu();
+        //            //MenuContainer.Content = PauseMenu;
 
-        private void BoardGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (IsMenuOpen() || rightClickStart == null) return;
+        //            //PauseMenu.OptionSelected += option =>
+        //            //{
+        //            //    MenuContainer.Content = null;
 
-            Point point = e.GetPosition(BoardGrid);
-            Position rightClickEnd = PointToCoordinates(point);
+        //            //    if (option == MenuOption.Resign)
+        //            //    {
+        //            //        Game.HasResigned();
+        //            //        ShowGameOver();
+        //            //    }
+        //            //};
+        //        }
 
-            if (rightClickStart == rightClickEnd)
-            {
-                // CLICKED A SINGLE SQUARE now mark it
-                bool removed = markedSquares.RemoveAll(p => p == rightClickEnd) > 0;
-                if (!removed)
-                {
-                    markedSquares.Add(rightClickEnd);
-                }
-            }
-            else
-            {
-                // DRAGGED BETWEEN SQUARES = arrow
-                bool removed = plannedArrows.RemoveAll(a => a.From == rightClickStart && a.To == rightClickEnd) > 0;
-                if (!removed)
-                {
-                    plannedArrows.Add((rightClickStart, rightClickEnd));
-                }
-            }
+        //        private void BoardGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        //        {
+        //            if (IsMenuOpen() || rightClickStart == null) return;
 
-            rightClickStart = null;
-            DrawRightClickDrawings();
-        }
+        //            Point point = e.GetPosition(BoardGrid);
+        //            Position rightClickEnd = PointToCoordinates(point);
 
-        private void DrawRightClickDrawings()
-        {
-            // Wipe the canvas clean before redrawing
-            DrawingCanvas.Children.Clear();
-            double squareSize = BoardGrid.ActualWidth / 8;
+        //            if (rightClickStart == rightClickEnd)
+        //            {
+        //                // CLICKED A SINGLE SQUARE now mark it
+        //                bool removed = markedSquares.RemoveAll(p => p == rightClickEnd) > 0;
+        //                if (!removed)
+        //                {
+        //                    markedSquares.Add(rightClickEnd);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                // DRAGGED BETWEEN SQUARES = arrow
+        //                bool removed = plannedArrows.RemoveAll(a => a.From == rightClickStart && a.To == rightClickEnd) > 0;
+        //                if (!removed)
+        //                {
+        //                    plannedArrows.Add((rightClickStart, rightClickEnd));
+        //                }
+        //            }
 
-            // DRAW RED SQUARES
-            SolidColorBrush markedBrush = new SolidColorBrush(Color.FromArgb(130, 246, 31, 31));
-            foreach (Position pos in markedSquares)
-            {
-                Rectangle rect = new Rectangle
-                {
-                    Width = squareSize,
-                    Height = squareSize,
-                    Fill = markedBrush
-                };
-                // Position rectangle over the square
-                Canvas.SetLeft(rect, pos.Column * squareSize);
-                Canvas.SetTop(rect, pos.Row * squareSize);
-                DrawingCanvas.Children.Add(rect);
-            }
+        //            rightClickStart = null;
+        //            DrawRightClickDrawings();
+        //        }
 
-            // DRAW THE ARROWS
-            SolidColorBrush arrowBrush = new SolidColorBrush(Color.FromArgb(180, 255, 170, 0));
-            foreach (var arrow in plannedArrows)
-            {
-                double startX = (arrow.From.Column * squareSize) + (squareSize / 2);
-                double startY = (arrow.From.Row * squareSize) + (squareSize / 2);
-                double endX = (arrow.To.Column * squareSize) + (squareSize / 2);
-                double endY = (arrow.To.Row * squareSize) + (squareSize / 2);
+        //        private void DrawRightClickDrawings()
+        //        {
+        //            // Wipe the canvas clean before redrawing
+        //            DrawingCanvas.Children.Clear();
+        //            double squareSize = BoardGrid.ActualWidth / 8;
 
-                // Draw the Triangle Arrowhead
-                double angle = Math.Atan2(endY - startY, endX - startX);
-                double headLength = 25;
-                double headAngle = Math.PI / 6;
+        //            // DRAW RED SQUARES
+        //            SolidColorBrush markedBrush = new SolidColorBrush(Color.FromArgb(130, 246, 31, 31));
+        //            foreach (Position pos in markedSquares)
+        //            {
+        //                Rectangle rect = new Rectangle
+        //                {
+        //                    Width = squareSize,
+        //                    Height = squareSize,
+        //                    Fill = markedBrush
+        //                };
+        //                // Position rectangle over the square
+        //                Canvas.SetLeft(rect, pos.Column * squareSize);
+        //                Canvas.SetTop(rect, pos.Row * squareSize);
+        //                DrawingCanvas.Children.Add(rect);
+        //            }
 
-                // Draw the main line
-                Line line = new Line
-                {
-                    X1 = startX,
-                    Y1 = startY,
-                    X2 = endX - 0.8 * headLength * Math.Cos(angle),
-                    Y2 = endY - 0.8 * headLength * Math.Sin(angle),
-                    Stroke = arrowBrush,
-                    StrokeThickness = 12,
-                    StrokeEndLineCap = PenLineCap.Flat,
-                    StrokeStartLineCap = PenLineCap.Round
-                };
-                DrawingCanvas.Children.Add(line);
+        //            // DRAW THE ARROWS
+        //            SolidColorBrush arrowBrush = new SolidColorBrush(Color.FromArgb(180, 255, 170, 0));
+        //            foreach (var arrow in plannedArrows)
+        //            {
+        //                double startX = (arrow.From.Column * squareSize) + (squareSize / 2);
+        //                double startY = (arrow.From.Row * squareSize) + (squareSize / 2);
+        //                double endX = (arrow.To.Column * squareSize) + (squareSize / 2);
+        //                double endY = (arrow.To.Row * squareSize) + (squareSize / 2);
 
-                Point p1 = new Point(endX, endY);
-                Point p2 = new Point(endX - headLength * Math.Cos(angle - headAngle), endY - headLength * Math.Sin(angle - headAngle));
-                Point p3 = new Point(endX - headLength * Math.Cos(angle + headAngle), endY - headLength * Math.Sin(angle + headAngle));
+        //                // Draw the Triangle Arrowhead
+        //                double angle = Math.Atan2(endY - startY, endX - startX);
+        //                double headLength = 25;
+        //                double headAngle = Math.PI / 6;
 
-                Polygon arrowhead = new Polygon
-                {
-                    Points = new PointCollection { p1, p2, p3 },
-                    Fill = arrowBrush
-                };
-                DrawingCanvas.Children.Add(arrowhead);
-            }
-        }
+        //                // Draw the main line
+        //                Line line = new Line
+        //                {
+        //                    X1 = startX,
+        //                    Y1 = startY,
+        //                    X2 = endX - 0.8 * headLength * Math.Cos(angle),
+        //                    Y2 = endY - 0.8 * headLength * Math.Sin(angle),
+        //                    Stroke = arrowBrush,
+        //                    StrokeThickness = 12,
+        //                    StrokeEndLineCap = PenLineCap.Flat,
+        //                    StrokeStartLineCap = PenLineCap.Round
+        //                };
+        //                DrawingCanvas.Children.Add(line);
 
-        private void BoardGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (IsMenuOpen()) return;
+        //                Point p1 = new Point(endX, endY);
+        //                Point p2 = new Point(endX - headLength * Math.Cos(angle - headAngle), endY - headLength * Math.Sin(angle - headAngle));
+        //                Point p3 = new Point(endX - headLength * Math.Cos(angle + headAngle), endY - headLength * Math.Sin(angle + headAngle));
 
-            Point point = e.GetPosition(BoardGrid);
-            rightClickStart = PointToCoordinates(point);
-        }
+        //                Polygon arrowhead = new Polygon
+        //                {
+        //                    Points = new PointCollection { p1, p2, p3 },
+        //                    Fill = arrowBrush
+        //                };
+        //                DrawingCanvas.Children.Add(arrowhead);
+        //            }
+        //        }
+
+        //        private void BoardGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        //        {
+        //            if (IsMenuOpen()) return;
+
+        //            Point point = e.GetPosition(BoardGrid);
+        //            rightClickStart = PointToCoordinates(point);
+        //        }
     }
 }

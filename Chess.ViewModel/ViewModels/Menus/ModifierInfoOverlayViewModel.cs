@@ -1,4 +1,5 @@
-﻿using Chess.Model;
+﻿using Chess.Data;
+using Chess.Model;
 using Chess.ViewModel.Stores;
 using System.Windows.Input;
 
@@ -8,21 +9,23 @@ namespace Chess.ViewModel
     {
         public Action RequestClose { get; set; }
 
-        private readonly IModifierRepository _modifierRepo;
+        private readonly IJSONRepository<string, ModifierData> _jsonRepo;
         private readonly IModifierStore _modifierStore;
         private ModifierData _currentData;
 
-        public ModifierInfoOverlayViewModel(IModifierRepository modifierRepository, IModifierStore modifierStore)
+        public ModifierInfoOverlayViewModel(IJSONRepository<string, ModifierData> jsonRepository, IModifierStore modifierStore)
         {
-            _modifierRepo = modifierRepository;
+            _jsonRepo = jsonRepository;
             _modifierStore = modifierStore;
 
-            SelectedDynamicItem = _modifierStore.ActivelyInspectedModifier.SelectedParameter;
-            Modifier = _modifierStore.ActivelyInspectedModifier.Modifier;
             CloseViewModelCommand = new RelayCommand(o => RequestClose?.Invoke());
+
+            CurrentDataChangedAsync(Modifier.ToString());
         }
 
-		public ModifierType Modifier
+        public ICommand CloseViewModelCommand { get; }
+
+        public ModifierType Modifier
 		{
 			get
 			{
@@ -31,8 +34,7 @@ namespace Chess.ViewModel
 			set
 			{
 				_modifierStore.ActivelyInspectedModifier.Modifier = value;
-                _currentData = _modifierRepo.GetModifierData(Modifier);
-                OnPropertyChanged(string.Empty);
+                CurrentDataChangedAsync(value.ToString());
 			}
 		}
 
@@ -45,16 +47,20 @@ namespace Chess.ViewModel
             }
         }
 
-        public string ModifierName => _currentData?.Name;
+        public string ModifierName => _currentData?.Name ?? "Loading...";
         public string ModifierIconFontFamily => _currentData?.FontFamilyName;
         public string IconFontColor => _currentData?.IconHexColor;
         public bool IsDynamicModifier => _currentData?.IsDynamic ?? false;
-        public string ModifierDuration => _currentData?.Duration;
+        public string ModifierDuration => _currentData?.Duration ?? "Loading...";
         public List<string> DynamicModifierItemSource => _currentData?.DynamicItems;
-        public string ModifierIcon => _currentData?.IconName;
-        public string ModifierDescription => _currentData?.Description;
-        public string ModifierType => _currentData?.Type;
+        public string ModifierIcon => _currentData?.IconName ?? "Loading...";
+        public string ModifierDescription => _currentData?.Description ?? "Loading...";
+        public string ModifierType => _currentData?.Type ?? "Loading...";
 
-        public ICommand CloseViewModelCommand { get; }
+        private async void CurrentDataChangedAsync(string value)
+        {
+            _currentData = await _jsonRepo.FetchFromJSONAsync("Modifiers.json", value);
+            OnPropertyChanged(string.Empty);
+        }
     }
 }

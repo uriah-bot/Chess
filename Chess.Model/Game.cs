@@ -2,30 +2,38 @@
 {
     public class Game
     {
-        private readonly List<IModifier> ActiveModifiers = new List<IModifier>();
-
-        public delegate void PieceMovedHandler(Move move);
-        public event PieceMovedHandler OnPieceMoved;
-
-        public delegate void BoardSetupHandler(Board board);
-        public event BoardSetupHandler OnBoardSetup;
-
-        public int HalfMoves { get; private set; } = 0; // modifiers
 
         public Board Board { get; }
         public PlayerColor CurrentPlayer { get; private set; }
-        public Result Result { get; set; } = null;
-
+        public event Action OnGameEndedByTimer;
+        private Result _result;
+        public Result Result
+        {
+            get => _result;
+            set
+            {
+                if (value != null && _result == null)
+                {
+                    _result = value;
+                    if (Result.reason == EndReason.TimeRanOut)
+                    {
+                        OnGameEndedByTimer?.Invoke();
+                    }
+                }
+            }
+        }
         private int noCaptureOrPawnMove = 0;
         private string gameStateString;
-
         private readonly Dictionary<string, int> stateHistory = new Dictionary<string, int>();
 
+        // modifiers
+        public delegate void PieceMovedHandler(Move move);
+        public event PieceMovedHandler OnPieceMoved;
+        public delegate void BoardSetupHandler(Board board);
+        public event BoardSetupHandler OnBoardSetup;
+        public int HalfMoves { get; private set; } = 0; // modifiers
+        private readonly List<IModifier> ActiveModifiers = new List<IModifier>();
         public event Action<string, string> OnModifierDataUpdated;
-        public void BroadcastModifierData(string key, string value)
-        {
-            OnModifierDataUpdated?.Invoke(key, value);
-        }
 
         // white always starts, this constructor helps with testing
         public Game(PlayerColor player, Board board)
@@ -37,9 +45,14 @@
             stateHistory[gameStateString] = 1;
         }
 
+        public void BroadcastModifierData(string key, string value)
+        {
+            OnModifierDataUpdated?.Invoke(key, value);
+        }
+
         private void ApplyModifiers(List<ActiveModifier> selectedModifiers)
         {
-            if (selectedModifiers.Count == 0) return;
+            if (selectedModifiers.Count == 0 || selectedModifiers == null) return;
 
             foreach (var mod in selectedModifiers)
             {
@@ -52,10 +65,25 @@
             }
         }
 
+        private void RemoveModifiers()
+        {
+            if (ActiveModifiers.Count == 0 || ActiveModifiers == null) return;
+
+            foreach (var mod in ActiveModifiers)
+            {
+                mod.Remove(this);
+            }
+        }
+
         public void StartMatch(List<ActiveModifier> selectedModifiers)
         {
             ApplyModifiers(selectedModifiers);
             OnBoardSetup?.Invoke(Board);
+        }
+
+        public void EndMatch()
+        {
+            RemoveModifiers();
         }
 
         public IEnumerable<Move> LegalMovesForPiece(Position position)
@@ -111,11 +139,6 @@
 
         public void CheckForGameEnd()
         {
-            if (IsGameOver()) // guard for modifiers
-            {
-                return;
-            }
-
             if (!GetAllLegalMovesFor(CurrentPlayer).Any())
             {
                 if (Board.IsInCheck(CurrentPlayer))

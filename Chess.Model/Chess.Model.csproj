@@ -7,14 +7,4 @@
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="JSON\Modifiers.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="JSON\Modifiers.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>

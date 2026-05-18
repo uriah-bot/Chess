@@ -1,4 +1,5 @@
 ﻿using Chess.Model;
+using Chess.Service;
 using Chess.ViewModel.Stores;
 using System.Collections.ObjectModel;
 
@@ -6,15 +7,16 @@ namespace Chess.ViewModel
 {
     public class StatsViewModel : ViewModelBase
     {
+        // TODO: ADD A STORE FOR GAME HISTORY IN MEMORY
         private readonly IUserStore _userStore;
-        private readonly IGameHistoryStore _gameHistoryStore;
+        private readonly IGameService _gameService;
 
         public ObservableCollection<GameRecord> GameHistory { get; } = new ObservableCollection<GameRecord>();
 
-        public StatsViewModel(IUserStore userStore, IGameHistoryStore gameHistoryStore)
+        public StatsViewModel(IUserStore userStore, IGameService gameService)
         {
             _userStore = userStore;
-            _gameHistoryStore = gameHistoryStore;
+            _gameService = gameService;
             _userStore.CurrentUserChanged += OnUserChanged;
 
             _ = ReloadDataAsync();
@@ -29,9 +31,14 @@ namespace Chess.ViewModel
                 return;
             }
 
-            await _gameHistoryStore.LoadGamesAsync();
+            var games = await _gameService.GetGamesByUserAsync(_userStore.CurrentUser ?? new UserEntity());
 
-            foreach (var game in _gameHistoryStore.UserGames)
+            if (games == null || games.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var game in games)
             {
                 GameHistory.Add(new GameRecord(game));
             }

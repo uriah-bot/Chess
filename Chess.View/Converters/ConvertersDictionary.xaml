@@ -10,4 +10,5 @@
     <conv:StringToBrushConverter x:Key="StringToBrush" />
     <conv:StringToFontFamilyConverter x:Key="StringToFontFamily" />
     <conv:PlayerColorToCursorConverter x:Key="PlayerColorToCursor" />
+    <conv:PieceToImageConverter x:Key="PieceToImage" />
 </ResourceDictionary>

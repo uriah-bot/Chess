@@ -25,25 +25,22 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
             <TextBlock
-                x:Name="WinnerTextBlock"
                 Grid.ColumnSpan="2"
                 FontSize="28"
                 Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
-                Text="WINNER" />
+                Text="{Binding Winner}" />
             <TextBlock
-                x:Name="ReasonTextBlock"
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
                 FontSize="16"
                 Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
-                Text="REASON FOR WIN" />
+                Text="{Binding WinReason}" />
             <Button
                 Grid.Row="2"
                 Width="80"
                 Height="30"
-                Command="{Binding RestartCommand}"
+                Command="{Binding PlayAgainCommand}"
                 Content="RESTART"
                 Style="{StaticResource ResourceKey=MenuButtonStyle}" />
 

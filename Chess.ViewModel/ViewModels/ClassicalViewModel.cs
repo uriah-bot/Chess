@@ -21,15 +21,18 @@ namespace Chess.ViewModel
             _userStore = userStore;
 
             NavigateToSettingsCommand = new NavigateCommand<SettingsViewModel>(_navigationService);
-            StartClassicalGameCommand = new RelayCommand(o => ExecuteStartClassicalGame(), o => _userStore.IsLoggedIn);
+            StartClassicalGameCommand = new RelayCommand(o => StartClassicalGame(), o => _userStore.IsLoggedIn);
             SelectColorCommand = new RelayCommand(o => SelectColor(o));
+            SelectBotCommand = new RelayCommand(o => SelectBot(o));
         }
 
         public ICommand NavigateToSettingsCommand { get; }
         public ICommand StartClassicalGameCommand { get; }
         public ICommand SelectColorCommand { get; }
+        public ICommand SelectBotCommand { get; }
 
-        public PlayerColor UserColor { get; set; } // TODO: change this to user selected color
+        public PlayerColor UserColor { get; set; } = PlayerColor.White;
+        public int SelectedBotElo { get; set; } = 1200;
 
         private void SelectColor(object o)
         {
@@ -43,9 +46,18 @@ namespace Chess.ViewModel
             };
         }
 
-        public void ExecuteStartClassicalGame()
+        private void SelectBot(object o)
+        {
+            var botElo = o as int?;
+
+            SelectedBotElo = botElo ?? -1;
+        }
+
+        public void StartClassicalGame()
         {
             _gameManagerService.UserColor = UserColor;
+            _gameManagerService.BotRating = SelectedBotElo;
+            _gameManagerService.Mode = GameMode.Classical;
 
             _navigationService.NavigateTo<GameViewModel>();
             _windowService.SwitchWindow<MainViewModel>();

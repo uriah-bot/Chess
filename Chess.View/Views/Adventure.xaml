@@ -40,222 +40,223 @@
             PanningMode="HorizontalOnly"
             PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
             VerticalScrollBarVisibility="Disabled">
-            <StackPanel Orientation="Horizontal">
-                <Border Style="{StaticResource ModifierCard}">
-                    <Grid>
-                        <Button CommandParameter="KingPromotion" Style="{StaticResource InfoBtn}" />
-                        <StackPanel Margin="20" VerticalAlignment="Center">
-                            <TextBlock
-                                Margin="0,0,0,15"
+            <Viewbox Stretch="Uniform" StretchDirection="DownOnly">
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource ModifierCard}">
+                        <Grid>
+                            <Button CommandParameter="KingPromotion" Style="{StaticResource InfoBtn}" />
+                            <StackPanel Margin="20" VerticalAlignment="Center">
+                                <TextBlock
+                                    Margin="0,0,0,15"
+                                    HorizontalAlignment="Center"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="48"
+                                    Foreground="#D3AF37"
+                                    Text="&#xE734;" />
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="The King's Journey" />
+                                <TextBlock
+                                    FontSize="13"
+                                    Foreground="#AAAAAA"
+                                    Text="Once a Player's King reaches the Promotion Rank, the match will end as a victory for that player"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                            <CheckBox
+                                Margin="0,0,0,20"
                                 HorizontalAlignment="Center"
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="48"
-                                Foreground="#D3AF37"
-                                Text="&#xE734;" />
-                            <TextBlock
-                                Margin="0,0,0,10"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                                CommandParameter="KingPromotion"
+                                Content="Select"
+                                Foreground="White" />
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource ModifierCard}">
+                        <Grid>
+                            <Button CommandParameter="TimeLimit" Style="{StaticResource InfoBtn}" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Margin="20,121,20,0"
+                                VerticalAlignment="Top">
+                                <TextBlock
+                                    Margin="0,0,0,15"
+                                    HorizontalAlignment="Center"
+                                    FontFamily="Segoe UI Emoji"
+                                    FontSize="48"
+                                    Foreground="PapayaWhip"
+                                    Text="&#x23F2;" />
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="Under The Gun" />
+                                <TextBlock
+                                    FontSize="13"
+                                    Foreground="#AAAAAA"
+                                    Text="Each Player has a Timer."
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                            <CheckBox
+                                Margin="0,0,0,20"
                                 HorizontalAlignment="Center"
-                                FontSize="20"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="The King's Journey" />
-                            <TextBlock
-                                FontSize="13"
-                                Foreground="#AAAAAA"
-                                Text="Once a Player's King reaches the Promotion Rank, the match will end as a victory for that player"
-                                TextAlignment="Center"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                        <CheckBox
-                            Margin="0,0,0,20"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
-                            CommandParameter="KingPromotion"
-                            Content="Select"
-                            Foreground="White" />
-                    </Grid>
-                </Border>
-                <Border Style="{StaticResource ModifierCard}">
-                    <Grid>
-                        <Button CommandParameter="TimeLimit" Style="{StaticResource InfoBtn}" />
-                        <StackPanel
-                            Grid.Row="1"
-                            Margin="20,121,20,0"
-                            VerticalAlignment="Top">
-                            <TextBlock
-                                Margin="0,0,0,15"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                                CommandParameter="TimeLimit"
+                                Content="Select"
+                                Foreground="White" />
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource ModifierCard}">
+                        <Grid>
+                            <Button CommandParameter="Poof" Style="{StaticResource InfoBtn}" />
+                            <StackPanel Margin="20" VerticalAlignment="Center">
+                                <TextBlock
+                                    Margin="0,0,0,15"
+                                    HorizontalAlignment="Center"
+                                    FontFamily="Segoe Emoji"
+                                    FontSize="48"
+                                    Foreground="#cb353d"
+                                    Text="&#x2728;" />
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="POOF!" />
+                                <TextBlock
+                                    FontSize="13"
+                                    Foreground="#AAAAAA"
+                                    Text="Each Player will have a random Piece disappear every few moves."
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                            <CheckBox
+                                Margin="0,0,0,20"
                                 HorizontalAlignment="Center"
-                                FontFamily="Segoe UI Emoji"
-                                FontSize="48"
-                                Foreground="PapayaWhip"
-                                Text="&#x23F2;" />
-                            <TextBlock
-                                Margin="0,0,0,10"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                                CommandParameter="Poof"
+                                Content="Select"
+                                Foreground="White" />
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource ModifierCard}">
+                        <Grid>
+                            <Button CommandParameter="FogOfWar" Style="{StaticResource InfoBtn}" />
+                            <StackPanel Margin="20" VerticalAlignment="Center">
+                                <TextBlock
+                                    Margin="0,0,0,15"
+                                    HorizontalAlignment="Center"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="48"
+                                    Foreground="#888888"
+                                    Text="&#xE753;" />
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="Fog of War" />
+                                <TextBlock
+                                    FontSize="13"
+                                    Foreground="#AAAAAA"
+                                    Text="Enemy pieces are invisible unless they are within 2 squares of your pieces."
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                            <CheckBox
+                                Margin="0,0,0,20"
                                 HorizontalAlignment="Center"
-                                FontSize="20"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="Under The Gun" />
-                            <TextBlock
-                                FontSize="13"
-                                Foreground="#AAAAAA"
-                                Text="Each Player has a Timer."
-                                TextAlignment="Center"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                        <CheckBox
-                            Grid.Row="1"
-                            Margin="0,360,0,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
-                            CommandParameter="TimeLimit"
-                            Content="Select"
-                            Foreground="White" />
-                    </Grid>
-                </Border>
-                <Border Style="{StaticResource ModifierCard}">
-                    <Grid>
-                        <Button CommandParameter="Poof" Style="{StaticResource InfoBtn}" />
-                        <StackPanel Margin="20" VerticalAlignment="Center">
-                            <TextBlock
-                                Margin="0,0,0,15"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                                CommandParameter="FogOfWar"
+                                Content="Select"
+                                Foreground="White" />
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource ModifierCard}">
+                        <Grid>
+                            <Button CommandParameter="Wormholes" Style="{StaticResource InfoBtn}" />
+                            <StackPanel Margin="20" VerticalAlignment="Center">
+                                <TextBlock
+                                    Margin="0,0,0,15"
+                                    HorizontalAlignment="Center"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="48"
+                                    Foreground="#00A8FF"
+                                    Text="&#xE895;" />
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="Quantum Chess" />
+                                <TextBlock
+                                    FontSize="13"
+                                    Foreground="#AAAAAA"
+                                    Text="Two connected wormholes spawn on the board. Any piece can step into one and emerge from the other."
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                            <CheckBox
+                                Margin="0,0,0,20"
                                 HorizontalAlignment="Center"
-                                FontFamily="Segoe Emoji"
-                                FontSize="48"
-                                Foreground="#cb353d"
-                                Text="&#x2728;" />
-                            <TextBlock
-                                Margin="0,0,0,10"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                                CommandParameter="Wormholes"
+                                Content="Select"
+                                Foreground="White" />
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource ModifierCard}">
+                        <Grid>
+                            <Button CommandParameter="MoveMultiplier" Style="{StaticResource InfoBtn}" />
+                            <StackPanel Margin="20" VerticalAlignment="Center">
+                                <TextBlock
+                                    Margin="0,0,0,15"
+                                    HorizontalAlignment="Center"
+                                    FontFamily="Cambria Math"
+                                    FontSize="48"
+                                    Foreground="{StaticResource Brush.Accent}"
+                                    Text="∏" />
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    HorizontalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="Multi-Tap" />
+                                <TextBlock
+                                    FontSize="13"
+                                    Foreground="#AAAAAA"
+                                    Text="Each Player gets multiple moves per turn."
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                            <CheckBox
+                                Margin="0,0,0,20"
                                 HorizontalAlignment="Center"
-                                FontSize="20"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="POOF!" />
-                            <TextBlock
-                                FontSize="13"
-                                Foreground="#AAAAAA"
-                                Text="Each Player will have a random Piece disappear every few moves."
-                                TextAlignment="Center"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                        <CheckBox
-                            Margin="0,0,0,20"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
-                            CommandParameter="Poof"
-                            Content="Select"
-                            Foreground="White" />
-                    </Grid>
-                </Border>
-                <Border Style="{StaticResource ModifierCard}">
-                    <Grid>
-                        <Button CommandParameter="FogOfWar" Style="{StaticResource InfoBtn}" />
-                        <StackPanel Margin="20" VerticalAlignment="Center">
-                            <TextBlock
-                                Margin="0,0,0,15"
-                                HorizontalAlignment="Center"
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="48"
-                                Foreground="#888888"
-                                Text="&#xE753;" />
-                            <TextBlock
-                                Margin="0,0,0,10"
-                                HorizontalAlignment="Center"
-                                FontSize="20"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="Fog of War" />
-                            <TextBlock
-                                FontSize="13"
-                                Foreground="#AAAAAA"
-                                Text="Enemy pieces are invisible unless they are within 2 squares of your pieces."
-                                TextAlignment="Center"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                        <CheckBox
-                            Margin="0,0,0,20"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
-                            CommandParameter="FogOfWar"
-                            Content="Select"
-                            Foreground="White" />
-                    </Grid>
-                </Border>
-                <Border Style="{StaticResource ModifierCard}">
-                    <Grid>
-                        <Button CommandParameter="Wormholes" Style="{StaticResource InfoBtn}" />
-                        <StackPanel Margin="20" VerticalAlignment="Center">
-                            <TextBlock
-                                Margin="0,0,0,15"
-                                HorizontalAlignment="Center"
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="48"
-                                Foreground="#00A8FF"
-                                Text="&#xE895;" />
-                            <TextBlock
-                                Margin="0,0,0,10"
-                                HorizontalAlignment="Center"
-                                FontSize="20"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="Quantum Chess" />
-                            <TextBlock
-                                FontSize="13"
-                                Foreground="#AAAAAA"
-                                Text="Two connected wormholes spawn on the board. Any piece can step into one and emerge from the other."
-                                TextAlignment="Center"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                        <CheckBox
-                            Margin="0,0,0,20"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
-                            CommandParameter="Wormholes"
-                            Content="Select"
-                            Foreground="White" />
-                    </Grid>
-                </Border>
-                <Border Style="{StaticResource ModifierCard}">
-                    <Grid>
-                        <Button CommandParameter="MoveMultiplier" Style="{StaticResource InfoBtn}" />
-                        <StackPanel Margin="20" VerticalAlignment="Center">
-                            <TextBlock
-                                Margin="0,0,0,15"
-                                HorizontalAlignment="Center"
-                                FontFamily="Cambria Math"
-                                FontSize="48"
-                                Foreground="{StaticResource Brush.Accent}"
-                                Text="∏" />
-                            <TextBlock
-                                Margin="0,0,0,10"
-                                HorizontalAlignment="Center"
-                                FontSize="20"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="Multi-Tap" />
-                            <TextBlock
-                                FontSize="13"
-                                Foreground="#AAAAAA"
-                                Text="Each Player gets multiple moves per turn."
-                                TextAlignment="Center"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                        <CheckBox
-                            Margin="0,0,0,20"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
-                            CommandParameter="DoubleMove"
-                            Content="Select"
-                            Foreground="White" />
-                    </Grid>
-                </Border>
-            </StackPanel>
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
+                                CommandParameter="DoubleMove"
+                                Content="Select"
+                                Foreground="White" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Viewbox>
         </ScrollViewer>
         <Border
             Grid.Row="2"

@@ -22,22 +22,34 @@
             x:Name="BoardGrid"
             Grid.Row="1"
             Width="600"
-            Height="600"
-            MouseLeftButtonDown="BoardGrid_MouseDown"
-            MouseRightButtonDown="BoardGrid_MouseRightButtonDown"
-            MouseRightButtonUp="BoardGrid_MouseRightButtonUp">
+            Height="600">
             <Grid.Background>
                 <ImageBrush ImageSource="/Assets/Default/Board.png" />
             </Grid.Background>
-            <UniformGrid
-                x:Name="HighlightGrid"
-                Columns="8"
-                Rows="8" />
-            <UniformGrid
-                x:Name="PieceGrid"
-                Columns="8"
-                RenderOptions.BitmapScalingMode="HighQuality"
-                Rows="8" />
+            <ItemsControl ItemsSource="{Binding Squares}">
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="8" Rows="8" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="{Binding HighlightBrush}">
+
+                            <Image RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Piece, Converter={StaticResource PieceToImage}}" />
+
+                            <Rectangle Fill="{Binding OverlayBrush}" IsHitTestVisible="False" />
+
+                            <Grid.InputBindings>
+                                <MouseBinding Command="{Binding SquareLeftClickedCommand}" Gesture="LeftClick" />
+                                <MouseBinding Command="{Binding SquareRightClickedCommand}" Gesture="RightClick" />
+                            </Grid.InputBindings>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
             <Canvas x:Name="DrawingCanvas" IsHitTestVisible="False" />
         </Grid>
 

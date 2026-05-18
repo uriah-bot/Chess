@@ -14,47 +14,99 @@
         Height="125"
         RenderOptions.BitmapScalingMode="HighQuality"
         Style="{StaticResource ResourceKey=MenuBorderStyle}">
+
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.8*" />
-                <RowDefinition Height="0.7*" />
-                <RowDefinition Height="0.5*" />
-            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.Style>
+                    <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding GameMode}" Value="Standard">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.8*" />
+                    <RowDefinition Height="0.7*" />
+                    <RowDefinition Height="0.5*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock
-                Grid.ColumnSpan="2"
-                HorizontalAlignment="Center"
-                FontSize="28"
-                Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
-                Text="GAME PAUSED" />
-            <TextBlock
-                Grid.Row="2"
-                Grid.ColumnSpan="2"
-                FontSize="10"
-                Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
-                Text="NOTE: RESIGNING WILL EFFECT STATS"
-                TextAlignment="Center" />
-            <Button
-                Grid.Row="1"
-                Width="80"
-                Height="30"
-                Command="{Binding ResignCommand}"
-                Content="RESIGN"
-                Style="{StaticResource ResourceKey=MenuButtonStyle}" />
+                <TextBlock
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    FontSize="28"
+                    Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
+                    Text="GAME PAUSED" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    FontSize="10"
+                    Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
+                    Text="NOTE: RESIGNING WILL AFFECT STATS"
+                    TextAlignment="Center" />
 
-            <Button
-                Grid.Row="1"
-                Grid.Column="1"
-                Width="80"
-                Height="30"
-                Command="{Binding ContinueCommand}"
-                Content="CONTINUE"
-                Style="{StaticResource ResourceKey=MenuButtonStyle}" />
+                <Button
+                    Grid.Row="1"
+                    Width="80"
+                    Height="30"
+                    Command="{Binding ResignCommand}"
+                    Content="RESIGN"
+                    Style="{StaticResource ResourceKey=MenuButtonStyle}" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="80"
+                    Height="30"
+                    Command="{Binding ContinueCommand}"
+                    Content="CONTINUE"
+                    Style="{StaticResource ResourceKey=MenuButtonStyle}" />
+            </Grid>
+            <Grid>
+                <Grid.Style>
+                    <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding GameMode}" Value="Modified">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.8*" />
+                    <RowDefinition Height="0.7*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    FontSize="28"
+                    Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
+                    Text="GAME PAUSED" />
+                <Button
+                    Grid.Row="1"
+                    Width="80"
+                    Height="30"
+                    Command="{Binding RestartCommand}"
+                    Content="RESTART"
+                    Style="{StaticResource ResourceKey=MenuButtonStyle}" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="80"
+                    Height="30"
+                    Command="{Binding ContinueCommand}"
+                    Content="CONTINUE"
+                    Style="{StaticResource ResourceKey=MenuButtonStyle}" />
+            </Grid>
         </Grid>
     </Border>
 </UserControl>

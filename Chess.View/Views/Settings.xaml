@@ -168,24 +168,37 @@
                     CornerRadius="8">
                     <StackPanel>
                         <TextBlock Style="{StaticResource SettingHeader}" Text="Audio" />
-                        <DockPanel Margin="0,5,0,15" LastChildFill="True">
+                        <Grid Margin="0,5,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <TextBlock
-                                Width="120"
                                 VerticalAlignment="Center"
                                 Foreground="White"
                                 Text="Radio Volume" />
-                            <TextBlock
-                                Margin="10,0,0,0"
-                                VerticalAlignment="Center"
-                                DockPanel.Dock="Right"
-                                Foreground="Gray"
-                                Text="{Binding Volume, Mode=OneWay}" />
                             <Slider
+                                Grid.Column="1"
+                                Margin="10,0,0,0"
                                 IsSnapToTickEnabled="True"
                                 Maximum="100"
                                 TickFrequency="5"
                                 Value="{Binding Volume}" />
-                        </DockPanel>
+                            <Button
+                                Grid.Column="2"
+                                Height="Auto"
+                                MinWidth="0"
+                                MinHeight="0"
+                                Margin="10,0,0,0"
+                                Padding="8,4"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding SaveVolumeCommand}"
+                                Content="{Binding Volume, Mode=OneWay}"
+                                Style="{StaticResource DefaultButton}"
+                                ToolTip="Press To Save Volume To DB" />
+                        </Grid>
                         <CheckBox Content="Stop Radio On Matches" />
                         <CheckBox Command="{Binding PlaySoundEffectOnMoveCommand}" Content="Play sound effects on move" />
                         <Border
@@ -208,8 +221,7 @@
                                         <ListBox
                                             Background="Transparent"
                                             BorderThickness="0"
-                                            ItemsSource="{Binding MusicChannels}"
-                                            SelectedIndex="0">
+                                            ItemsSource="{Binding MusicChannels}">
                                             <ListBox.ItemContainerStyle>
                                                 <Style TargetType="ListBoxItem">
                                                     <Setter Property="Template">
@@ -230,7 +242,7 @@
                                                         Content="{Binding ChannelName}"
                                                         Foreground="LightGray"
                                                         GroupName="MusicOptions"
-                                                        IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Mode=TwoWay}" />
+                                                        IsChecked="{Binding IsSelected, Mode=TwoWay}" />
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>

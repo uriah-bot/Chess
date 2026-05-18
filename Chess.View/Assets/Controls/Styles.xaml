@@ -582,4 +582,8 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="DynamicGridStyle" TargetType="Grid">
+        <Setter Property="Visibility" Value="Collapsed" />
+    </Style>
 </ResourceDictionary>

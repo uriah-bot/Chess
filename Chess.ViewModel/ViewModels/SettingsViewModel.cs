@@ -18,7 +18,7 @@ namespace Chess.ViewModel
 		private readonly IDecorStore _decorStore;
 		private readonly ISettingsRepository _settingsRepo;
 		private readonly IFileService _fileService;
-		private readonly ICustomizableDecorManager<RadioChannelEntity> _radioChannel;
+		private readonly ICustomizableDecorManager<RadioChannelEntity> _radio;
 
         public SettingsViewModel(IUserStore userStore, INavigationService navigationService, IWindowService windowService,IUserRepository userRepository,
             IDecorStore decorStore, IFileService fileService, ISettingsRepository settingsRepo, ICustomizableDecorManager<RadioChannelEntity> radioChannel)
@@ -28,7 +28,7 @@ namespace Chess.ViewModel
 			_windowService = windowService;
 			_userRepo = userRepository;
             _settingsRepo = settingsRepo;
-			_radioChannel = radioChannel;
+			_radio = radioChannel;
 			_decorStore = decorStore;
 			_fileService = fileService;
 
@@ -38,6 +38,7 @@ namespace Chess.ViewModel
 			PlaySelectedMusicCommand = new RelayCommand(o => PlayMusicAsync(o));
             ShowPopupCommand = new RelayCommand(o => ShowPopup(o), o => _userStore.IsLoggedIn);
 			AddMusicCommand = new RelayCommand(o => AddMusic(), o => _userStore.IsLoggedIn);
+            SaveVolumeCommand = new RelayCommand(o => UpdateUserVolumeAsync(), o => _userStore.IsLoggedIn);
             _ = LoadChannelsAsync();
         }
 
@@ -51,6 +52,7 @@ namespace Chess.ViewModel
             set
             {
                 _musicChannels = value;
+                _musicChannels.Where(c => c.ChannelPath == (_userStore.CurrentUser?.Settings?.CurrentSong ?? "DefaultMusic.mp3")).ToList().ForEach(c => c.IsSelected = true);
                 OnPropertyChanged(nameof(MusicChannels));
             }
         }
@@ -136,6 +138,7 @@ namespace Chess.ViewModel
         public ICommand ShowPopupCommand { get; }
         public ICommand AddMusicCommand { get; }
         public ICommand PlaySoundEffectOnMoveCommand { get; }
+        public ICommand SaveVolumeCommand { get; }
 
         private void AddMusic()
         {
@@ -143,7 +146,7 @@ namespace Chess.ViewModel
 
 			if (path != null)
 			{
-                var destination = _fileService.SaveFileForUser<RadioChannelEntity>(path, _userStore.CurrentUser);
+                var destination = _fileService.SaveRadioFileForUser<RadioChannelEntity>(path, _userStore.CurrentUser);
 				MusicChannels.Add(new RadioChannelEntity { ChannelName = Path.GetFileNameWithoutExtension(destination), ChannelPath = destination});
             }
         }
@@ -157,14 +160,14 @@ namespace Chess.ViewModel
 
         private async Task LoadChannelsAsync()
         {
+            await _radio.GetDefaultItemsAsync();
+
             if (_userStore.IsLoggedIn)
             {
-			    _radioChannel.dbEntities.AddRange(_fileService.GetUserRadioFiles(_userStore.CurrentUser));
+			    _radio.dbEntities.AddRange(_fileService.GetUserRadioFiles(_userStore.CurrentUser));
             }
-            
-            await _radioChannel.GetDefaultItemsAsync();
 
-            MusicChannels = new ObservableCollection<RadioChannelEntity>(_radioChannel.dbEntities);
+            MusicChannels = new ObservableCollection<RadioChannelEntity>(_radio.dbEntities);
         }
 
         private async void PlayMusicAsync(object content)
@@ -184,8 +187,14 @@ namespace Chess.ViewModel
                 }
             }
 		}
-        
-		private bool CanDeleteUser()
+
+        private async void UpdateUserVolumeAsync()
+        {
+            _userStore.Update(u => u.Settings.Volume = _decorStore.CurrentVolume);
+            await _settingsRepo.UpdateUserSettingsAsync(_userStore.CurrentUser);
+        }
+
+        private bool CanDeleteUser()
         {
             // there is no user logged in, nothing to delete
             if (!_userStore.IsLoggedIn)

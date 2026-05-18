@@ -1,9 +1,8 @@
 ﻿using Chess.Model;
-using System.Text.RegularExpressions;
 
 namespace Chess.Service
 {
-    public class GameLogicHelper
+    public static class MoveFormatter
     {
         /*  the format for stockfish output is:
                         ex: e2e4, e1e2, h7h8q etc. 
@@ -11,7 +10,7 @@ namespace Chess.Service
                      and then make a move based on that... yeah i know right?   */
 
         // Will be used for DataBase too, to convert chess notation to position and vice versa
-        public Move ParseMove(Board board, string stockfishOutput)
+        public static Move ParseStockfishMove(Board board, string stockfishOutput)
         {
             if (string.IsNullOrWhiteSpace(stockfishOutput) || stockfishOutput.Length < 4)
                 throw new ArgumentException("Invalid Stockfish output.");
@@ -60,7 +59,51 @@ namespace Chess.Service
             return new NormalMove(fromPosition, toPosition);
         }
 
-        private Move GetPromotionMove(Position fromPosition, Position toPosition, char lastLetter)
+        public static Move StringToMove(Board board, string move)
+        {
+            string startSquare = move.Substring(0, 2);
+            string targetSquare = move.Substring(4, 2);
+
+            var fromPosition = new Position(startSquare[0], startSquare[1]);
+            var toPosition = new Position(targetSquare[0], targetSquare[1]);
+
+            var pieceType = board[fromPosition].Type;
+
+            if ("qrnb".Contains(move.ElementAt(6)))
+            {
+                char lastLetter = move.ElementAt(6);
+                return GetPromotionMove(fromPosition, toPosition, lastLetter);
+            }
+
+            if (pieceType == PieceType.Pawn
+                && board.IsEmptySquare(toPosition) && startSquare[0] != targetSquare[0])
+            {
+                return new EnPassant(fromPosition, toPosition);
+            }
+
+            if (pieceType == PieceType.Pawn
+                && Math.Abs(targetSquare[1] - startSquare[1]) == 2)
+            {
+                return new DoublePawnPush(fromPosition, toPosition);
+            }
+
+            if (pieceType == PieceType.King)
+            {
+                if (startSquare[0] + 2 == targetSquare[0])
+                {
+                    return new Castling(MoveType.CastlingKing, fromPosition);
+                }
+
+                if (startSquare[0] - 2 == targetSquare[0])
+                {
+                    return new Castling(MoveType.CastlingQueen, fromPosition);
+                }
+            }
+            
+            return new NormalMove(fromPosition, toPosition);
+        }
+
+        private static Move GetPromotionMove(Position fromPosition, Position toPosition, char lastLetter)
         {
             var newPieceType = lastLetter switch
             {
@@ -74,12 +117,36 @@ namespace Chess.Service
             return new PawnPromotion(fromPosition, toPosition, newPieceType);
         }
 
+        private static char GetPromotedPieceType(PawnPromotion move)
+        {
+            var newPieceType = move.promotedTo switch
+            {
+                PieceType.Queen => 'q',
+                PieceType.Rook => 'r',
+                PieceType.Knight => 'n',
+                PieceType.Bishop => 'b',
+                _ => 'q',
+            };
+
+            return newPieceType;
+        }
+
         private static Position ChessNotationToPosition(string chessNotation)
         {
             int rank = '8' - chessNotation[1]; // row
             int file = chessNotation[0] - 'a'; // column
 
             return new Position(rank, file);
+        }
+
+        public static string MoveToString(Move move)
+        {
+            var fromRow = move.FromPosition.Row.ToString();
+            var fromCol = move.FromPosition.Column.ToString();
+            var toRow = move.ToPosition.Row.ToString();
+            var toCol = move.ToPosition.Column.ToString();
+
+            return $"{fromRow}{fromCol}->{toRow}{toCol}{(move is PawnPromotion ? $"={GetPromotedPieceType((PawnPromotion)move)}" : "")}";
         }
     }
 }

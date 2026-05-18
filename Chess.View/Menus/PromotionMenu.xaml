@@ -23,36 +23,25 @@
                 Foreground="{Binding PromotionColor}"
                 Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
                 Text="SELECT A PIECE" />
-            <UniformGrid
-                Grid.Row="1"
-                Columns="4"
-                Cursor="Hand"
-                Rows="1">
-                <Button
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding PieceSelected}">
-                    <Image Source="Assets/Default/white_queen.png" />
-                </Button>
-                <Button
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding PieceSelected}">
-                    <Image Source="Assets/Default/white_rook.png" />
-                </Button>
-                <Button
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding PieceSelected}">
-                    <Image Source="Assets/Default/white_bishop.png" />
-                </Button>
-                <Button
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding PieceSelected}">
-                    <Image Source="Assets/Default/white_knight.png" />
-                </Button>
-            </UniformGrid>
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding AvailablePromotions}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="4" Rows="1" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding DataContext.PieceSelectedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding Type}"
+                            Cursor="Hand">
+                            <Image Source="{Binding Converter={StaticResource PieceToImage}}" />
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
     </Border>
 </UserControl>

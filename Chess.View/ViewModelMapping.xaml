@@ -47,9 +47,6 @@
     <DataTemplate DataType="{x:Type vm:GamePausedMenuViewModel}">
         <menus:GamePausedMenu />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:ModifiedGamePausedMenuViewModel}">
-        <menus:ModifiedGamePaused />
-    </DataTemplate>
     <DataTemplate DataType="{x:Type vm:PromotionMenuViewModel}">
         <menus:PromotionMenu />
     </DataTemplate>

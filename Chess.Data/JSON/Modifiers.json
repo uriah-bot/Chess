@@ -49,7 +49,7 @@
     "FontFamilyName": "Segoe Fluent Icons",
     "Type": "Environmental",
     "Duration": "Throughout all game",
-    "Description": "Creates two connected portals on random empty squares.",
+    "Description": "Creates x connected portals on random empty squares.",
     "IsDynamic": true,
     "DynamicItems": [
       "2",

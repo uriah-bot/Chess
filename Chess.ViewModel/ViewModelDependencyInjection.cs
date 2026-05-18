@@ -11,14 +11,11 @@ namespace Chess.ViewModel
             // Stores
             services.AddSingleton<IUserStore, UserStore>();
             services.AddSingleton<INavigationStore, NavigationStore>();
-            services.AddSingleton<IGameHistoryStore, GameHistoryStore>();
             services.AddSingleton<IDecorStore, DecorStore>();
             services.AddSingleton<IModifierStore, ModifierStore>();
 
             // ViewModel Helpers
             services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton<IGameManagerService, GameManagerService>();
-            services.AddSingleton<IModifierRepository, ModifierRepository>();
 
             // ViewModels
             services.AddTransient<MainViewModel>();
@@ -36,7 +33,6 @@ namespace Chess.ViewModel
 
             // Menus
             services.AddTransient<GameOverMenuViewModel>();
-            services.AddTransient<ModifiedGamePausedMenuViewModel>();
             services.AddTransient<PromotionMenuViewModel>();
             services.AddTransient<GamePausedMenuViewModel>();
             services.AddTransient<AccountModificationMenuViewModel>();

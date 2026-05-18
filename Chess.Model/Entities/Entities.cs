@@ -21,26 +21,14 @@
 
     public class GameEntity : DBEntity
     {
-        public string Username { get; set; }
-        public List<string> GameFENs { get; set; }
+        public int UserId { get; set; }
+        public int? EloDelta { get; set; }
+        public List<string> GameMoves { get; set; }
         public PlayerColor? UserPlayedAs { get; set; }
         public int? BotRating { get; set; }
         public string Result { get; set; } // playercolor -> User
         public DateTime DatePlayed { get; set; }
-    }
-
-    public class BoardThemeEntity : DBEntity
-    {
-        public int? UserId { get; set; }
-        public string Name { get; set; }
-        public string Path { get; set; }
-    }
-
-    public class PieceThemeEntity : DBEntity
-    {
-        public int? UserId { get; set; }
-        public string Name { get; set; }
-        public string Path { get; set; }
+        public List<ModifierType> Modifiers { get; set; }
     }
 
     public class RadioChannelEntity : DBEntity
@@ -48,6 +36,7 @@
         public int? UserId { get; set; }
         public string ChannelName { get; set; }
         public string ChannelPath { get; set; }
+        public bool IsSelected { get; set; }
     }
 
     public class SettingsModel : DBEntity

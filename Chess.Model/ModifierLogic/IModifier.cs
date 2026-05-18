@@ -2,6 +2,7 @@
 {
     public enum ModifierType
     {
+        Empty,
         KingPromotion,
         Wormholes,
         Poof,

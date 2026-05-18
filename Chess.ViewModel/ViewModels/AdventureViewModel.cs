@@ -111,7 +111,8 @@ namespace Chess.ViewModel
 
         private void StartModifiedGame()
         {
-            _gameManagerService.ConfigurateGame(SelectedModifiers.ToList());
+            _gameManagerService.Modifiers = SelectedModifiers.ToList();
+            _gameManagerService.Mode = GameMode.Modified;
 
             _navigationService.NavigateTo<GameViewModel>();
             _windowService.SwitchWindow<MainViewModel>();

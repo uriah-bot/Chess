@@ -5,7 +5,7 @@ namespace Chess.Service
     public interface IFileService
     {
         string SelectFile(string filterName, string[] fileTypes);
-        string SaveFileForUser<T>(string sourceFilePath, UserEntity user) where T : DBEntity;
+        string SaveRadioFileForUser<RadioChannelEntity>(string sourceFilePath, UserEntity user);
         IEnumerable<RadioChannelEntity> GetUserRadioFiles(UserEntity user);
     }
 }

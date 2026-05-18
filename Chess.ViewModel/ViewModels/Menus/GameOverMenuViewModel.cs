@@ -1,9 +1,4 @@
 ﻿using Chess.ViewModel.ViewModelHelper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
@@ -13,19 +8,35 @@ namespace Chess.ViewModel
         public Action RequestClose { get; set; }
 
         private readonly INavigationService _navigationService;
+        private readonly IWindowService _windowService;
+
         public ICommand ExitCommand { get; }
         public ICommand PlayAgainCommand { get; }
 
-        public GameOverMenuViewModel(INavigationService navigationService)
+        public GameOverMenuViewModel(INavigationService navigationService, IWindowService windowService)
         {
             _navigationService = navigationService;
+            _windowService = windowService;
+
             ExitCommand = new RelayCommand(o => ExitToApp());
+            PlayAgainCommand = new RelayCommand(o => PlayAgain());
+        }
+
+        private void PlayAgain()
+        {
+            RequestClose?.Invoke();
+
+            _navigationService.NavigateTo<GameViewModel>();
         }
 
         private void ExitToApp()
         {
             RequestClose?.Invoke();
-            new NavigateCommand<AppBaseViewModel>(_navigationService).Execute(null);
+            
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                _windowService.SwitchWindow<AppBaseViewModel>();
+            }), System.Windows.Threading.DispatcherPriority.Background); // <-- THIS IS THE MAGIC
         }
     }
 }

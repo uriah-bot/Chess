@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess.Model
+﻿namespace Chess.Model
 {
     public readonly record struct GameRecord
     {
+        // will be used for UI
         public GameRecord(GameEntity game)
         {
-            GameMode = game.BotRating == null ? "Player vs Player" : "Player vs AI";
-            AIName = game.BotRating == null ? string.Empty : "Stockfish (" + game.BotRating.ToString() + ")";
+            Game = game;
+            GameMode = game.BotRating == null ? "Friendly Battle" : "Player vs AI";
+            AIName = game.BotRating == null ? string.Join(", ", game.Modifiers.Select(m => m != ModifierType.Empty ? m.ToString() : string.Empty)) : "Stockfish (" + game.BotRating.ToString() + ")";
             UserColor = game.BotRating == null ? string.Empty : game.UserPlayedAs.ToString();
-            Result = game.BotRating == null ? "(friendly game)" : game.Result.ToString();
+            EloDelta = game.EloDelta.HasValue && game.EloDelta >= 0 ? $"+{game.EloDelta}" : game.EloDelta.ToString();
+            Result = game.BotRating == null ? "" : game.Result.ToString();
             Date = game.DatePlayed.ToString("yy-MM-dd--hh--mm");
         }
 
+        public GameEntity Game { get; }
         public string GameMode { get; }
         public string AIName { get; }
+        public string EloDelta { get; }
         public string Result { get; }
         public string Date { get; }
         public string UserColor { get; }
@@ -28,10 +27,10 @@ namespace Chess.Model
             {
                 return Result switch
                 {
-                    "Win" => "Green",
-                    "Loss" => "Red",
-                    "Draw" => "Yellow",
-                    _ => "Black"
+                    "Win" => "ForestGreen",
+                    "Loss" => "MediumVioletRed",
+                    "Draw" => "LightGray",
+                    _ => "Gray"
                 };
             }
         }
@@ -72,7 +71,8 @@ namespace Chess.Model
         public bool IsDynamic { get; set; }
         public List<string> DynamicItems { get; set; }
     }
-
+    
+    // will be used for UI AND logic
     public record ActiveModifier
     {
         public ModifierType Modifier { get; set; }

@@ -12,7 +12,7 @@ namespace Chess.Service
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string safeSalt = user.PasswordSalt.Replace("/", "_").Replace("+", "-").Replace("=", "");
-            string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets", "Users", nameof(RadioChannelEntity) , safeSalt);
+            string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets", "Users", safeSalt);
 
             if (!Directory.Exists(userDirectory))
             {
@@ -34,7 +34,7 @@ namespace Chess.Service
             return channels;
         }
 
-        public string SaveFileForUser<T>(string sourceFilePath, UserEntity user) where T : DBEntity
+        public string SaveRadioFileForUser<RadioChannelEntity>(string sourceFilePath, UserEntity user)
         {
             if (user == null) return null;
 
@@ -43,7 +43,7 @@ namespace Chess.Service
 
             string safeSalt = user.PasswordSalt.Replace("/", "_").Replace("+", "-").Replace("=", "");
             // Gets a unique folder just for this user (the hash is one-time and doesn't change)
-            string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets" , "Users", nameof(T) , safeSalt);
+            string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets" , "Users", safeSalt);
 
             // Ensures the folder actually exists on the hard drive
             Directory.CreateDirectory(userDirectory);
