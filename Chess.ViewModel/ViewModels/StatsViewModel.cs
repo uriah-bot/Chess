@@ -1,6 +1,7 @@
 ﻿using Chess.Model;
 using Chess.Service;
 using Chess.ViewModel.Stores;
+using Chess.ViewModel.ViewModelHelper;
 using System.Collections.ObjectModel;
 
 namespace Chess.ViewModel
@@ -10,13 +11,20 @@ namespace Chess.ViewModel
         // TODO: ADD A STORE FOR GAME HISTORY IN MEMORY
         private readonly IUserStore _userStore;
         private readonly IGameService _gameService;
+        private readonly IWindowService _windowService;
+        private readonly INavigationService _navigationService;
+        private readonly IGameReplayRequestStore _replayRequestStore;
 
-        public ObservableCollection<GameRecord> GameHistory { get; } = new ObservableCollection<GameRecord>();
+        public ObservableCollection<GameEntityViewModel> GameHistory { get; } = new ObservableCollection<GameEntityViewModel>();
 
-        public StatsViewModel(IUserStore userStore, IGameService gameService)
+        public StatsViewModel(IUserStore userStore, IGameService gameService, IWindowService windowService, INavigationService navigationService, IGameReplayRequestStore replayRequestStore)
         {
             _userStore = userStore;
             _gameService = gameService;
+            _windowService = windowService;
+            _navigationService = navigationService;
+            _replayRequestStore = replayRequestStore;
+
             _userStore.CurrentUserChanged += OnUserChanged;
 
             _ = ReloadDataAsync();
@@ -40,8 +48,15 @@ namespace Chess.ViewModel
 
             foreach (var game in games)
             {
-                GameHistory.Add(new GameRecord(game));
+                GameHistory.Add(new GameEntityViewModel(game, () => OpenReplayWindow(game)));
             }
+        }
+
+        private void OpenReplayWindow(GameEntity game)
+        {
+            _replayRequestStore.RequestedGame = game;
+            _navigationService.NavigateTo<GameViewModel>();
+            _windowService.SwitchWindow<MainViewModel>();
         }
 
         public int Wins => _userStore.CurrentUser?.Wins ?? -1;

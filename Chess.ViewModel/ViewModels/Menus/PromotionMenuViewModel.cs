@@ -42,7 +42,7 @@ namespace Chess.ViewModel
 
             if (finalMove != null)
             {
-                _gameManager.Game.MakeMove(finalMove);
+                _gameManager.MoveHuman(finalMove);
                 _gameManager.PendingPromotionMoves = null;
             }
 

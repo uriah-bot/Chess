@@ -17,15 +17,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid
-            x:Name="BoardGrid"
             Grid.Row="1"
             Width="600"
             Height="600">
             <Grid.Background>
                 <ImageBrush ImageSource="/Assets/Default/Board.png" />
             </Grid.Background>
+
             <ItemsControl ItemsSource="{Binding Squares}">
 
                 <ItemsControl.ItemsPanel>
@@ -39,6 +40,14 @@
                         <Grid Background="{Binding HighlightBrush}">
 
                             <Image RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Piece, Converter={StaticResource PieceToImage}}" />
+
+                            <TextBlock
+                                Margin="1"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Panel.ZIndex="1"
+                                FontSize="14"
+                                Text="{Binding Coordinate}" />
 
                             <Rectangle Fill="{Binding OverlayBrush}" IsHitTestVisible="False" />
 
@@ -83,13 +92,52 @@
             </StackPanel>
         </Border>
 
+        <Border Grid.Row="2" Visibility="{Binding IsReplayMode, Converter={StaticResource BoolToVis}}">
+            <StackPanel>
+                <DockPanel Height="54" LastChildFill="True">
+                    <Button
+                        Width="150"
+                        MinHeight="35"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Command="{Binding ReplayBackwardsCommand}"
+                        Content="◀ "
+                        FontSize="16"
+                        Style="{StaticResource DefaultButton}" />
+                    <Button
+                        Width="150"
+                        MinHeight="35"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        Command="{Binding StopReplayCommand}"
+                        Content="Exit"
+                        FontSize="16"
+                        Style="{StaticResource DefaultButton}" />
+                    <Button
+                        Width="150"
+                        MinHeight="35"
+                        Margin="10,0,0,0"
+                        Command="{Binding ReplayForwardsCommand}"
+                        Content="▶"
+                        FontSize="16"
+                        Style="{StaticResource DefaultButton}" />
+                    <TextBlock
+                        Margin="30,3,10,0"
+                        VerticalAlignment="Top"
+                        FontSize="16"
+                        Foreground="White"
+                        Text="{Binding Username}" />
+                </DockPanel>
+            </StackPanel>
+        </Border>
+
         <Border
             Grid.Row="1"
             Grid.Column="1"
             MinWidth="200"
             Padding="20"
             Background="#181818"
-            Visibility="{Binding IsClassicalGame, Converter={StaticResource InverseBoolToVis}}">
+            Visibility="{Binding IsModifiedGame, Converter={StaticResource BoolToVis}}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

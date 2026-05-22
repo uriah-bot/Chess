@@ -20,12 +20,12 @@ namespace Chess.Service
 
         public async Task<List<GameEntity>> GetGamesByUserAsync(UserEntity user)
         {
-            return await _gameRepo.GetGamesByUserAsync(user);
+            return await _gameRepo.GetUserGamesAsync(user);
         }
 
         public Task SaveGameAsync(GameEntity newGame)
         {
-            return _gameRepo.AddGameAsync(newGame);
+            return _gameRepo.AddUserGameAsync(newGame);
         }
     }
 }

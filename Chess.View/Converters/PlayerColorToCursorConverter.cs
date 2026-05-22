@@ -1,6 +1,7 @@
 ﻿using Chess.Model;
 using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace Chess.View.Converters
 {
@@ -10,10 +11,10 @@ namespace Chess.View.Converters
         {
             if (value is PlayerColor playerColor)
             {
-                return playerColor == PlayerColor.White ? ChessCursors.WhiteCursor : ChessCursors.BlackCursor;
+                return playerColor == PlayerColor.White && playerColor != PlayerColor.None ? ChessCursors.WhiteCursor : ChessCursors.BlackCursor;
             }
 
-            return null;
+            return Cursors.Arrow;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>

@@ -8,6 +8,7 @@ namespace Chess.Service
         private Process _stockfishProcess = default;
         private StreamWriter _engineInput = default;
         private StreamReader _engineOutput = default;
+        private readonly SemaphoreSlim _stockfishLock = new SemaphoreSlim(1, 1);
 
         public void StartEngine(string pathToExe)
         {
@@ -58,33 +59,44 @@ namespace Chess.Service
                 throw new InvalidOperationException("Stockfish isn't running");
             }
 
-            ConfigureBotDifficulty(elo);
+            await _stockfishLock.WaitAsync();
 
-            await _engineInput.WriteLineAsync("isready");
-            while (true)
+            try
             {
-                string readyLine = await _engineOutput.ReadLineAsync();
+                ConfigureBotDifficulty(elo);
 
-                if (readyLine == "readyok")
+                await _engineInput.WriteLineAsync("isready");
+                while (true)
                 {
-                    break;
-                }
-            }
+                    string readyLine = await _engineOutput.ReadLineAsync();
 
-            await _engineInput.WriteLineAsync($"position fen {FEN.ToString()}");
-
-            while (true)
-            {
-                string line = await _engineOutput.ReadLineAsync();
-
-                if (line != null && line.StartsWith("bestmove"))
-                {
-                    string[] parts = line.Split(' ');
-                    if (parts.Length >= 2)
+                    if (readyLine == "readyok")
                     {
-                        return parts[1]; // example: bestmove e2e4
+                        break;
                     }
                 }
+
+                await _engineInput.WriteLineAsync($"position fen {FEN.ToString()}");
+
+                await _engineInput.WriteLineAsync("go movetime 1000");
+
+                while (true)
+                {
+                    string line = await _engineOutput.ReadLineAsync();
+
+                    if (line != null && line.StartsWith("bestmove"))
+                    {
+                        string[] parts = line.Split(' ');
+                        if (parts.Length >= 2)
+                        {
+                            return parts[1]; // example: bestmove e2e4
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                _stockfishLock.Release();
             }
         }
         public void Dispose()

@@ -1,8 +1,10 @@
 ﻿using Chess.Model;
+using Chess.Service;
 using Chess.ViewModel.Stores;
 using Chess.ViewModel.ViewModelHelper;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Chess.ViewModel
@@ -12,47 +14,78 @@ namespace Chess.ViewModel
 		private readonly IUserStore _userStore;
 		private readonly IGameManagerService _gameManager;
 		private readonly IWindowService _windowService;
+		private readonly IGameReplayRequestStore _gameReplayStore;
 
         public ObservableCollection<SquareViewModel> Squares { get; } = new ObservableCollection<SquareViewModel>();
         private List<Move> _availableMoves = new List<Move>();
         private List<Position> _markedSquares = new List<Position>();
         private Position _selectedPosition = null;
 
-        public GameViewModel(IUserStore userStore, IGameManagerService gameManagerService, IWindowService windowService)
+        private List<Board> _replayFilmstrip { get; } = new List<Board>();
+        private int _currentReplayFrame;
+        public bool IsReplayMode => _gameReplayStore.IsReplayRequested;
+        private Board CurrentRenderedBoard => IsReplayMode ? _replayFilmstrip[_currentReplayFrame] : _gameManager.Game.Board;
+
+        public GameViewModel(IUserStore userStore, IGameManagerService gameManagerService, IWindowService windowService, IGameReplayRequestStore gameReplayStore)
 		{
 			_userStore = userStore;
 			_gameManager = gameManagerService;
 			_windowService = windowService;
+			_gameReplayStore = gameReplayStore;
 
             InitializeBoard();
             RestartGame();
 
+            if (IsReplayMode)
+                return;
+
+            PauseGameCommand = new RelayCommand(o => _windowService.ShowDialog<GamePausedMenuViewModel>());
+
             _gameManager.Game.OnGameEndedByTimer += EndGame;
         }
+
+        public ICommand ReplayForwardsCommand { get; private set; }
+        public ICommand ReplayBackwardsCommand { get; private set; }
+        public ICommand StopReplayCommand { get; private set; }
+        public ICommand PauseGameCommand { get; }
 
         private void EndGame()
         {
             // A background timer might have ended the game, so we use Dispatcher
-            Application.Current.Dispatcher.Invoke(async () =>
+            Application.Current?.Dispatcher.InvokeAsync(async () =>
             {
                 _gameManager.Game.OnGameEndedByTimer -= EndGame;
 
-                await _gameManager.EndGameAsync(_userStore.CurrentUser);
+                //await _gameManager.EndGameAsync(_userStore.CurrentUser);
 
                 _windowService.ShowDialog<GameOverMenuViewModel>();
-                
-            });
+
+            }, System.Windows.Threading.DispatcherPriority.ContextIdle); // do it when all else is done in the thread;
         }
 
         private void InitializeBoard()
         {
             Squares.Clear();
-            for (int row = 0; row < 8; row++)
+
+            var isPlayingAsBlack = _gameManager.Mode == GameMode.Classical && _gameManager.UserColor == PlayerColor.Black;
+
+            int start = isPlayingAsBlack ? 7 : 0;
+            int end = isPlayingAsBlack ? -1 : 8;
+            int step = isPlayingAsBlack ? -1 : 1;
+
+            for (int row = start; row != end; row += step)
             {
-                for (int col = 0; col < 8; col++)
+                for (int col = start; col != end; col += step)
                 {
+                    string coordinate = string.Empty;
+
+                    if (row == 7 - start || col == start)
+                    {
+                        coordinate = $"{(char)('a' + col)}{8 - row}";
+                    }
+
                     // Pass the OnSquareClicked method to every square
-                    Squares.Add(new SquareViewModel(row, col, OnSquareLeftClicked, OnSquareRightClicked));
+                    Squares.Add(new SquareViewModel(row, col, coordinate, OnSquareLeftClicked, OnSquareRightClicked));
                 }
             }
         }
@@ -67,15 +100,17 @@ namespace Chess.ViewModel
             UpdateBoardVisuals();
         }
 
-        private void OnSquareLeftClicked(Position pos)
+        private async void OnSquareLeftClicked(Position pos)
         {
+            if (_gameManager.Mode == GameMode.Classical && !_gameManager.IsBoardReactive || IsReplayMode) return;
+
             if (_selectedPosition == null)
             {
                 SelectPiece(pos);
             }
             else
             {
-                TryMakeMove(pos);
+                await TryMakeMove(pos);
             }
         }
 
@@ -98,7 +133,7 @@ namespace Chess.ViewModel
             UpdateBoardVisuals(); // Refreshes images and highlights
         }
 
-        private void TryMakeMove(Position targetPos)
+        private async Task TryMakeMove(Position targetPos)
         {
             var possibleMoves = _availableMoves.Where(m => m.ToPosition == targetPos).ToList();
 
@@ -113,14 +148,6 @@ namespace Chess.ViewModel
                 _gameManager.PendingPromotionMoves = possibleMoves;
                 _windowService.ShowDialog<PromotionMenuViewModel>();
 
-                _availableMoves.Clear();
-                _selectedPosition = null;
-
-                UpdateBoardVisuals();
-            }
-            else
-            {
-                _gameManager.Game.MakeMove(possibleMoves.First());
                 _selectedPosition = null;
                 _availableMoves.Clear();
 
@@ -128,11 +155,42 @@ namespace Chess.ViewModel
 
                 if (_gameManager.Game.IsGameOver())
                 {
-                    Application.Current.Dispatcher.InvokeAsync(() =>
-                    {
-                        EndGame();
-                    }, System.Windows.Threading.DispatcherPriority.ContextIdle);
+                    EndGame();
+                    return;
                 }
+
+                await TriggerBotAsync();
+
+                return;
+            }
+
+            _gameManager.MoveHuman(possibleMoves.First());
+            _selectedPosition = null;
+            _availableMoves.Clear();
+
+            UpdateBoardVisuals();
+
+            if (_gameManager.Game.IsGameOver())
+            {
+                EndGame();
+                return;
+            }
+
+            await TriggerBotAsync();
+        }
+
+        private async Task TriggerBotAsync()
+        {
+            if (_gameManager.Mode == GameMode.Modified || _gameManager.IsBoardReactive) return;
+
+            await _gameManager.MoveStockfishAsync();
+
+            UpdateBoardVisuals();
+
+            if (_gameManager.Game.IsGameOver())
+            {
+                EndGame();
+                return;
             }
         }
 
@@ -140,7 +198,7 @@ namespace Chess.ViewModel
         {
             foreach (var square in Squares)
             {
-                square.Piece = _gameManager.Game.Board[square.Position.Row, square.Position.Column];
+                square.Piece = CurrentRenderedBoard[square.Position.Row, square.Position.Column];
 
                 if (_markedSquares.Contains(square.Position))
                 {
@@ -171,8 +229,9 @@ namespace Chess.ViewModel
         // properties for binding to the UI
         public string Username => _userStore.CurrentUser?.Username ?? "Stranger";
 		public string AIName => _gameManager.BotRating?.ToString() ?? string.Empty;
-		public bool IsClassicalGame => _gameManager.Mode == GameMode.Classical;
-        public PlayerColor CurrentPlayer => _gameManager.Game.CurrentPlayer;
+		public bool IsClassicalGame => _gameManager.Mode == GameMode.Classical && !IsReplayMode;
+		public bool IsModifiedGame => _gameManager.Mode == GameMode.Modified && !IsReplayMode;
+        public PlayerColor CurrentPlayer => _gameManager.Game?.CurrentPlayer ?? PlayerColor.White;
 
         private string _whiteUserTimerText;
 		public string WhiteUserTimerText
@@ -204,7 +263,7 @@ namespace Chess.ViewModel
 
 		private void TimersUpdated(string key, string value)
 		{
-			Application.Current.Dispatcher.BeginInvoke(() =>
+			Application.Current?.Dispatcher.BeginInvoke(() =>
 			{
 				if (key == "WhiteTime")
 				{
@@ -220,6 +279,34 @@ namespace Chess.ViewModel
 		public void RestartGame()
 		{
             _markedSquares.Clear();
+
+            if (IsReplayMode)
+            {
+                _replayFilmstrip.Clear();
+                var phantomGame = new Game(PlayerColor.White, Board.Initial());
+                _replayFilmstrip.Add(phantomGame.Board.Copy());
+
+                foreach (var moveStr in _gameReplayStore.RequestedGame.GameMoves)
+                {
+                    var move = MoveFormatter.StringToMove(phantomGame.Board, moveStr);
+                    phantomGame.MakeMove(move);
+                    _replayFilmstrip.Add(phantomGame.Board.Copy());
+                }
+
+                _currentReplayFrame = 0;
+
+                ReplayForwardsCommand = new RelayCommand(o => ForwardsReplay(), o => _currentReplayFrame < _replayFilmstrip.Count - 1);
+                ReplayBackwardsCommand = new RelayCommand(o => BackwardsReplay(), o => _currentReplayFrame > 0);
+                StopReplayCommand = new RelayCommand(o => _windowService.SwitchWindow<AppBaseViewModel>());
+
+                _gameManager.UserColor = _gameReplayStore.RequestedGame.UserPlayedAs.Value;
+
+                InitializeBoard();
+                UpdateBoardVisuals();
+
+                return;
+            }
+
             _gameManager.ConfigurateGame();
 
             if (_gameManager.Modifiers.Any(m => m.Modifier == ModifierType.TimeLimit))
@@ -232,8 +319,23 @@ namespace Chess.ViewModel
             }
 
             UpdateBoardVisuals();
+
+            _ = TriggerBotAsync();
         }
 
+        private void BackwardsReplay()
+        {
+            _currentReplayFrame--;
+            _markedSquares.Clear();
+            UpdateBoardVisuals();
+        }
+
+        private void ForwardsReplay()
+        {
+            _currentReplayFrame++;
+            _markedSquares.Clear();
+            UpdateBoardVisuals();
+        }
 
         public override void Dispose()
         {
@@ -241,6 +343,9 @@ namespace Chess.ViewModel
             {
                 _gameManager.Game.OnModifierDataUpdated -= TimersUpdated;
             }
+
+            _gameManager.UserColor = PlayerColor.White;
+            _gameReplayStore.RequestedGame = null;
 
             base.Dispose();
         }

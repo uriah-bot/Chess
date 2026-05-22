@@ -16,8 +16,8 @@ namespace Chess.Data
 
         public interface IGameRepository
         {
-            Task<List<GameEntity>> GetGamesByUserAsync(UserEntity user);
-            Task AddGameAsync(GameEntity newGame);
+            Task<List<GameEntity>> GetUserGamesAsync(UserEntity user);
+            Task AddUserGameAsync(GameEntity newGame);
         }
 
         public interface IRadioChannelRepository

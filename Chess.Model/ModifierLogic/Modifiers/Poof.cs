@@ -36,7 +36,7 @@
 
         public void PoofPiece(Move move)
         {
-            if (_game.HalfMoves % 2*PoofCycle != 2*PoofCycle-1 && _game.HalfMoves % 2*PoofCycle != 0)
+            if (_game.HalfMoves % (2*PoofCycle) != 2*PoofCycle-1 && _game.HalfMoves % (2*PoofCycle) != 0)
             {
                 return;
             }

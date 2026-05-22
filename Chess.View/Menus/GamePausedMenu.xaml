@@ -20,7 +20,7 @@
                 <Grid.Style>
                     <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding GameMode}" Value="Standard">
+                            <DataTrigger Binding="{Binding Mode}" Value="Classical">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -71,7 +71,7 @@
                 <Grid.Style>
                     <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding GameMode}" Value="Modified">
+                            <DataTrigger Binding="{Binding Mode}" Value="Modified">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -84,23 +84,32 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock
-                    Grid.ColumnSpan="2"
+                    Grid.ColumnSpan="3"
                     HorizontalAlignment="Center"
                     FontSize="28"
                     Style="{StaticResource ResourceKey=MenuTextBlockStyle}"
                     Text="GAME PAUSED" />
                 <Button
                     Grid.Row="1"
+                    Grid.Column="1"
                     Width="80"
                     Height="30"
-                    Command="{Binding RestartCommand}"
+                    Command="{Binding PlayAgainCommand}"
                     Content="RESTART"
                     Style="{StaticResource ResourceKey=MenuButtonStyle}" />
                 <Button
                     Grid.Row="1"
-                    Grid.Column="1"
+                    Width="80"
+                    Height="30"
+                    Command="{Binding ExitCommand}"
+                    Content="EXIT"
+                    Style="{StaticResource ResourceKey=MenuButtonStyle}" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="2"
                     Width="80"
                     Height="30"
                     Command="{Binding ContinueCommand}"

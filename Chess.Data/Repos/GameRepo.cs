@@ -7,9 +7,9 @@ namespace Chess.Data
 {
     public class GameRepo : IGameRepository
     {
-        public async Task<List<GameEntity>> GetGamesByUserAsync(UserEntity user)
+        public async Task<List<GameEntity>> GetUserGamesAsync(UserEntity user)
         {
-            string sql = "SELECT * FROM Games WHERE UserID =?";
+            string sql = "SELECT * FROM Games WHERE UserID =? ORDER BY ID DESC";
 
             DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql, new OleDbParameter("@userId", user.Id));
 
@@ -18,7 +18,7 @@ namespace Chess.Data
             {
                 foreach (DataRow game in dt.Rows)
                 {
-                    string rawMoves = game["GameFENs"].ToString();
+                    string rawMoves = game["GameMoves"].ToString();
                     // removes empty strings returned   e.g ",," with ',' Split
                     List<string> moves = rawMoves.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -50,15 +50,15 @@ namespace Chess.Data
             return null;
         }
 
-        public async Task AddGameAsync(GameEntity newGame)
+        public async Task AddUserGameAsync(GameEntity newGame)
         {
-            string sql = "INSERT INTO Games (UserID, GameFENs, UserPlayedAs, BotRating, Result, DatePlayed, EloDelta) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            string sql = "INSERT INTO Games (UserID, GameMoves, UserPlayedAs, BotRating, Result, DatePlayed, EloDelta) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             var gameMoves = string.Join("|", newGame.GameMoves);
 
             await DbConnectionProvider.ExecuteCommandAsync(sql,
                 new OleDbParameter("@userId", newGame.UserId),
-                new OleDbParameter("@gameFENs", gameMoves),
+                new OleDbParameter("@gameMoves", gameMoves),
                 new OleDbParameter("@userPlayedAs", newGame.UserPlayedAs),
                 new OleDbParameter("@botRating", newGame.BotRating),
                 new OleDbParameter("@result", newGame.Result.ToString()),

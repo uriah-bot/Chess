@@ -10,6 +10,8 @@ namespace Chess.ViewModel
     {
         public Position Position { get; }
 
+        public string Coordinate { get; }
+
         private Piece _piece;
         public Piece Piece
         {
@@ -43,14 +45,18 @@ namespace Chess.ViewModel
             }
         }
 
-        public SquareViewModel(int row, int column, Action<Position> OnLeftClicked, Action<Position> OnRightClicked)
+        public SquareViewModel(int row, int column, string coordinate, Action<Position> OnLeftClicked, Action<Position> OnRightClicked)
         {
             Position = new Position(row, column);
             SquareLeftClickedCommand = new RelayCommand(o => OnLeftClicked(Position));
             SquareRightClickedCommand = new RelayCommand(o => OnRightClicked(Position));
+
+            Coordinate = coordinate;
+
+            OnPropertyChanged(Coordinate);
         }
 
-        public ICommand SquareLeftClickedCommand { get; set; }
+        public ICommand SquareLeftClickedCommand { get; }
         public ICommand SquareRightClickedCommand { get; }
     }
 }

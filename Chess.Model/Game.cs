@@ -2,7 +2,6 @@
 {
     public class Game
     {
-
         public Board Board { get; }
         public PlayerColor CurrentPlayer { get; private set; }
         public event Action OnGameEndedByTimer;
@@ -167,9 +166,9 @@
             }
         }
 
-        public void HasResigned()
+        public void Resign(PlayerColor resigning)
         {
-            Result = Result.Resignation(CurrentPlayer);
+            Result = Result.Resignation(resigning);
         }
 
         public bool IsGameOver()

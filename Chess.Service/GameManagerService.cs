@@ -7,17 +7,15 @@ namespace Chess.ViewModel.ViewModelHelper
     {
         Game Game { get; set; }
         GameMode Mode { get; set; }
-        Move LastMove { get; set; }
         List<Move> PendingPromotionMoves { get; set; }
         PlayerColor UserColor { get; set; }
         int? BotRating { get; set; }
         List<ActiveModifier> Modifiers { get; set; }
-        DateTime Time { get; set; }
-        bool IsBoardReactive { get; set; }
+        bool IsBoardReactive { get; }
         void ConfigurateGame();
         Task EndGameAsync(UserEntity currentUser);
-        void HumanMoveAsync(Move move);
-        Task StockfishMoveAsync();
+        void MoveHuman(Move move);
+        Task MoveStockfishAsync();
     }
 
     public class GameManagerService : IGameManagerService
@@ -26,16 +24,16 @@ namespace Chess.ViewModel.ViewModelHelper
         private readonly StockfishCommunicationService _stockfishCommunicationService;
         private readonly IGameService _gameService;
 
+        public Game Game { get; set; }
         public GameMode Mode { get; set; } = GameMode.Classical;
         public PlayerColor UserColor { get; set; } = PlayerColor.White;
-        public bool IsBoardReactive { get; set; }
-        public int? BotRating { get; set; }
-        public DateTime Time { get; set; }
-        public Move LastMove { get; set; }
+        public bool IsBoardReactive { get; private set; }
         public List<Move> PendingPromotionMoves { get; set; } = new List<Move>();
-        public Queue<string> Moves { get; set; } = new Queue<string>();
         public List<ActiveModifier> Modifiers { get; set; } = new List<ActiveModifier>();
-        public Game Game { get; set; }
+        public int? BotRating { get; set; }
+        public Queue<string> Moves { get; set; } = new Queue<string>();
+        private DateTime Time { get; set; }
+        private int? EloDelta { get; set; }
 
         public GameManagerService(IGameService gameService, StockfishCommunicationService stockfishCommunicationService)
         {
@@ -61,6 +59,7 @@ namespace Chess.ViewModel.ViewModelHelper
         public async Task EndGameAsync(UserEntity user)
         {
             Cleanup();
+            EloDelta = CalculateEloChange(Game);
 
             GameEntity currentGame = new GameEntity
             {
@@ -68,20 +67,20 @@ namespace Chess.ViewModel.ViewModelHelper
                 UserPlayedAs = Mode == GameMode.Classical ? UserColor : null,
                 BotRating = Mode == GameMode.Classical ? BotRating : null,
                 Modifiers = Modifiers.Select(m => m.Modifier).ToList(),
-                Result = Game.Result.winner switch
+                Result = Mode == GameMode.Modified ? null : Game.Result.winner switch
                 {
                     var winner when winner == UserColor => "Win",
                     PlayerColor.None => "Draw",
                     _ => "Loss"
                 },
-                EloDelta = CalculateEloChange(Game),
+                EloDelta = EloDelta,
                 DatePlayed = Time
             };
 
-            while (Moves.Count > 0)
-            {
-                currentGame.GameMoves.Add(Moves.Dequeue());
-            }
+            //while (Moves.Count > 0)
+            //{
+            //    currentGame.GameMoves.Add(Moves.Dequeue());
+            //}
 
             await _gameService.SaveGameAsync(currentGame); 
         }
@@ -105,21 +104,15 @@ namespace Chess.ViewModel.ViewModelHelper
             return (int)Math.Round(multi * (score + C));
         }
 
-        public void HumanMoveAsync(Move move)
+        public void MoveHuman(Move move)
         {
-            if (!IsBoardReactive)
-                return;
-
             Game.MakeMove(move);
             Moves.Enqueue(MoveFormatter.MoveToString(move));
-            LastMove = Game.Result == null ? move : null;
+            IsBoardReactive = Mode == GameMode.Classical ? !IsBoardReactive : IsBoardReactive;
         }
 
-        public async Task StockfishMoveAsync()
+        public async Task MoveStockfishAsync()
         {
-            if (IsBoardReactive)
-                return;
-
             var fen = new FEN(Game.Board, Game.CurrentPlayer);
 
             string bestMove = await _stockfishCommunicationService.GetBotMoveAsync(fen, BotRating);
@@ -127,10 +120,11 @@ namespace Chess.ViewModel.ViewModelHelper
             var move = MoveFormatter.ParseStockfishMove(Game.Board, bestMove);
             Game.MakeMove(move);
             Moves.Enqueue(MoveFormatter.MoveToString(move));
-            LastMove = move;
+            IsBoardReactive = Mode == GameMode.Classical ? !IsBoardReactive : IsBoardReactive;
         }
 
-        public void Cleanup()
+
+        private void Cleanup()
         {
             Game.EndMatch();
             _stockfishCommunicationService?.Dispose();

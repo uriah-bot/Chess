@@ -12,8 +12,12 @@ namespace Chess.Service
         // Will be used for DataBase too, to convert chess notation to position and vice versa
         public static Move ParseStockfishMove(Board board, string stockfishOutput)
         {
+            stockfishOutput = stockfishOutput.Trim();
+
             if (string.IsNullOrWhiteSpace(stockfishOutput) || stockfishOutput.Length < 4)
                 throw new ArgumentException("Invalid Stockfish output.");
+            if (stockfishOutput.Contains("(none)") || stockfishOutput.Contains("0000"))
+                return null;
 
             string startSquare = stockfishOutput.Substring(0, 2);
             string targetSquare = stockfishOutput.Substring(2, 2);
@@ -64,12 +68,12 @@ namespace Chess.Service
             string startSquare = move.Substring(0, 2);
             string targetSquare = move.Substring(4, 2);
 
-            var fromPosition = new Position(startSquare[0], startSquare[1]);
-            var toPosition = new Position(targetSquare[0], targetSquare[1]);
+            var fromPosition = new Position(startSquare[1] - '0', startSquare[0] - '0');
+            var toPosition = new Position(targetSquare[1] - '0', targetSquare[0] - '0');
 
             var pieceType = board[fromPosition].Type;
 
-            if ("qrnb".Contains(move.ElementAt(6)))
+            if ("qrnb".Contains(move.ElementAtOrDefault(6)))
             {
                 char lastLetter = move.ElementAt(6);
                 return GetPromotionMove(fromPosition, toPosition, lastLetter);
