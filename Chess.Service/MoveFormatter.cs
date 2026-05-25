@@ -68,8 +68,8 @@ namespace Chess.Service
             string startSquare = move.Substring(0, 2);
             string targetSquare = move.Substring(4, 2);
 
-            var fromPosition = new Position(startSquare[1] - '0', startSquare[0] - '0');
-            var toPosition = new Position(targetSquare[1] - '0', targetSquare[0] - '0');
+            var fromPosition = new Position(int.Parse(startSquare[0].ToString()), int.Parse(startSquare[1].ToString()));
+            var toPosition = new Position(int.Parse(targetSquare[0].ToString()), int.Parse(targetSquare[1].ToString()));
 
             var pieceType = board[fromPosition].Type;
 
@@ -107,7 +107,7 @@ namespace Chess.Service
             return new NormalMove(fromPosition, toPosition);
         }
 
-        private static Move GetPromotionMove(Position fromPosition, Position toPosition, char lastLetter)
+        private static PawnPromotion GetPromotionMove(Position fromPosition, Position toPosition, char lastLetter)
         {
             var newPieceType = lastLetter switch
             {
@@ -150,7 +150,7 @@ namespace Chess.Service
             var toRow = move.ToPosition.Row.ToString();
             var toCol = move.ToPosition.Column.ToString();
 
-            return $"{fromRow}{fromCol}->{toRow}{toCol}{(move is PawnPromotion ? $"={GetPromotedPieceType((PawnPromotion)move)}" : "")}";
+            return $"{fromRow}{fromCol}->{toRow}{toCol}{(move is PawnPromotion ? $"={GetPromotedPieceType((PawnPromotion)move)}" : string.Empty)}";
         }
     }
 }

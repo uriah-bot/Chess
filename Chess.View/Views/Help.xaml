@@ -31,23 +31,24 @@
             <Border Style="{StaticResource HelpCard}">
                 <StackPanel>
                     <DockPanel LastChildFill="False">
-                        <TextBlock Style="{StaticResource SectionHeader}" Text="Video Tutorial For Contributors" />
+                        <TextBlock Style="{StaticResource SectionHeader}" Text="Video Tutorial" />
                         <Button
                             Width="40"
                             Height="20"
-                            Margin="230,0,0,12"
                             Command="{Binding ShowVideoCommand}"
                             Content="Show"
+                            DockPanel.Dock="Right"
                             Style="{StaticResource DefaultButton}" />
                         <Button
                             Width="40"
                             Height="20"
-                            Margin="5,0,0,12"
-                            Command="{Binding CollapseVideoCommand}"
+                            Margin="0,0,5,0"
+                            Click="CollapseVideo_Click"
                             Content="Hide"
+                            DockPanel.Dock="Right"
                             Style="{StaticResource DefaultButton}" />
                     </DockPanel>
-                    <Grid Panel.ZIndex="100" Visibility="{Binding VideoGridVisible, Converter={StaticResource BoolToVis}}">
+                    <Grid Panel.ZIndex="100" Visibility="{Binding IsVideoVisible, Converter={StaticResource BoolToVis}}">
                         <StackPanel Margin="0,15,0,0">
                             <MediaElement
                                 x:Name="TutorialVideo"
@@ -66,7 +67,7 @@
                                     Margin="5"
                                     Background="#333333"
                                     BorderThickness="0"
-                                    Command="{Binding BackFiveSecCommand}"
+                                    Click="Backwards5Sec_Click"
                                     Content="-5s"
                                     Cursor="Hand"
                                     FontSize="18"
@@ -77,7 +78,7 @@
                                     Margin="5"
                                     Background="#333333"
                                     BorderThickness="0"
-                                    Command="{Binding PlayVideoCommand}"
+                                    Click="PlayVideo_Click"
                                     Content="&#xE768;"
                                     Cursor="Hand"
                                     FontFamily="Segoe MDL2 Assets"
@@ -89,7 +90,7 @@
                                     Margin="5"
                                     Background="#333333"
                                     BorderThickness="0"
-                                    Command="{Binding PauseVideoCommand}"
+                                    Click="PauseVideo_Click"
                                     Content="&#xE769;"
                                     Cursor="Hand"
                                     FontFamily="Segoe MDL2 Assets"
@@ -101,7 +102,7 @@
                                     Margin="5"
                                     Background="#333333"
                                     BorderThickness="0"
-                                    Command="{Binding ForwardsFiveSecCommand}"
+                                    Click="Forwards5Sec_Click"
                                     Content="+5s"
                                     Cursor="Hand"
                                     FontSize="18"
@@ -209,11 +210,11 @@
                         BorderThickness="1"
                         CornerRadius="4">
                         <TextBox
-                            x:Name="EmailSubject"
                             Padding="8"
                             Background="Transparent"
                             BorderThickness="0"
-                            Foreground="White" />
+                            Foreground="White"
+                            Text="{Binding Subject, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </Border>
                     <TextBlock
                         Margin="0,0,0,5"
@@ -227,20 +228,20 @@
                         BorderThickness="1"
                         CornerRadius="4">
                         <TextBox
-                            x:Name="EmailBody"
                             Height="100"
                             Padding="8"
                             AcceptsReturn="True"
                             Background="Transparent"
                             BorderThickness="0"
                             Foreground="White"
+                            Text="{Binding Body, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             TextWrapping="Wrap" />
                     </Border>
                     <Button
                         Width="120"
                         Height="30"
                         HorizontalAlignment="Left"
-                        Command="{Binding SendEmailToDeveloper_Click}"
+                        Command="{Binding SendEmailCommand}"
                         Content="Send Message"
                         Style="{StaticResource DefaultButton}" />
                 </StackPanel>

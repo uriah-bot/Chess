@@ -17,56 +17,62 @@ namespace Chess.ViewModel
             _emailService = emailService;
 
             ShowVideoCommand = new RelayCommand(o => ShowVideo());
-            CollapseVideoCommand = new RelayCommand(o => CollapseVideo());
-            BackFiveSecCommand = new RelayCommand(o => BackFiveSec());
-            ForwardsFiveSecCommand = new RelayCommand(o => ForwardsFiveSec());
-            CloseVideoCommand = new RelayCommand(o => CloseVideo());
-            PlayVideoCommand = new RelayCommand(o => PlayVideo());
             SendEmailCommand = new RelayCommand(o => SendEmail());
         }
 
         public ICommand ShowVideoCommand { get; }
-        public ICommand CollapseVideoCommand { get; }
-        public ICommand BackFiveSecCommand { get; }
-        public ICommand ForwardsFiveSecCommand { get; }
-        public ICommand CloseVideoCommand { get; }
-        public ICommand PlayVideoCommand { get; }
         public ICommand SendEmailCommand { get; }
+
+        public bool _isVideoVisible = false;
+        public bool IsVideoVisible
+        {
+            get => _isVideoVisible;
+            set
+            {
+                _isVideoVisible = value;
+                OnPropertyChanged(nameof(IsVideoVisible));
+            }
+        }
+
+        private string _subject;
+        public string Subject
+        {
+            get
+            {
+                return _subject;
+            }
+            set
+            {
+                _subject = value;
+                OnPropertyChanged(nameof(Subject));
+            }
+        }
+
+        private string _body;
+        public string Body
+        {
+            get
+            {
+                return _body;
+            }
+            set
+            {
+                _body = value;
+                OnPropertyChanged(nameof(Body));
+            }
+        }
 
         private async void SendEmail()
         {
-            //await _emailService.SendEmail();
+            await _emailService.SendEmail(Subject, Body);
+            Subject = string.Empty;
+            Body = string.Empty;
             return;
-        }
-
-        private void PlayVideo()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CloseVideo()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ForwardsFiveSec()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void BackFiveSec()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CollapseVideo()
-        {
-            throw new NotImplementedException();
         }
 
         private void ShowVideo()
         {
-            throw new NotImplementedException();
+            IsVideoVisible = true;
         }
     }
 }

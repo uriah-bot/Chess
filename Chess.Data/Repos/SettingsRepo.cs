@@ -35,7 +35,7 @@ namespace Chess.Data
             string sql = "UPDATE Settings SET Volume=?, CurrentSong=?, StopRadioOnMatches=?, SoundEffectOnMove=?, DisplayCoordinates=? WHERE UserID=?";
 
             await DbConnectionProvider.ExecuteCommandAsync(sql,
-                new OleDbParameter("@volumn", user.Settings.Volume),
+                new OleDbParameter("@volume", user.Settings.Volume),
                 new OleDbParameter("@currentSong", user.Settings.CurrentSong),
                 new OleDbParameter("@stopRadioOnMatches", user.Settings.StopRadioOnMatches),
                 new OleDbParameter("@soundEffectOnMove", user.Settings.SoundEffectOnMove),

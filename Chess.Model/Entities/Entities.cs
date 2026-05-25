@@ -23,7 +23,7 @@
     {
         public int UserId { get; set; }
         public int? EloDelta { get; set; }
-        public List<string> GameMoves { get; set; }
+        public List<string> GameMoves { get; set; } = new List<string>();
         public PlayerColor? UserPlayedAs { get; set; }
         public int? BotRating { get; set; }
         public string Result { get; set; } // playercolor -> User

@@ -36,8 +36,8 @@ namespace Chess.Data
                         EloDelta = game["EloDelta"] != DBNull.Value && game["EloDelta"] != null ? (int)game["EloDelta"] : null,
                         UserId = user.Id,
                         UserPlayedAs = Enum.TryParse<PlayerColor>(game["UserPlayedAs"]?.ToString(), out var color) ? color : null,
-                        Result = game["Result"].ToString(),
-                        //DatePlayed = new DateTime((long)game["Date"]),
+                        Result = game["Result"]?.ToString(),
+                        DatePlayed = (DateTime)game["Date"],
                         BotRating = game["BotRating"] != DBNull.Value && game["BotRating"] != null ? (int)game["BotRating"] : null,
                     };
 
@@ -52,18 +52,20 @@ namespace Chess.Data
 
         public async Task AddUserGameAsync(GameEntity newGame)
         {
-            string sql = "INSERT INTO Games (UserID, GameMoves, UserPlayedAs, BotRating, Result, DatePlayed, EloDelta) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            string sql = "INSERT INTO Games (UserID, GameMoves, Modifiers, UserPlayedAs, BotRating, Result, [Date], EloDelta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             var gameMoves = string.Join("|", newGame.GameMoves);
+            var modifiers = newGame.Modifiers != null ? string.Join("|", newGame.Modifiers.Select(m => m.ToString())) : string.Empty;
 
             await DbConnectionProvider.ExecuteCommandAsync(sql,
                 new OleDbParameter("@userId", newGame.UserId),
                 new OleDbParameter("@gameMoves", gameMoves),
-                new OleDbParameter("@userPlayedAs", newGame.UserPlayedAs),
-                new OleDbParameter("@botRating", newGame.BotRating),
-                new OleDbParameter("@result", newGame.Result.ToString()),
-                new OleDbParameter("@date", newGame.DatePlayed),
-                new OleDbParameter("@eloDelta", newGame.EloDelta)
+                new OleDbParameter("@modifiers", modifiers),
+                new OleDbParameter("@userPlayedAs", newGame.UserPlayedAs.ToString()),
+                new OleDbParameter("@botRating", (object)newGame.BotRating ?? DBNull.Value),
+                new OleDbParameter("@result", (object)newGame.Result?.ToString() ?? DBNull.Value),
+                new OleDbParameter("@date", newGame.DatePlayed.Date),
+                new OleDbParameter("@eloDelta", (object)newGame.EloDelta ?? DBNull.Value)
             );
         }
     }

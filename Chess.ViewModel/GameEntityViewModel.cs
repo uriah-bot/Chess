@@ -1,4 +1,5 @@
 ﻿using Chess.Model;
+using Chess.ViewModel.Stores;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
@@ -32,10 +33,10 @@ namespace Chess.ViewModel
         {
             GameMode = game.BotRating == null ? "Friendly Battle" : "Player vs AI";
             AIName = game.BotRating == null ? string.Join(", ", game.Modifiers.Select(m => m != ModifierType.Empty ? m.ToString() : string.Empty)) : "Stockfish (" + game.BotRating.ToString() + ")";
-            UserColor = game.BotRating == null ? string.Empty : game.UserPlayedAs.ToString();
+            UserColor = game.BotRating == null ? "White" : game.UserPlayedAs.ToString();
             EloDelta = game.EloDelta.HasValue && game.EloDelta >= 0 ? $"+{game.EloDelta}" : game.EloDelta.ToString();
             Result = game.BotRating == null ? "" : game.Result.ToString();
-            Date = game.DatePlayed.ToString("yy-MM-dd--hh--mm");
+            Date = game.DatePlayed.ToString("dd/MM/yyyy|hh--mm");
 
             ReplayCommand = new RelayCommand(o => replayAction());
         }

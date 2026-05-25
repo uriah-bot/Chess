@@ -1,5 +1,6 @@
 ﻿using Chess.Model;
 using Chess.Service;
+using static Chess.Data.Repositories;
 
 namespace Chess.ViewModel.ViewModelHelper
 {
@@ -10,12 +11,14 @@ namespace Chess.ViewModel.ViewModelHelper
         List<Move> PendingPromotionMoves { get; set; }
         PlayerColor UserColor { get; set; }
         int? BotRating { get; set; }
+        int? EloDelta { get; set; }
         List<ActiveModifier> Modifiers { get; set; }
         bool IsBoardReactive { get; }
         void ConfigurateGame();
         Task EndGameAsync(UserEntity currentUser);
         void MoveHuman(Move move);
         Task MoveStockfishAsync();
+        void CalculateEloChange();
     }
 
     public class GameManagerService : IGameManagerService
@@ -23,6 +26,7 @@ namespace Chess.ViewModel.ViewModelHelper
         private readonly Random rnd = new Random();
         private readonly StockfishCommunicationService _stockfishCommunicationService;
         private readonly IGameService _gameService;
+        private readonly IUserRepository _userRepo;
 
         public Game Game { get; set; }
         public GameMode Mode { get; set; } = GameMode.Classical;
@@ -33,11 +37,12 @@ namespace Chess.ViewModel.ViewModelHelper
         public int? BotRating { get; set; }
         public Queue<string> Moves { get; set; } = new Queue<string>();
         private DateTime Time { get; set; }
-        private int? EloDelta { get; set; }
+        public int? EloDelta { get; set; }
 
-        public GameManagerService(IGameService gameService, StockfishCommunicationService stockfishCommunicationService)
+        public GameManagerService(IGameService gameService, StockfishCommunicationService stockfishCommunicationService, IUserRepository userRepo)
         {
             _gameService = gameService;
+            _userRepo = userRepo;
             _stockfishCommunicationService = stockfishCommunicationService;
         }
 
@@ -59,12 +64,11 @@ namespace Chess.ViewModel.ViewModelHelper
         public async Task EndGameAsync(UserEntity user)
         {
             Cleanup();
-            EloDelta = CalculateEloChange(Game);
 
             GameEntity currentGame = new GameEntity
             {
                 UserId = user.Id,
-                UserPlayedAs = Mode == GameMode.Classical ? UserColor : null,
+                UserPlayedAs = Mode == GameMode.Classical ? UserColor : PlayerColor.White,
                 BotRating = Mode == GameMode.Classical ? BotRating : null,
                 Modifiers = Modifiers.Select(m => m.Modifier).ToList(),
                 Result = Mode == GameMode.Modified ? null : Game.Result.winner switch
@@ -77,23 +81,26 @@ namespace Chess.ViewModel.ViewModelHelper
                 DatePlayed = Time
             };
 
-            //while (Moves.Count > 0)
-            //{
-            //    currentGame.GameMoves.Add(Moves.Dequeue());
-            //}
+            while (Moves.Count > 0)
+            {
+                currentGame.GameMoves.Add(Moves.Dequeue());
+            }
 
-            await _gameService.SaveGameAsync(currentGame); 
+            await _gameService.SaveGameAsync(currentGame);
         }
 
-        private int? CalculateEloChange(Game game)
+        public void CalculateEloChange()
         {
             if (Mode != GameMode.Classical || BotRating == null)
-                return null;
+            {
+                EloDelta = null;
+                return;
+            }
 
             int C = rnd.Next(5, 15);
 
             var score = BotRating.Value / 100;
-            var multi = game.Result.winner switch
+            var multi = Game.Result.winner switch
             {
                 PlayerColor.None => 0,
                 var winner when winner == UserColor && BotRating >= 1800 => 0.6,
@@ -101,7 +108,7 @@ namespace Chess.ViewModel.ViewModelHelper
                 _ => -0.9
             };
 
-            return (int)Math.Round(multi * (score + C));
+            EloDelta = (int)Math.Round(multi * (score + C));
         }
 
         public void MoveHuman(Move move)

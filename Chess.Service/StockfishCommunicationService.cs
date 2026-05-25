@@ -5,9 +5,9 @@ namespace Chess.Service
 {
     public class StockfishCommunicationService : IDisposable
     {
-        private Process _stockfishProcess = default;
-        private StreamWriter _engineInput = default;
-        private StreamReader _engineOutput = default;
+        private Process _stockfishProcess;
+        private StreamWriter _engineInput;
+        private StreamReader _engineOutput;
         private readonly SemaphoreSlim _stockfishLock = new SemaphoreSlim(1, 1);
 
         public void StartEngine(string pathToExe)
@@ -42,14 +42,23 @@ namespace Chess.Service
 
         public void ConfigureBotDifficulty(int? estimatedElo)
         {
-            if (estimatedElo == null || estimatedElo < 1320)
+            if (estimatedElo == null)
             {
                 return;
             }
 
+            int safeElo = Math.Clamp(estimatedElo.Value, 1320, 3190);
+
             // modern Elo limiter (Min is ~1320)
             SetEngineOption("UCI_LimitStrength", "true");
-            SetEngineOption("UCI_Elo", $"{estimatedElo}");
+            SetEngineOption("UCI_Elo", $"{safeElo}");
+
+            // if the Elo is below 1320, we can use the old skill level limiter to get a weaker bot (Min is 0)
+            if (estimatedElo < 1320)
+            {
+                SetEngineOption("UCI_LimitStrength", "false");
+                SetEngineOption("Skill Level", "1");
+            }
         }
 
         public async Task<string> GetBotMoveAsync(FEN FEN, int? elo = null)
@@ -78,7 +87,15 @@ namespace Chess.Service
 
                 await _engineInput.WriteLineAsync($"position fen {FEN.ToString()}");
 
-                await _engineInput.WriteLineAsync("go movetime 1000");
+                // Scale the depth based on the requested ELO
+                if (elo <= 1000)
+                    await _engineInput.WriteLineAsync("go depth 3"); // shallow, misses simple tactics
+                else if (elo <= 1500)
+                    await _engineInput.WriteLineAsync("go depth 5"); // club player depth
+                else if (elo <= 2000)
+                    await _engineInput.WriteLineAsync("go depth 7"); // tournament player depth
+                else
+                    await _engineInput.WriteLineAsync("go depth 12"); // grandmaster level depth
 
                 while (true)
                 {
@@ -99,6 +116,7 @@ namespace Chess.Service
                 _stockfishLock.Release();
             }
         }
+
         public void Dispose()
         {
             if ( _stockfishProcess != null && !_stockfishProcess.HasExited )

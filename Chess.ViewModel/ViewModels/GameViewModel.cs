@@ -33,6 +33,9 @@ namespace Chess.ViewModel
 			_windowService = windowService;
 			_gameReplayStore = gameReplayStore;
 
+            // basically changing (because of mode) the usercolor or maintaining if restarted the game
+            _gameManager.UserColor = _gameManager.Mode != GameMode.Classical ? PlayerColor.White : _gameManager.UserColor;
+
             InitializeBoard();
             RestartGame();
 
@@ -56,7 +59,10 @@ namespace Chess.ViewModel
             {
                 _gameManager.Game.OnGameEndedByTimer -= EndGame;
 
-                //await _gameManager.EndGameAsync(_userStore.CurrentUser);
+
+                _userStore.UpdateOnGameEnd(_gameManager);
+
+                await _gameManager.EndGameAsync(_userStore.CurrentUser);
 
                 _windowService.ShowDialog<GameOverMenuViewModel>();
 
@@ -344,7 +350,6 @@ namespace Chess.ViewModel
                 _gameManager.Game.OnModifierDataUpdated -= TimersUpdated;
             }
 
-            _gameManager.UserColor = PlayerColor.White;
             _gameReplayStore.RequestedGame = null;
 
             base.Dispose();

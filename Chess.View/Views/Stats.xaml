@@ -181,7 +181,7 @@
                                             HorizontalAlignment="Right"
                                             FontSize="11"
                                             Foreground="Gray"
-                                            Text="{Binding Time}" />
+                                            Text="{Binding Date}" />
                                     </StackPanel>
 
                                     <Button

@@ -32,7 +32,7 @@ namespace Chess.ViewModel
         public ICommand SelectBotCommand { get; }
 
         public PlayerColor UserColor { get; set; } = PlayerColor.White;
-        public int SelectedBotElo { get; set; } = 1200;
+        public int SelectedBotElo { get; set; } = 1400;
 
         private void SelectColor(object o)
         {
@@ -48,9 +48,11 @@ namespace Chess.ViewModel
 
         private void SelectBot(object o)
         {
-            var botElo = o as int?;
-
-            SelectedBotElo = botElo ?? -1;
+            if (int.TryParse(o as string, out var result))
+            {
+                SelectedBotElo = result;
+                return;
+            }
         }
 
         public void StartClassicalGame()

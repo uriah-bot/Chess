@@ -188,28 +188,28 @@
                         Text="Stockfish Difficulty:" />
                     <UniformGrid Margin="0,0,0,30" Columns="2">
                         <RadioButton
-                            Command="{Binding BotEloSelectedCommand}"
-                            CommandParameter="800"
+                            Command="{Binding SelectBotCommand}"
+                            CommandParameter="1200"
                             GroupName="EloGroup"
                             Style="{StaticResource SelectionCard}">
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
-                                Text="Beginner (800)" />
+                                Text="Beginner (1200)" />
                         </RadioButton>
                         <RadioButton
-                            Command="{Binding BotEloSelectedCommand}"
-                            CommandParameter="1200"
+                            Command="{Binding SelectBotCommand}"
+                            CommandParameter="1400"
                             GroupName="EloGroup"
                             IsChecked="True"
                             Style="{StaticResource SelectionCard}">
                             <TextBlock
                                 FontSize="14"
                                 FontWeight="Bold"
-                                Text="Amateur (1200)" />
+                                Text="Amateur (1400)" />
                         </RadioButton>
                         <RadioButton
-                            Command="{Binding BotEloSelectedCommand}"
+                            Command="{Binding SelectBotCommand}"
                             CommandParameter="1600"
                             GroupName="EloGroup"
                             Style="{StaticResource SelectionCard}">
@@ -219,7 +219,7 @@
                                 Text="Intermediate (1600)" />
                         </RadioButton>
                         <RadioButton
-                            Command="{Binding BotEloSelectedCommand}"
+                            Command="{Binding SelectBotCommand}"
                             CommandParameter="2000"
                             GroupName="EloGroup"
                             Style="{StaticResource SelectionCard}">
@@ -229,7 +229,7 @@
                                 Text="Advanced (2000)" />
                         </RadioButton>
                         <RadioButton
-                            Command="{Binding BotEloSelectedCommand}"
+                            Command="{Binding SelectBotCommand}"
                             CommandParameter="2500"
                             GroupName="EloGroup"
                             Style="{StaticResource SelectionCard}">
@@ -239,7 +239,7 @@
                                 Text="Master (2500)" />
                         </RadioButton>
                         <RadioButton
-                            Command="{Binding BotEloSelectedCommand}"
+                            Command="{Binding SelectBotCommand}"
                             CommandParameter="3200"
                             GroupName="EloGroup"
                             Style="{StaticResource SelectionCard}">

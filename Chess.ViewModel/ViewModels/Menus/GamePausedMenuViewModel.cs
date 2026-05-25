@@ -35,13 +35,20 @@ namespace Chess.ViewModel
             Mode = _gameManagerService.Mode == GameMode.Classical ? "Classical" : "Modified";
 
             ContinueCommand = new RelayCommand(o => RequestClose?.Invoke());
-            ExitCommand = new RelayCommand(o => { RequestClose?.Invoke(); _windowService.SwitchWindow<AppBaseViewModel>(); });
+            ExitCommand = new RelayCommand(async o =>
+            {
+                await _gameManagerService.EndGameAsync(_userStore.CurrentUser);
+                RequestClose?.Invoke();
+                _windowService.SwitchWindow<AppBaseViewModel>();
+            });
             PlayAgainCommand = new RelayCommand(async o => await PlayAgain());
             ResignCommand = new RelayCommand(async o =>
             {
                 _gameManagerService.Game.Resign(_gameManagerService.UserColor);
                 await _gameManagerService.EndGameAsync(_userStore.CurrentUser);
+                _userStore.UpdateOnGameEnd(_gameManagerService);
                 RequestClose?.Invoke();
+                _windowService.ShowDialog<GameOverMenuViewModel>();
             });
         }
 
@@ -50,6 +57,7 @@ namespace Chess.ViewModel
             RequestClose?.Invoke();
 
             await _gameManagerService.EndGameAsync(_userStore.CurrentUser);
+            _userStore.UpdateOnGameEnd(_gameManagerService);
             _navigationService.NavigateTo<GameViewModel>();
         }
     }

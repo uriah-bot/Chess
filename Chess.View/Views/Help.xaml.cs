@@ -1,4 +1,5 @@
 ﻿using Chess.Model;
+using Chess.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,87 +30,42 @@ namespace Chess.View
             InitializeComponent();
         }
 
-        //private void WatchVideo_Click(object sender, RoutedEventArgs e)
-        //{
-        //    VideoGrid.Visibility = Visibility.Visible;
-        //}
+        private void CollapseVideo_Click(object sender, RoutedEventArgs e)
+        {
+            TutorialVideo.Stop();
+            if (DataContext is HelpViewModel viewModel)
+            {
+                viewModel.IsVideoVisible = false;
+            }
+        }
 
-        //private async void SendEmailToDeveloper_Click(object sender, RoutedEventArgs e)
-        //{
-        //    string subject = EmailSubject.Text;
-        //    string body = EmailBody.Text;
+        private void Forwards5Sec_Click(object sender, RoutedEventArgs e)
+        {
+            var duration = TutorialVideo.NaturalDuration.TimeSpan;
+            var nextPosition = TutorialVideo.Position.Add(TimeSpan.FromSeconds(5));
 
-        //    if (string.IsNullOrWhiteSpace(subject) || string.IsNullOrWhiteSpace(body))
-        //    {
-        //        MessageBox.Show("Please fill out both the subject and the message before sending.", "Missing Info");
-        //        return;
-        //    }
+            if (nextPosition > duration)
+            {
+                nextPosition = duration;
+            }
 
-        //    // TODO: remove ts and connect to SendEmail() from servicw when in vm
-        //    try
-        //    {
-        //        var smtpClient = new SmtpClient("smtp.gmail.com")
-        //        {
-        //            Port = 587,
-        //            UseDefaultCredentials = false,
-        //            Credentials = new NetworkCredential(AppConstants.APP_EMAIL, AppConstants.APP_KEY),
-        //            EnableSsl = true
-        //        };
+            TutorialVideo.Position = nextPosition;
+        }
 
-        //        var mailMessage = new MailMessage
-        //        {
-        //            From = new MailAddress(AppConstants.APP_EMAIL),
-        //            Subject = $"[Custom Chess Feedback] {subject}",
-        //            Body = $"Message from User:\n\n{body}",
-        //        };
+        private void Backwards5Sec_Click(object sender, RoutedEventArgs e)
+        {
+            var zero = TimeSpan.FromSeconds(0);
+            var nextPosition = TutorialVideo.Position.Subtract(TimeSpan.FromSeconds(5));
 
-        //        mailMessage.To.Add(AppConstants.APP_EMAIL);
-        //        await smtpClient.SendMailAsync(mailMessage);
+            if (nextPosition < zero)
+            {
+                nextPosition = zero;
+            }
 
-        //        EmailSubject.Clear();
-        //        EmailBody.Clear();
+            TutorialVideo.Position = nextPosition;
+        }
 
-        //        MessageBox.Show("Message sent successfully! Thank you for your feedback.", "Success");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Could not send message. Check your internet connection.\n\nError: {ex.Message}", "Failed to Send");
-        //    }
-        //}
-
-        //private void CollapseVideo_Click(object sender, RoutedEventArgs e)
-        //{
-        //    TutorialVideo.Stop();
-        //    VideoGrid.Visibility = Visibility.Collapsed;
-        //}
-
-        //private void Forwards5Sec_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var duration = TutorialVideo.NaturalDuration.TimeSpan;
-        //    var nextPosition = TutorialVideo.Position.Add(TimeSpan.FromSeconds(5));
-
-        //    if (nextPosition > duration)
-        //    {
-        //        nextPosition = duration;
-        //    }
-
-        //    TutorialVideo.Position = nextPosition;
-        //}
-
-        //private void Backwards5Sec_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var zero = TimeSpan.FromSeconds(0);
-        //    var nextPosition = TutorialVideo.Position.Subtract(TimeSpan.FromSeconds(5));
-
-        //    if (nextPosition < zero)
-        //    {
-        //        nextPosition = zero;
-        //    }
-
-        //    TutorialVideo.Position = nextPosition;
-        //}
-
-        //private void PlayVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Play();
-        //private void PauseVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Pause();
+        private void PlayVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Play();
+        private void PauseVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Pause();
     }
 }

@@ -48,13 +48,24 @@ namespace Chess.ViewModel
             }), System.Windows.Threading.DispatcherPriority.Background); // <-- THIS IS THE MAGIC
         }
 
-        private static string GetWinnerText(PlayerColor winner)
+        private string GetWinnerText(PlayerColor winner)
         {
+            if (_gameManagerService.Mode == GameMode.Modified)
+            {
+                return winner switch
+                {
+                    PlayerColor.White => "WHITE WINS!",
+                    PlayerColor.Black => "BLACK WINS!",
+                    _ => "IT'S A DRAW!"
+                };
+            }
+
+            var plus = _gameManagerService.EloDelta > 0 ? "+" : "";
             return winner switch
             {
-                PlayerColor.White => "WHITE WINS!",
-                PlayerColor.Black => "BLACK WINS!",
-                _ => "IT'S A DRAW!"
+                PlayerColor.White => $"WHITE WINS! ({plus}{_gameManagerService.EloDelta})",
+                PlayerColor.Black => $"BLACK WINS! ({plus}{_gameManagerService.EloDelta})",
+                _ => $"IT'S A DRAW! (+0)"
             };
         }
 
@@ -68,7 +79,7 @@ namespace Chess.ViewModel
                 EndReason.ThreefoldRepetition => "DRAW BY THREEFOLD REPETITION",
                 EndReason.FiftyMoveRule => "DRAW BY FIFTY-MOVE RULE",
                 EndReason.Resignation => "YOU LOST BY RESIGNATION",
-                EndReason.KingPromotion => $"{PlayerString(currentPlayer.Opponent()).ToUpper()} PROMOTED THE KING",
+                EndReason.KingPromotion => $"{PlayerString(currentPlayer).ToUpper()} PROMOTED THE KING",
                 EndReason.NotEnoughPoofPieces => $"{PlayerString(currentPlayer).ToUpper()} RAN OUT OF POOF-ABLES",
                 EndReason.TimeRanOut => $"{PlayerString(currentPlayer).ToUpper()} RAN OUT OF TIME",
                 _ => ""
