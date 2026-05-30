@@ -25,7 +25,7 @@ namespace Chess.ViewModel
             _gameManagerService = gameManagerService;
 
             Winner = GetWinnerText(_gameManagerService.Game.Result.winner);
-            WinReason = GetReason(_gameManagerService.Game.Result.reason, _gameManagerService.Game.CurrentPlayer);
+            WinReason = GetReasonText(_gameManagerService.Game.Result, _gameManagerService.Game.CurrentPlayer);
 
             ExitCommand = new RelayCommand(o => ExitToApp());
             PlayAgainCommand = new RelayCommand(o => PlayAgain());
@@ -69,19 +69,19 @@ namespace Chess.ViewModel
             };
         }
 
-        private static string GetReason(EndReason reason, PlayerColor currentPlayer)
+        private static string GetReasonText(Result result, PlayerColor currentPlayer)
         {
-            return reason switch
+            return result.reason switch
             {
                 EndReason.Stalemate => $"STALEMATE - {PlayerString(currentPlayer).ToUpper()} CAN'T MOVE",
-                EndReason.Checkmate => $"{PlayerString(currentPlayer.Opponent()).ToUpper()} HAS CHECKMATED",
+                EndReason.Checkmate => $"{PlayerString(result.winner).ToUpper()} HAS CHECKMATED",
                 EndReason.InsufficientMaterial => "DRAW BY INSUFFICIENT MATERIAL",
                 EndReason.ThreefoldRepetition => "DRAW BY THREEFOLD REPETITION",
                 EndReason.FiftyMoveRule => "DRAW BY FIFTY-MOVE RULE",
                 EndReason.Resignation => "YOU LOST BY RESIGNATION",
-                EndReason.KingPromotion => $"{PlayerString(currentPlayer).ToUpper()} PROMOTED THE KING",
-                EndReason.NotEnoughPoofPieces => $"{PlayerString(currentPlayer).ToUpper()} RAN OUT OF POOF-ABLES",
-                EndReason.TimeRanOut => $"{PlayerString(currentPlayer).ToUpper()} RAN OUT OF TIME",
+                EndReason.KingPromotion => $"{PlayerString(result.winner).ToUpper()} PROMOTED THE KING",
+                EndReason.NotEnoughPoofPieces => $"{PlayerString(result.winner.Opponent()).ToUpper()} RAN OUT OF POOF-ABLES",
+                EndReason.TimeRanOut => $"{PlayerString(result.winner.Opponent()).ToUpper()} RAN OUT OF TIME",
                 _ => ""
             };
         }

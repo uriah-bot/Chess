@@ -1,11 +1,4 @@
-﻿using Chess.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 
 namespace Chess.Data
 {
@@ -77,16 +70,21 @@ namespace Chess.Data
                 return new Dictionary<string, TValue>();
             }
 
+            // opens and reads the JSON file
             using FileStream openStream = File.OpenRead(filePath);
             if (openStream.Length == 0) return new Dictionary<string, TValue>();
 
+            // deserializes the JSON into a dictionary of string, Tvalue
             return await JsonSerializer.DeserializeAsync<Dictionary<string, TValue>>(openStream, _options)
                    ?? new Dictionary<string, TValue>();
         }
 
         private async Task SaveDictionary(string filePath, Dictionary<string, TValue> data)
         {
+            // creates/overwrites the file in the path
             using FileStream createStream = File.Create(filePath);
+            
+            // serialize the objects into the JSON
             await JsonSerializer.SerializeAsync(createStream, data, _options);
         }
     }

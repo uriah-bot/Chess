@@ -14,7 +14,5 @@
     {
         void Apply(Game game);
         void Remove(Game game);
-
-        List<ModifierType> Conflicts { get; }
     }
 }

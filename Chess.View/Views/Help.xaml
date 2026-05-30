@@ -55,7 +55,7 @@
                                 Width="600"
                                 Height="340"
                                 LoadedBehavior="Manual"
-                                Source=""
+                                Source="Assets/mommyProject.mp4"
                                 Stretch="Uniform" />
                             <StackPanel
                                 Margin="0,15,0,0"
@@ -185,7 +185,7 @@
                         <TextBlock
                             Margin="30,10,0,10"
                             Foreground="#CCCCCC"
-                            Text="The AI acts in 2 ways: Stockfish AI uses a neural network, existing databases including millions of positions in the start and endgame, and uses thousands of efficiancy improving code, involving complex neural network algorithms. The local AI uses only the base of stockfish and all other Chess AIs, it uses a method called minimax, and another named alpha-beta pruning. I encourage research on these amazing revolutions in the world of AI in board games."
+                            Text="The AI acts in 2 ways: Stockfish AI uses a neural network, existing databases including millions of positions in the start and endgame, and uses thousands of efficiancy improving code, involving complex neural network algorithms. I encourage research on these amazing revolutions in the world of AI in board games."
                             TextWrapping="Wrap" />
                     </Expander>
                 </StackPanel>
@@ -203,39 +203,75 @@
                         FontWeight="SemiBold"
                         Foreground="White"
                         Text="Subject" />
-                    <Border
-                        Margin="0,0,0,15"
-                        Background="#1E1E1E"
-                        BorderBrush="#444"
-                        BorderThickness="1"
-                        CornerRadius="4">
-                        <TextBox
-                            Padding="8"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Foreground="White"
-                            Text="{Binding Subject, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <Border Margin="0,0,0,15" CornerRadius="4">
+                        <StackPanel>
+                            <TextBox
+                                x:Name="EmailSubject"
+                                Padding="8"
+                                Background="#1E1E1E"
+                                BorderBrush="#444"
+                                BorderThickness="1"
+                                Foreground="White"
+                                Text="{Binding Subject, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnNotifyDataErrors=True}" />
+                            <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=EmailSubject}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,2" Orientation="Horizontal">
+                                            <TextBlock
+                                                Margin="0,0,5,0"
+                                                VerticalAlignment="Center"
+                                                FontFamily="Segoe MDL2 Assets"
+                                                Foreground="#FF5555"
+                                                Text="&#xE783;" />
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                FontSize="12"
+                                                Foreground="#FF5555"
+                                                Text="{Binding ErrorContent}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
                     </Border>
                     <TextBlock
                         Margin="0,0,0,5"
                         FontWeight="SemiBold"
                         Foreground="White"
-                        Text="Message" />
-                    <Border
-                        Margin="0,0,0,15"
-                        Background="#1E1E1E"
-                        BorderBrush="#444"
-                        BorderThickness="1"
-                        CornerRadius="4">
-                        <TextBox
-                            Height="100"
-                            Padding="8"
-                            AcceptsReturn="True"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Foreground="White"
-                            Text="{Binding Body, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            TextWrapping="Wrap" />
+                        Text="Body" />
+                    <Border Margin="0,0,0,15" CornerRadius="4">
+                        <StackPanel>
+                            <TextBox
+                                x:Name="EmailBody"
+                                Height="100"
+                                Padding="8"
+                                AcceptsReturn="True"
+                                Background="#1E1E1E"
+                                BorderBrush="#444"
+                                BorderThickness="1"
+                                Foreground="White"
+                                Text="{Binding Body, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnNotifyDataErrors=True}"
+                                TextWrapping="Wrap" />
+                            <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding (Validation.Errors), ElementName=EmailBody}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,2" Orientation="Horizontal">
+                                            <TextBlock
+                                                Margin="0,0,5,0"
+                                                VerticalAlignment="Center"
+                                                FontFamily="Segoe MDL2 Assets"
+                                                Foreground="#FF5555"
+                                                Text="&#xE783;" />
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                FontSize="12"
+                                                Foreground="#FF5555"
+                                                Text="{Binding ErrorContent}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
                     </Border>
                     <Button
                         Width="120"

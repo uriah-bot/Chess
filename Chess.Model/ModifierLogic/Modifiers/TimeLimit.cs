@@ -11,8 +11,6 @@ namespace Chess.Model
         private TimeSpan BlackTime;
         public Dictionary<PlayerColor, Timer> Timers { get; private set; } = new Dictionary<PlayerColor, Timer>();
 
-        public List<ModifierType> Conflicts => null;
-
         public TimeLimit(int? param)
         {
             if (param != null)

@@ -3,7 +3,7 @@
     public class Game
     {
         public Board Board { get; }
-        public PlayerColor CurrentPlayer { get; private set; }
+        public PlayerColor CurrentPlayer { get; internal set; }
         public event Action OnGameEndedByTimer;
         private Result _result;
         public Result Result
@@ -107,6 +107,8 @@
 
             if (IsGameOver()) // some modifiers set the Result
             {
+                CurrentPlayer = Result.reason == EndReason.KingPromotion && ActiveModifiers.Any(m => m is MoveMultiplier) ? CurrentPlayer.Opponent() : CurrentPlayer;
+                // if the modifiers have both, the game might end in promotion and the UI will display incorrectly
                 return;
             }
 

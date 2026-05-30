@@ -250,7 +250,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
-                                CommandParameter="DoubleMove"
+                                CommandParameter="MoveMultiplier"
                                 Content="Select"
                                 Foreground="White" />
                         </Grid>

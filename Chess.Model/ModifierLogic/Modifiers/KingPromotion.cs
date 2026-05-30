@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess.Model
+﻿namespace Chess.Model
 {
     public class KingPromotion : IModifier
     {
         private Game _game; // so Result can be set
-
-        public List<ModifierType> Conflicts => null;
 
         public void Apply(Game game)
         {

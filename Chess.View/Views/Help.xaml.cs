@@ -36,6 +36,7 @@ namespace Chess.View
             if (DataContext is HelpViewModel viewModel)
             {
                 viewModel.IsVideoVisible = false;
+                viewModel._decorStore.CurrentVolume = viewModel.UserVolume;
             }
         }
 
@@ -65,7 +66,25 @@ namespace Chess.View
             TutorialVideo.Position = nextPosition;
         }
 
-        private void PlayVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Play();
-        private void PauseVideo_Click(object sender, RoutedEventArgs e) => TutorialVideo.Pause();
+        private void PlayVideo_Click(object sender, RoutedEventArgs e) => Play();
+        private void PauseVideo_Click(object sender, RoutedEventArgs e) => Pause();
+
+        public void Pause()
+        {
+            TutorialVideo.Pause();
+            if (DataContext is HelpViewModel viewModel)
+            {
+                viewModel._decorStore.CurrentVolume = viewModel.UserVolume;
+            }
+        }
+
+        public void Play()
+        {
+            TutorialVideo.Play();
+            if (DataContext is HelpViewModel viewModel)
+            {
+                viewModel._decorStore.CurrentVolume = 0;
+            }
+        }
     }
 }

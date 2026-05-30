@@ -7,7 +7,7 @@ namespace Chess.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         
-        // Clear event listeners
+        // Clear event handler
         public virtual void Dispose()
         {
             PropertyChanged = null;

@@ -5,8 +5,6 @@
         private Game _game; // so Result can be set
         private readonly Random rnd = new Random();
         private int PoofCycle;
-
-        public List<ModifierType> Conflicts => null;
         
         public Poof(int? param)
         {
@@ -68,8 +66,14 @@
                 return false;
             }
 
+            // incase promoted to a poofable on the last move
+            if (lastMove is PawnPromotion promotion)
+            {
+                return piece == _game.Board[lastMove.ToPosition] && promotion.promotedTo != PieceType.Queen;
+            }
+
             return piece.Type != PieceType.King && piece.Type != PieceType.Pawn &&
-                    piece.Type != PieceType.Queen && piece.Color == _game.CurrentPlayer && piece != _game.Board[lastMove.ToPosition]; // must be b4 changing player
+                    piece.Type != PieceType.Queen && piece != _game.Board[lastMove.ToPosition]; // must be b4 changing player
             // must be a piece of type: Bishop/Knight/Rook
         }
     }

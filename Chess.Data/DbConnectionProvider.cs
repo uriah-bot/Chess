@@ -44,33 +44,15 @@ namespace Chess.Data
 
         public static async Task<int> ExecuteCommandAsync(string sql, params OleDbParameter[] parameters)
         {
-            //using (var con = GetConnection())
-            //using (var cmd = new OleDbCommand(sql, con))
-            //{
-            //    if (parameters != null && parameters.Length > 0)
-            //        cmd.Parameters.AddRange(parameters);
-
-            //    await con.OpenAsync();
-
-            //    return await cmd.ExecuteNonQueryAsync();
-            //}
-            try
+            using (var con = GetConnection())
+            using (var cmd = new OleDbCommand(sql, con))
             {
-                using (var con = GetConnection())
-                using (var cmd = new OleDbCommand(sql, con))
-                {
-                    if (parameters != null && parameters.Length > 0)
-                        cmd.Parameters.AddRange(parameters);
+                if (parameters != null && parameters.Length > 0)
+                    cmd.Parameters.AddRange(parameters);
 
-                    await con.OpenAsync();
-                    return await cmd.ExecuteNonQueryAsync();
-                }
-            }
-            catch (System.Data.OleDb.OleDbException ex)
-            {
-                // THIS WILL POP UP THE EXACT MS ACCESS ERROR!
-                System.Diagnostics.Debug.WriteLine($"DATABASE REJECTED QUERY:\n{ex.Message}\n\nSQL: {sql}");
-                return 0;
+                await con.OpenAsync();
+
+                return await cmd.ExecuteNonQueryAsync();
             }
         }
 

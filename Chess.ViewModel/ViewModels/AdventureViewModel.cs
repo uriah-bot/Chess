@@ -104,6 +104,10 @@ namespace Chess.ViewModel
             {
                 AddError("Quantum Chess and Fog of War Cannot Be Selected Together.", nameof(SelectedModifiers));
             }
+            if (SelectedModifiers.Any(m => m.Modifier == ModifierType.MoveMultiplier) && SelectedModifiers.Any(m => m.Modifier == ModifierType.Poof))
+            {
+                AddError("Move Multiplier and Poof Cannot Be Selected Together.", nameof(SelectedModifiers));
+            }
 
             OnPropertyChanged(nameof(SelectedModifiers));
             OnPropertyChanged(nameof(StartModifiedGameCommand));

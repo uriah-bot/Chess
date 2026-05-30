@@ -1,23 +1,22 @@
 ﻿using Chess.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Chess.ViewModel.Stores;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
 {
-    public class HelpViewModel : ViewModelBase
+    public class HelpViewModel : ValidatableViewModel
     {
         private readonly IEmailService _emailService;
+        public readonly IDecorStore _decorStore;
+        public double UserVolume = 0;
         
-        public HelpViewModel(IEmailService emailService)
+        public HelpViewModel(IEmailService emailService, IDecorStore decorStore)
         {
             _emailService = emailService;
+            _decorStore = decorStore;
 
             ShowVideoCommand = new RelayCommand(o => ShowVideo());
-            SendEmailCommand = new RelayCommand(o => SendEmail());
+            SendEmailCommand = new RelayCommand(o => SendEmail(), o => !string.IsNullOrEmpty(Subject) && !string.IsNullOrEmpty(Body));
         }
 
         public ICommand ShowVideoCommand { get; }
@@ -45,6 +44,12 @@ namespace Chess.ViewModel
             {
                 _subject = value;
                 OnPropertyChanged(nameof(Subject));
+
+                ClearErrors();
+                if (string.IsNullOrWhiteSpace(Subject))
+                {
+                    AddError("\"Email Subject\" is a required field.");
+                }
             }
         }
 
@@ -59,20 +64,27 @@ namespace Chess.ViewModel
             {
                 _body = value;
                 OnPropertyChanged(nameof(Body));
+
+                ClearErrors();
+                if (string.IsNullOrWhiteSpace(Body))
+                {
+                    AddError("\"Email Body\" is a required field.");
+                }
             }
         }
 
         private async void SendEmail()
         {
-            await _emailService.SendEmail(Subject, Body);
             Subject = string.Empty;
             Body = string.Empty;
-            return;
+            await _emailService.SendEmail(Subject, Body);
+            ClearErrors();
         }
 
         private void ShowVideo()
         {
             IsVideoVisible = true;
+            UserVolume = _decorStore.CurrentVolume;
         }
     }
 }

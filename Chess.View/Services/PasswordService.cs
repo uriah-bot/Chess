@@ -5,6 +5,7 @@ namespace Chess.View
 {
     public class PasswordService
     {
+        // register it for the UI to use
         public static readonly DependencyProperty BoundPasswordProperty =
         DependencyProperty.RegisterAttached("BoundPassword", typeof(string), typeof(PasswordService),
             new PropertyMetadata(string.Empty, OnBoundPasswordChanged));

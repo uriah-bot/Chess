@@ -142,7 +142,7 @@ namespace Chess.ViewModel
 
         private void AddMusic()
         {
-			var path = _fileService.SelectFile("Add Music", new string[] {".mp3"});
+			var path = _fileService.SelectFile("Add MP3", new string[] {".mp3"});
 
 			if (path != null)
 			{

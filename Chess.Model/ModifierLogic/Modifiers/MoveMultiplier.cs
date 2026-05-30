@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Sources;
-
-namespace Chess.Model
+﻿namespace Chess.Model
 {
     public class MoveMultiplier : IModifier
     {
-        private int Multiplier;
+        private readonly int Multiplier;
+        private int ConsecutiveMoveCount;
+        private Game game;
 
         public MoveMultiplier(int? param)
         {
@@ -23,16 +18,35 @@ namespace Chess.Model
             }
         }
 
-        public List<ModifierType> Conflicts => null;
-
         public void Apply(Game game)
         {
-            throw new NotImplementedException();
+            this.game = game;
+            this.game.OnPieceMoved += MultiplyMove;
         }
 
         public void Remove(Game game)
         {
-            throw new NotImplementedException();
+            this.game = game;
+            this.game.OnPieceMoved -= MultiplyMove;
+        }
+
+        private void MultiplyMove(Move move)
+        {
+            // multiplier allows one less consecutive moves (multiplier = consecutive + initial move (which is 1))
+            if (ConsecutiveMoveCount >= Multiplier - 1)
+            {
+                ConsecutiveMoveCount = 0;
+                return;
+            }
+
+            if (game.IsGameOver() || game.Board.IsInCheck(game.CurrentPlayer.Opponent()))
+            {
+                ConsecutiveMoveCount = 0;
+                return;
+            }
+
+            game.CurrentPlayer = game.CurrentPlayer.Opponent(); // shouldnt effect anything else
+            ConsecutiveMoveCount++;
         }
     }
 }

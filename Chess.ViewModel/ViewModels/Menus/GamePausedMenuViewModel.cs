@@ -1,13 +1,7 @@
 ﻿using Chess.Model;
 using Chess.ViewModel.Stores;
 using Chess.ViewModel.ViewModelHelper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace Chess.ViewModel
 {
@@ -37,7 +31,8 @@ namespace Chess.ViewModel
             ContinueCommand = new RelayCommand(o => RequestClose?.Invoke());
             ExitCommand = new RelayCommand(async o =>
             {
-                await _gameManagerService.EndGameAsync(_userStore.CurrentUser);
+                _userStore.UpdateOnGameEnd(_gameManagerService);
+                await _gameManagerService.EndGameAsync(_userStore.CurrentUser, true);
                 RequestClose?.Invoke();
                 _windowService.SwitchWindow<AppBaseViewModel>();
             });
@@ -45,8 +40,8 @@ namespace Chess.ViewModel
             ResignCommand = new RelayCommand(async o =>
             {
                 _gameManagerService.Game.Resign(_gameManagerService.UserColor);
-                await _gameManagerService.EndGameAsync(_userStore.CurrentUser);
                 _userStore.UpdateOnGameEnd(_gameManagerService);
+                await _gameManagerService.EndGameAsync(_userStore.CurrentUser, true);
                 RequestClose?.Invoke();
                 _windowService.ShowDialog<GameOverMenuViewModel>();
             });
@@ -56,8 +51,8 @@ namespace Chess.ViewModel
         {
             RequestClose?.Invoke();
 
-            await _gameManagerService.EndGameAsync(_userStore.CurrentUser);
             _userStore.UpdateOnGameEnd(_gameManagerService);
+            await _gameManagerService.EndGameAsync(_userStore.CurrentUser);
             _navigationService.NavigateTo<GameViewModel>();
         }
     }

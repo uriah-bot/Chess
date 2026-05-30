@@ -15,7 +15,7 @@ namespace Chess.ViewModel.ViewModelHelper
         List<ActiveModifier> Modifiers { get; set; }
         bool IsBoardReactive { get; }
         void ConfigurateGame();
-        Task EndGameAsync(UserEntity currentUser);
+        Task EndGameAsync(UserEntity currentUser, bool shouldCleanup = false);
         void MoveHuman(Move move);
         Task MoveStockfishAsync();
         void CalculateEloChange();
@@ -61,9 +61,12 @@ namespace Chess.ViewModel.ViewModelHelper
             Game.StartMatch(Modifiers);
         }
 
-        public async Task EndGameAsync(UserEntity user)
+        public async Task EndGameAsync(UserEntity user, bool shouldCleanup)
         {
-            Cleanup();
+            if (shouldCleanup)
+            {
+                Cleanup();
+            }
 
             GameEntity currentGame = new GameEntity
             {
@@ -91,7 +94,7 @@ namespace Chess.ViewModel.ViewModelHelper
 
         public void CalculateEloChange()
         {
-            if (Mode != GameMode.Classical || BotRating == null)
+            if (Mode != GameMode.Classical || BotRating == null || Modifiers.Count != 0)
             {
                 EloDelta = null;
                 return;
@@ -99,7 +102,7 @@ namespace Chess.ViewModel.ViewModelHelper
 
             int C = rnd.Next(5, 15);
 
-            var score = BotRating.Value / 100;
+            var score = (double)BotRating.Value / 100;
             var multi = Game.Result.winner switch
             {
                 PlayerColor.None => 0,
@@ -134,7 +137,10 @@ namespace Chess.ViewModel.ViewModelHelper
         private void Cleanup()
         {
             Game.EndMatch();
-            _stockfishCommunicationService?.Dispose();
+            if (Mode == GameMode.Classical)
+                _stockfishCommunicationService?.Dispose();
+
+            Modifiers.Clear();
         }
     }
 }

@@ -25,8 +25,9 @@ namespace Chess.ViewModel
 
         protected void OnErrorsChanged(string propertyName)
         {
+            // notify the UI using the interface's EventHandler and re-eval HasErrors
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-            OnPropertyChanged(nameof(HasErrors)); // Uses the method from ViewModelBase!
+            OnPropertyChanged(nameof(HasErrors)); // uses method from ViewModelBase
         }
 
         protected void AddError(string errorMessage, [CallerMemberName] string propertyName = null)
@@ -34,6 +35,7 @@ namespace Chess.ViewModel
             if (propertyName == null) 
                 return;
 
+            // check if key exists first
             if (!_propertyErrors.ContainsKey(propertyName))
             {
                 _propertyErrors.Add(propertyName, new List<string>());
@@ -41,11 +43,13 @@ namespace Chess.ViewModel
 
             var errors = _propertyErrors[propertyName];
 
+            // check if the error is already there
             if (errors.Contains(errorMessage))
             {
                 return;
             }
             
+            // add the error and invoke OnErrorsChanged
             _propertyErrors[propertyName].Add(errorMessage);
             OnErrorsChanged(propertyName);
         }

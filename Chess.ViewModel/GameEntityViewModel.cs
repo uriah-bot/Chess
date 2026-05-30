@@ -36,7 +36,7 @@ namespace Chess.ViewModel
             UserColor = game.BotRating == null ? "White" : game.UserPlayedAs.ToString();
             EloDelta = game.EloDelta.HasValue && game.EloDelta >= 0 ? $"+{game.EloDelta}" : game.EloDelta.ToString();
             Result = game.BotRating == null ? "" : game.Result.ToString();
-            Date = game.DatePlayed.ToString("dd/MM/yyyy|hh--mm");
+            Date = game.DatePlayed.ToString("dd/MM/yyyy");
 
             ReplayCommand = new RelayCommand(o => replayAction());
         }

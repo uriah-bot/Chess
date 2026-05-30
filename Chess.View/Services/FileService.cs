@@ -10,7 +10,9 @@ namespace Chess.Service
         {
             if (user == null) return Enumerable.Empty<RadioChannelEntity>();
 
+            // gets the hidden Windows AppData folder
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            // makes the path for the files that's specific for each user
             string safeSalt = user.PasswordSalt.Replace("/", "_").Replace("+", "-").Replace("=", "");
             string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets", "Users", safeSalt);
 
@@ -19,6 +21,7 @@ namespace Chess.Service
                 return Enumerable.Empty<RadioChannelEntity>();
             }
 
+            // take files and create them into radioChannelEntities
             var paths = Directory.GetFiles(userDirectory);
 
             List<RadioChannelEntity> channels = new List<RadioChannelEntity>(); 
@@ -38,23 +41,23 @@ namespace Chess.Service
         {
             if (user == null) return null;
 
-            // Gets the hidden Windows AppData folder
+            // gets the hidden Windows AppData folder
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
+            // makes the path for the files that's specific for each user
             string safeSalt = user.PasswordSalt.Replace("/", "_").Replace("+", "-").Replace("=", "");
-            // Gets a unique folder just for this user (the hash is one-time and doesn't change)
             string userDirectory = Path.Combine(appDataPath, "Chess.View", "Assets" , "Users", safeSalt);
 
-            // Ensures the folder actually exists on the hard drive
+            // ensures the folder actually exists on the hard drive
             Directory.CreateDirectory(userDirectory);
 
-            // Gets just the file name (e.g., "avatar.png")
+            // gets just the file name (e.g., "avatar.png")
             string fileName = Path.GetFileName(sourceFilePath);
 
-            // Creates the final destination path
+            // creates the final destination path
             string destinationPath = Path.Combine(userDirectory, fileName);
 
-            // Copies the file into safe zone! (overwrite: true just in case they upload the exact same file name again)
+            // copies the file into the user's path (overwrite: true just in case they upload the exact same file name again)
             File.Copy(sourceFilePath, destinationPath, overwrite: true);
 
             return destinationPath;
@@ -62,10 +65,12 @@ namespace Chess.Service
 
         public string SelectFile(string filterName, string[] fileTypes)
         {
+            // gets formatting types from an array of strings
             var formattedTypes = fileTypes.Select(ext => ext.StartsWith(".") ? ext : "." + ext);
 
             string extensionString = string.Join(";", formattedTypes.Select(ext => "*" + ext));
 
+            // displays when selecting a file
             string finalFilter = $"{filterName}|{extensionString}";
 
             OpenFileDialog dialog = new OpenFileDialog

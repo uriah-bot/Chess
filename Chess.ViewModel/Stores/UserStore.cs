@@ -44,29 +44,42 @@ namespace Chess.ViewModel.Stores
         {
             _gameManager.CalculateEloChange();
 
+            if (_gameManager.Mode == GameMode.Modified) return;
+
             Update(u =>
             {
-                if (_gameManager.Mode == GameMode.Modified) return;
-
-                u.Elo += _gameManager.EloDelta.Value;
-                if (_gameManager.EloDelta.Value > 0)
+                if (_gameManager.EloDelta.Value < 0)
+                {
+                    u.Losses++;
+                }
+                else if (_gameManager.Game.Result.winner == PlayerColor.None)
+                {
+                    u.Draws++;
+                }
+                else
                 {
                     u.Wins++;
                     if (u.Elo > u.PeakElo)
                     {
                         u.PeakElo = u.Elo;
                     }
-
-                    return;
                 }
 
-                if (_gameManager.Game.Result.winner == PlayerColor.None)
+                if (_gameManager.EloDelta.Value < 0 && u.Elo < 300 - _gameManager.EloDelta.Value)
                 {
-                    u.Draws++;
+                    u.Elo = 300;
+                    // limit the elo to 300
                     return;
                 }
 
-                u.Losses++;
+                if (_gameManager.EloDelta.Value > 0 && u.Elo > 3200 - _gameManager.EloDelta.Value)
+                {
+                    u.Elo = 3200;
+                    // limit the elo to 3200
+                    return;
+                }
+
+                u.Elo += _gameManager.EloDelta.Value;
             });
         }
     }

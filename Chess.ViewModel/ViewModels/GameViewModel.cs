@@ -21,10 +21,10 @@ namespace Chess.ViewModel
         private List<Position> _markedSquares = new List<Position>();
         private Position _selectedPosition = null;
 
-        private List<Board> _replayFilmstrip { get; } = new List<Board>();
-        private int _currentReplayFrame;
+        private List<Board> _boardPositions { get; } = new List<Board>();
+        private int _currentBoard;
         public bool IsReplayMode => _gameReplayStore.IsReplayRequested;
-        private Board CurrentRenderedBoard => IsReplayMode ? _replayFilmstrip[_currentReplayFrame] : _gameManager.Game.Board;
+        private Board CurrentRenderedBoard => IsReplayMode ? _boardPositions[_currentBoard] : _gameManager.Game.Board;
 
         public GameViewModel(IUserStore userStore, IGameManagerService gameManagerService, IWindowService windowService, IGameReplayRequestStore gameReplayStore)
 		{
@@ -288,21 +288,21 @@ namespace Chess.ViewModel
 
             if (IsReplayMode)
             {
-                _replayFilmstrip.Clear();
+                _boardPositions.Clear();
                 var phantomGame = new Game(PlayerColor.White, Board.Initial());
-                _replayFilmstrip.Add(phantomGame.Board.Copy());
+                _boardPositions.Add(phantomGame.Board.Copy());
 
                 foreach (var moveStr in _gameReplayStore.RequestedGame.GameMoves)
                 {
                     var move = MoveFormatter.StringToMove(phantomGame.Board, moveStr);
                     phantomGame.MakeMove(move);
-                    _replayFilmstrip.Add(phantomGame.Board.Copy());
+                    _boardPositions.Add(phantomGame.Board.Copy());
                 }
 
-                _currentReplayFrame = 0;
+                _currentBoard = 0;
 
-                ReplayForwardsCommand = new RelayCommand(o => ForwardsReplay(), o => _currentReplayFrame < _replayFilmstrip.Count - 1);
-                ReplayBackwardsCommand = new RelayCommand(o => BackwardsReplay(), o => _currentReplayFrame > 0);
+                ReplayForwardsCommand = new RelayCommand(o => ForwardsReplay(), o => _currentBoard < _boardPositions.Count - 1);
+                ReplayBackwardsCommand = new RelayCommand(o => BackwardsReplay(), o => _currentBoard > 0);
                 StopReplayCommand = new RelayCommand(o => _windowService.SwitchWindow<AppBaseViewModel>());
 
                 _gameManager.UserColor = _gameReplayStore.RequestedGame.UserPlayedAs.Value;
@@ -331,14 +331,14 @@ namespace Chess.ViewModel
 
         private void BackwardsReplay()
         {
-            _currentReplayFrame--;
+            _currentBoard--;
             _markedSquares.Clear();
             UpdateBoardVisuals();
         }
 
         private void ForwardsReplay()
         {
-            _currentReplayFrame++;
+            _currentBoard++;
             _markedSquares.Clear();
             UpdateBoardVisuals();
         }
