@@ -87,10 +87,13 @@ namespace Chess.ViewModel
 
                     if (row == 7 - start || col == start)
                     {
-                        coordinate = $"{(char)('a' + col)}{8 - row}";
+                        coordinate = $"{(char)('a' + col)}{8 - row}".ToUpper();
                     }
 
-                    // Pass the OnSquareClicked method to every square
+                    if (!_userStore.CurrentUser.Settings.DisplayCoordinates)
+                        coordinate = string.Empty;
+
+                    // pass OnSquareClicked method to every square
                     Squares.Add(new SquareViewModel(row, col, coordinate, OnSquareLeftClicked, OnSquareRightClicked));
                 }
             }

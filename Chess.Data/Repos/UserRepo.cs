@@ -47,12 +47,20 @@ namespace Chess.Data
                 new OleDbParameter("@wins", newUser.Wins),
                 new OleDbParameter("@draws", newUser.Draws),
                 new OleDbParameter("@losses", newUser.Losses),
-                new OleDbParameter("@role", newUser.Role.ToString())
+                new OleDbParameter("@role", (int)newUser.Role)
             );
         }
 
-        public async Task DeleteUserAsync(UserEntity user)
+        public async Task DeleteUserAsync(UserEntity user, bool byUsername) // should be called by username if UserEntity was created w.o id context
         {
+            if (byUsername)
+            {
+                string sqlUsername = "DELETE FROM Users WHERE Username=?";
+
+                await DbConnectionProvider.ExecuteCommandAsync(sqlUsername, new OleDbParameter("@username", user.Username));
+                return;
+            }
+
             string sql = "DELETE FROM Users WHERE ID=?";
 
             await DbConnectionProvider.ExecuteCommandAsync(sql, new OleDbParameter("@Id", user.Id));
@@ -60,7 +68,8 @@ namespace Chess.Data
 
         public async Task<List<LeaderboardEntry>> GetLeaderboardAsync(int count, string property, bool ascending)
         {
-            string sql = $"SELECT TOP {count} Username, Elo, Wins FROM Users ORDER BY [{property}] {(ascending ? "ASC" : "DESC")}, ID ASC";
+            string top = count == -1 ? $"100 PERCENT" : $"{count}"; // maintain the code but able to use it for Advanced Settings View to get all
+            string sql = $"SELECT TOP {top} Username, Elo, Wins, Role FROM Users ORDER BY [{property}] {(ascending ? "ASC" : "DESC")}, ID ASC";
             // wont let me parameterize the column name or order direction, so I have to interpolate them directly into the query string
 
             DataTable dt = await DbConnectionProvider.ExecuteQueryAsync(sql);
@@ -75,6 +84,7 @@ namespace Chess.Data
                         Username = user["Username"].ToString(),
                         Elo = (int)user["Elo"],
                         Wins = (int)user["Wins"],
+                        Role = Enum.TryParse(user["Role"].ToString(), out UserRole role) ? role : UserRole.User,
                     };
 
                     users.Add(userEntity);
@@ -86,8 +96,20 @@ namespace Chess.Data
             return null;
         }
 
-        public async Task UpdateUserAsync(UserEntity user)
+        public async Task UpdateUserAsync(UserEntity user, string property, object propertyValue)
         {
+            if (property != null)
+            {
+                // special case where the UserEntity is created without proper context (Advanced Settings View)
+                string sqlProp = $"UPDATE Users SET {property}=? WHERE Username=?";
+
+                await DbConnectionProvider.ExecuteCommandAsync(sqlProp,
+                    new OleDbParameter("@property", propertyValue),
+                    new OleDbParameter("@username", user.Username)
+                );
+                return;
+            }
+
             string sql = "UPDATE Users SET Username=?, PasswordHash=?, PasswordSalt=?, Elo=?, PeakElo=?, Wins=?, Draws=?, Losses=?, Role=? WHERE ID=?";
 
             await DbConnectionProvider.ExecuteCommandAsync(sql,
@@ -99,7 +121,7 @@ namespace Chess.Data
                 new OleDbParameter("@wins", user.Wins),
                 new OleDbParameter("@draws", user.Draws),
                 new OleDbParameter("@losses", user.Losses),
-                new OleDbParameter("@role", user.Role.ToString()),
+                new OleDbParameter("@role", (int)user.Role),
                 new OleDbParameter("@id", user.Id)
             );
         }

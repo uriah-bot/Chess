@@ -21,7 +21,6 @@ namespace Chess.Data
                     UserId = user.Id,
                     CurrentSong = settings["CurrentSong"].ToString(),
                     DisplayCoordinates = (bool)settings["DisplayCoordinates"],
-                    SoundEffectOnMove = (bool)settings["SoundEffectOnMove"],
                     Volume = (double)settings["Volume"],
                     StopRadioOnMatches = (bool)settings["StopRadioOnMatches"],
                 };
@@ -32,13 +31,12 @@ namespace Chess.Data
 
         public async Task UpdateUserSettingsAsync(UserEntity user)
         {
-            string sql = "UPDATE Settings SET Volume=?, CurrentSong=?, StopRadioOnMatches=?, SoundEffectOnMove=?, DisplayCoordinates=? WHERE UserID=?";
+            string sql = "UPDATE Settings SET Volume=?, CurrentSong=?, StopRadioOnMatches=?, DisplayCoordinates=? WHERE UserID=?";
 
             await DbConnectionProvider.ExecuteCommandAsync(sql,
                 new OleDbParameter("@volume", user.Settings.Volume),
                 new OleDbParameter("@currentSong", user.Settings.CurrentSong),
                 new OleDbParameter("@stopRadioOnMatches", user.Settings.StopRadioOnMatches),
-                new OleDbParameter("@soundEffectOnMove", user.Settings.SoundEffectOnMove),
                 new OleDbParameter("@displayCoordinates", user.Settings.DisplayCoordinates),
                 new OleDbParameter("@id", user.Id)
             );

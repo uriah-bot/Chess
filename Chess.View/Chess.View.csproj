@@ -25,7 +25,6 @@
     <None Remove="Assets\Default\white_queen.png" />
     <None Remove="Assets\Default\white_rook.png" />
     <None Remove="Assets\icon.ico" />
-    <None Remove="Assets\mommyProject.mp4" />
     <None Remove="Assets\Music\DefaultMusic.mp3" />
     <None Remove="Assets\Music\Metallica - The Unforgiven.mp3" />
     <None Remove="Assets\Music\NGGYU.mp3" />
@@ -33,9 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\mommyProject.mp4">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\Music\DefaultMusic.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

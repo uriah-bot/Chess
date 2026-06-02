@@ -55,7 +55,7 @@
                                 Width="600"
                                 Height="340"
                                 LoadedBehavior="Manual"
-                                Source="Assets/mommyProject.mp4"
+                                Source="Assets/InfoVideo.mp4"
                                 Stretch="Uniform" />
                             <StackPanel
                                 Margin="0,15,0,0"
@@ -175,7 +175,7 @@
                         <TextBlock
                             Margin="30,10,0,10"
                             Foreground="#CCCCCC"
-                            Text="You can hover over or click the modifier cards in the Adventure Selection menu to read exactly what each modifier changes about the game. I encourage subbmitting more ideas for modifiers and helping!"
+                            Text="You can click the 'i' buttons for each Modifier in the Adventure Selection menu to read exactly what each modifier changes about the game. I encourage subbmitting more ideas for modifiers and helping!"
                             TextWrapping="Wrap" />
                     </Expander>
                     <Expander

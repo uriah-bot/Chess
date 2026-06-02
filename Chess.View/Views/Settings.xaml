@@ -154,7 +154,7 @@
                 Margin="10,0,10,0"
                 FontSize="14"
                 Foreground="#888"
-                Text="You have full control! Experience every feature to its fullest." />
+                Text="Experience every feature to its fullest." />
         </StackPanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
             <StackPanel Margin="5,0,20,0">
@@ -199,8 +199,10 @@
                                 Style="{StaticResource DefaultButton}"
                                 ToolTip="Press To Save Volume To DB" />
                         </Grid>
-                        <CheckBox Content="Stop Radio On Matches" />
-                        <CheckBox Command="{Binding PlaySoundEffectOnMoveCommand}" Content="Play sound effects on move" />
+                        <CheckBox
+                            Command="{Binding StopRadioOnMatchesCommand}"
+                            Content="Stop Radio On Matches"
+                            IsChecked="{Binding StopRadioOnMatches, Mode=OneWay}" />
                         <Border
                             Margin="10"
                             Padding="10"
@@ -260,22 +262,12 @@
                                 </Grid>
                             </Expander>
                         </Border>
-                        <Separator Margin="0,15,0,15" Background="#333" />
+                        <Separator Margin="0,15,0,5" Background="#333" />
                         <TextBlock Style="{StaticResource SettingHeader}" Text="Visuals" />
-                        <CheckBox Content="Show legal moves highlights" />
-                        <CheckBox Content="Display coordinates (A-H, 1-8)" IsChecked="True" />
-                    </StackPanel>
-                </Border>
-                <TextBlock Style="{StaticResource SectionHeader}" Text="Classical Mode" />
-                <Border
-                    Padding="15"
-                    Background="#252526"
-                    CornerRadius="8">
-
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource SettingHeader}" Text="In-Game" />
-                        <CheckBox Content="Auto play as white" />
-                        <CheckBox Content="Show engine evaluation bar" />
+                        <CheckBox
+                            Command="{Binding DisplayCoordinatesCommand}"
+                            Content="Display Coordinates (A-H, 1-8)"
+                            IsChecked="{Binding DisplayCoordinates, Mode=OneWay}" />
                     </StackPanel>
                 </Border>
                 <TextBlock Style="{StaticResource SectionHeader}" Text="User Settings" />
@@ -348,6 +340,7 @@
                             <Border
                                 Width="230"
                                 Height="15"
+                                HorizontalAlignment="Left"
                                 Background="{StaticResource Brush.SurfaceElevated}"
                                 CornerRadius="4">
                                 <TextBox
@@ -359,15 +352,6 @@
                                     IsEnabled="False"
                                     Text="{Binding Role, Mode=OneWay}" />
                             </Border>
-                            <Button
-                                Width="20"
-                                Height="20"
-                                Command="{Binding ShowPopupCommand}"
-                                CommandParameter="Role"
-                                Content="&#xE8D7;"
-                                FontFamily="Segoe MDL2 Assets"
-                                Style="{StaticResource DefaultButton}"
-                                ToolTip="Request Role" />
                         </DockPanel>
                     </StackPanel>
                 </Border>

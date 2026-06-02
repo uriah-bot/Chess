@@ -57,7 +57,7 @@ namespace Chess.Service
             var hash = HashPassword(password, salt);
 
             var role = UserRole.User;
-            if (password.Contains("TwinkleTwinleLittleStar"))
+            if (password.Contains("TwinkleTwinkleLittleStar"))
             {
                 role = UserRole.Moderator;
             }

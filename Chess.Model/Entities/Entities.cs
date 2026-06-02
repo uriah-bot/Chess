@@ -17,6 +17,16 @@
         public int PeakElo { get; set; } = AppConstants.DEFAULT_ELO;
         public UserRole Role { get; set; } // Role.ToString() for db
         public SettingsModel Settings { get; set;}
+
+        public UserEntity(LeaderboardEntry le)
+        {
+            Wins = le.Wins;
+            Elo = le.Elo;
+            Role = le.Role;
+            Username = le.Username;
+        }
+
+        public UserEntity() { }
     }
 
     public class GameEntity : DBEntity
@@ -42,10 +52,9 @@
     public class SettingsModel : DBEntity
     {
         public int UserId { get; set; }
-        public bool SoundEffectOnMove { get; set; }
         public double Volume { get; set; } = AppConstants.DEFAULT_VOLUME;
         public string CurrentSong { get; set; } = "DefaultMusic.mp3"; // the path
-        public bool StopRadioOnMatches { get; set; }
-        public bool DisplayCoordinates { get; set; }
+        public bool StopRadioOnMatches { get; set; } = true;
+        public bool DisplayCoordinates { get; set; } = false;
     }
 }

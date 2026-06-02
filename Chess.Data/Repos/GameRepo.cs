@@ -57,6 +57,7 @@ namespace Chess.Data
             var gameMoves = string.Join("|", newGame.GameMoves);
             var modifiers = newGame.Modifiers != null ? string.Join("|", newGame.Modifiers.Select(m => m.ToString())) : string.Empty;
 
+            // a lot of formatting because of the parsing, and having 2 different game-modes with requirements and null fields
             await DbConnectionProvider.ExecuteCommandAsync(sql,
                 new OleDbParameter("@userId", newGame.UserId),
                 new OleDbParameter("@gameMoves", gameMoves),

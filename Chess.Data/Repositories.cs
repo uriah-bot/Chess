@@ -10,8 +10,8 @@ namespace Chess.Data
             Task<List<LeaderboardEntry>> GetLeaderboardAsync(int count, string property, bool ascending = false);
             Task<UserEntity> GetUserByUsernameAsync(string username);
             Task<int> AddUserAsync(UserEntity newUser);
-            Task DeleteUserAsync(UserEntity user);
-            Task UpdateUserAsync(UserEntity user);
+            Task DeleteUserAsync(UserEntity user, bool byUsername = false);
+            Task UpdateUserAsync(UserEntity user, string property = null, object propertyValue = null);
         }
 
         public interface IGameRepository

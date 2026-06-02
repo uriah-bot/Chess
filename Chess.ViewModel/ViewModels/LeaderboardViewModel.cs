@@ -1,6 +1,5 @@
 ﻿using Chess.Model;
 using Chess.ViewModel.Stores;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using static Chess.Data.Repositories;
@@ -75,7 +74,8 @@ namespace Chess.ViewModel
         private string GetSortIcon(string column)
         {
             if (SortBy != column) return ""; // No arrow if not sorted by this
-            return IsAscending ? " ▲" : " ▼";        }
+            return IsAscending ? " ▲" : " ▼";
+        }
 
         private async Task LoadUsersAsync()
         {
@@ -89,13 +89,6 @@ namespace Chess.ViewModel
                 entry.IsCurrentUser = true;
                 users[index] = entry;
             }
-
-            //if (!users.Any(u => u.Username == _userStore.CurrentUser.Username))
-            //{
-            //    users.RemoveAt(users.Count - 1);
-            //    users.Add(_userStore.CurrentUser);
-            //}
-
 
             Users = new ObservableCollection<LeaderboardEntry>(users);
         }

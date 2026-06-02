@@ -20,25 +20,37 @@ namespace Chess.ViewModel
 		private readonly IFileService _fileService;
 		private readonly ICustomizableDecorManager<RadioChannelEntity> _radio;
 
-        public SettingsViewModel(IUserStore userStore, INavigationService navigationService, IWindowService windowService,IUserRepository userRepository,
+        public SettingsViewModel(IUserStore userStore, INavigationService navigationService, IWindowService windowService, IUserRepository userRepository,
             IDecorStore decorStore, IFileService fileService, ISettingsRepository settingsRepo, ICustomizableDecorManager<RadioChannelEntity> radioChannel)
         {
             _userStore = userStore;
-			_navigationService = navigationService;
-			_windowService = windowService;
-			_userRepo = userRepository;
+            _navigationService = navigationService;
+            _windowService = windowService;
+            _userRepo = userRepository;
             _settingsRepo = settingsRepo;
-			_radio = radioChannel;
-			_decorStore = decorStore;
-			_fileService = fileService;
+            _radio = radioChannel;
+            _decorStore = decorStore;
+            _fileService = fileService;
 
             _userStore.CurrentUserChanged += OnUserChanged;
 
-			DeleteUserCommand = new RelayCommand(o => DeleteUserAsync(), o => CanDeleteUser());
-			PlaySelectedMusicCommand = new RelayCommand(o => PlayMusicAsync(o));
+            DeleteUserCommand = new RelayCommand(o => DeleteUserAsync(), o => CanDeleteUser());
+            PlaySelectedMusicCommand = new RelayCommand(o => PlayMusicAsync(o));
             ShowPopupCommand = new RelayCommand(o => ShowPopup(o), o => _userStore.IsLoggedIn);
-			AddMusicCommand = new RelayCommand(o => AddMusic(), o => _userStore.IsLoggedIn);
+            AddMusicCommand = new RelayCommand(o => AddMusic(), o => _userStore.IsLoggedIn);
             SaveVolumeCommand = new RelayCommand(o => UpdateUserVolumeAsync(), o => _userStore.IsLoggedIn);
+            DisplayCoordinatesCommand = new RelayCommand(async o =>
+            {
+                DisplayCoordinates = !DisplayCoordinates;
+                await _settingsRepo.UpdateUserSettingsAsync(_userStore.CurrentUser);
+            }, o => _userStore.IsLoggedIn);
+
+            StopRadioOnMatchesCommand = new RelayCommand(async o =>
+            {
+                StopRadioOnMatches = !StopRadioOnMatches;
+                await _settingsRepo.UpdateUserSettingsAsync(_userStore.CurrentUser);
+            }, o => _userStore.IsLoggedIn);
+
             _ = LoadChannelsAsync();
         }
 
@@ -69,58 +81,28 @@ namespace Chess.ViewModel
             }
         }
 
-        private bool _muteRadioDuringGame;
-        public bool MuteRadioDuringGame
+        public bool StopRadioOnMatches
         {
             get
             {
-                return _muteRadioDuringGame;
+                return _userStore.CurrentUser?.Settings?.StopRadioOnMatches ?? true;
             }
             set
             {
-                _muteRadioDuringGame = value;
-                OnPropertyChanged(nameof(MuteRadioDuringGame));
+                _userStore.Update(u => u.Settings.StopRadioOnMatches = value);
+                OnPropertyChanged(nameof(StopRadioOnMatches));
             }
         }
 
-        private bool _playSoundOnMove;
-        public bool PLaySoundOnMove
-        {
-            get
-            {
-                return _playSoundOnMove;
-            }
-            set
-            {
-                _playSoundOnMove = value;
-                OnPropertyChanged(nameof(PLaySoundOnMove));
-            }
-        }
-
-        private bool _showHighlights;
-        public bool ShowHighlights
-        {
-            get
-            {
-                return _showHighlights;
-            }
-            set
-            {
-                _showHighlights = value;
-                OnPropertyChanged(nameof(ShowHighlights));
-            }
-        }
-
-        private bool _displayCoordinates;
         public bool DisplayCoordinates
         {
             get
             {
-                return _displayCoordinates;
+                return _userStore.CurrentUser?.Settings?.DisplayCoordinates ?? false;
             }
             set
             {
-                _displayCoordinates = value;
+                _userStore.Update(u => u.Settings.DisplayCoordinates = value);
                 OnPropertyChanged(nameof(DisplayCoordinates));
             }
         }
@@ -128,7 +110,6 @@ namespace Chess.ViewModel
         private void OnUserChanged()
         {
             OnPropertyChanged(nameof(Username));
-            OnPropertyChanged(nameof(Role));
         }
 
         public string Role => _userStore.CurrentUser?.Role.ToString() ?? "Guest";
@@ -137,8 +118,9 @@ namespace Chess.ViewModel
         public ICommand PlaySelectedMusicCommand { get; }
         public ICommand ShowPopupCommand { get; }
         public ICommand AddMusicCommand { get; }
-        public ICommand PlaySoundEffectOnMoveCommand { get; }
         public ICommand SaveVolumeCommand { get; }
+        public ICommand DisplayCoordinatesCommand { get; }
+        public ICommand StopRadioOnMatchesCommand { get; }
 
         private void AddMusic()
         {

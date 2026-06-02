@@ -7,6 +7,7 @@
             Username = user.Username;
             Elo = user.Elo;
             Wins = user.Wins;
+            Role = user.Role;
         }
 
         public LeaderboardEntry(string Username, int Elo, int Wins, bool IsCurrentUser)
@@ -21,6 +22,7 @@
         public int Elo { get; set; }
         public int Wins { get; set; }
         public bool IsCurrentUser { get; set; }
+        public UserRole Role { get; set; }
     }
 
     public record ModifierData

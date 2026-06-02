@@ -1,13 +1,6 @@
 ﻿using Chess.Model;
 using Chess.Service;
 using Chess.ViewModel.Stores;
-using Chess.ViewModel.ViewModelHelper;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using static Chess.Data.Repositories;
 
@@ -29,7 +22,6 @@ namespace Chess.ViewModel
 
             ChangeUsernameCommand = new RelayCommand(o => ChangeUsername(), o => !HasErrors && !string.IsNullOrWhiteSpace(NewUsername));
             ChangePasswordCommand = new RelayCommand(o => ChangePasswordAsync(), o => !HasErrors && !string.IsNullOrWhiteSpace(NewPassword) && !string.IsNullOrWhiteSpace(Password));
-            RequestRoleCommand = new RelayCommand(o => RequestRole(o));
             NavigateBackCommand = new RelayCommand(o => RequestClose?.Invoke());
         }
 
@@ -127,13 +119,7 @@ namespace Chess.ViewModel
 
         public ICommand ChangeUsernameCommand { get; }
         public ICommand ChangePasswordCommand { get; }
-        public ICommand RequestRoleCommand { get; }
         public ICommand NavigateBackCommand { get; }
-
-        private void RequestRole(object o)
-        {
-            throw new NotImplementedException();
-        }
 
         private async void ChangeUsername()
         {
