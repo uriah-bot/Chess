@@ -235,7 +235,6 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-
                         <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding (Validation.Errors), ElementName=ChangePasswordButton}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -256,7 +255,6 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-
                         <Button
                             x:Name="ChangePasswordButton"
                             Grid.Column="1"
@@ -267,70 +265,7 @@
                             Style="{StaticResource DefaultButton}"
                             Validation.ErrorTemplate="{x:Null}" />
                     </Grid>
-
                 </StackPanel>
-            </Grid>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="2*" />
-                </Grid.RowDefinitions>
-                <Grid.Style>
-                    <Style BasedOn="{StaticResource DynamicGridStyle}" TargetType="Grid">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding PopupMode}" Value="Role">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <TextBlock
-                    Margin="0,0,0,10"
-                    FontSize="11"
-                    FontWeight="SemiBold"
-                    Foreground="#888"
-                    Text="REQUEST A ROLE" />
-                <StackPanel
-                    Grid.Row="1"
-                    Margin="0,0,0,15"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal">
-                    <RadioButton
-                        Margin="0,0,10,0"
-                        GroupName="Roles"
-                        Style="{StaticResource RoleCardStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,8,0"
-                                VerticalAlignment="Center"
-                                FontFamily="Segoe MDL2 Assets"
-                                Text="&#xE7EF;" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontWeight="SemiBold"
-                                Text="Moderator" />
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton GroupName="Roles" Style="{StaticResource RoleCardStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,8,0"
-                                VerticalAlignment="Center"
-                                FontFamily="Segoe MDL2 Assets"
-                                Text="&#xE7E8;" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontWeight="SemiBold"
-                                Text="Admin" />
-                        </StackPanel>
-                    </RadioButton>
-                </StackPanel>
-                <Button
-                    Grid.Row="1"
-                    Height="35"
-                    Command="{Binding RequestRoleCommand}"
-                    Content="Send Request"
-                    Style="{StaticResource DefaultButton}" />
             </Grid>
         </StackPanel>
     </Border>
