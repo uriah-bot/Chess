@@ -37,7 +37,7 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Background="{Binding HighlightBrush}">
+                        <Grid Background="{Binding HighlightBrush, Converter={StaticResource StringToBrush}}">
 
                             <Image RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Piece, Converter={StaticResource PieceToImage}}" />
 
@@ -49,7 +49,7 @@
                                 FontSize="14"
                                 Text="{Binding Coordinate}" />
 
-                            <Rectangle Fill="{Binding OverlayBrush}" IsHitTestVisible="False" />
+                            <Rectangle Fill="{Binding OverlayBrush, Converter={StaticResource StringToBrush}}" IsHitTestVisible="False" />
 
                             <Grid.InputBindings>
                                 <MouseBinding Command="{Binding SquareLeftClickedCommand}" Gesture="LeftClick" />
@@ -123,7 +123,7 @@
                         Style="{StaticResource DefaultButton}" />
                     <TextBlock
                         Margin="30,3,10,0"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         FontSize="16"
                         Foreground="White"
                         Text="{Binding Username}" />
@@ -139,17 +139,10 @@
             Background="#181818"
             Visibility="{Binding IsModifiedGame, Converter={StaticResource BoolToVis}}">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
                 <Border
-                    Grid.Row="0"
                     Margin="0,0,0,10"
                     Padding="0,15,0,15"
+                    VerticalAlignment="Top"
                     Background="#222222"
                     CornerRadius="8">
                     <StackPanel>
@@ -169,42 +162,9 @@
                     </StackPanel>
                 </Border>
 
-                <StackPanel
-                    Grid.Row="1"
-                    MinHeight="180"
-                    Margin="0,60,0,60"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-                    <TextBlock
-                        Margin="0,0,0,15"
-                        HorizontalAlignment="Center"
-                        FontSize="11"
-                        FontWeight="Bold"
-                        Foreground="#888"
-                        Text="ACTIVE MODIFIERS" />
-
-                    <ItemsControl ItemsSource="{Binding ActiveModifiers}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border
-                                    Margin="0,0,0,5"
-                                    Padding="10,5"
-                                    Background="#333333"
-                                    CornerRadius="4">
-                                    <TextBlock
-                                        FontSize="12"
-                                        Foreground="White"
-                                        Text="{Binding}" />
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-
                 <Button
-                    Grid.Row="2"
-                    MinHeight="35"
                     Margin="0,0,0,15"
+                    VerticalAlignment="Center"
                     Command="{Binding PauseGameCommand}"
                     Content="&#xE769;"
                     FontFamily="Segoe MDL2 Assets"
@@ -212,8 +172,8 @@
                     Style="{StaticResource DefaultButton}" />
 
                 <Border
-                    Grid.Row="3"
                     Padding="0,15,0,15"
+                    VerticalAlignment="Bottom"
                     Background="#222222"
                     CornerRadius="8">
                     <StackPanel>
@@ -232,6 +192,7 @@
                             Text="{Binding Username}" />
                     </StackPanel>
                 </Border>
+                <StackPanel />
             </Grid>
         </Border>
     </Grid>

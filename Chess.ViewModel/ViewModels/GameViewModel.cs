@@ -5,7 +5,6 @@ using Chess.ViewModel.ViewModelHelper;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Chess.ViewModel
 {
@@ -211,24 +210,24 @@ namespace Chess.ViewModel
 
                 if (_markedSquares.Contains(square.Position))
                 {
-                    square.OverlayBrush = new SolidColorBrush(Color.FromArgb(130, 246, 31, 31)); // red
+                    square.OverlayBrush = "130, 246, 31, 31"; // red
                 }
                 else
                 {
-                    square.OverlayBrush = Brushes.Transparent;
+                    square.OverlayBrush = "Transparent";
                 }
 
                 if (_selectedPosition == square.Position)
                 {
-                    square.HighlightBrush = new SolidColorBrush(Color.FromArgb(150, 170, 94, 220)); // Selected // purple
+                    square.HighlightBrush = "150, 170, 94, 220"; // purple
                 }
                 else if (_availableMoves.Where(m => m.ToPosition == square.Position).Any())
                 {
-                    square.HighlightBrush = new SolidColorBrush(Color.FromArgb(150, 125, 255, 125)); // Legal Move // green
+                    square.HighlightBrush = "150, 125, 255, 125"; // green
                 }
                 else
                 {
-                    square.HighlightBrush = Brushes.Transparent;
+                    square.HighlightBrush = "Transparent";
                 }
             }
 
@@ -297,8 +296,12 @@ namespace Chess.ViewModel
 
                 foreach (var moveStr in _gameReplayStore.RequestedGame.GameMoves)
                 {
-                    var move = MoveFormatter.StringToMove(phantomGame.Board, moveStr);
+                    (Move move, Position pos) = MoveFormatter.StringToMove(phantomGame.Board, moveStr);
                     phantomGame.MakeMove(move);
+                    if (pos != null)
+                    {
+                        phantomGame.Board[pos] = null;
+                    }
                     _boardPositions.Add(phantomGame.Board.Copy());
                 }
 

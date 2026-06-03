@@ -127,17 +127,5 @@ namespace Chess.ViewModel
 
             base.Dispose();
         }
-
-        //private bool _isLoading;
-        //public bool IsLoading
-        //{
-        //    get => _isLoading;
-        //    set
-        //    {
-        //        _isLoading = value;
-        //        OnPropertyChanged(nameof(IsLoading));
-        //    }
-        //}
-        // for preventing double clicks when requesting registration and nice UI
     }
 }

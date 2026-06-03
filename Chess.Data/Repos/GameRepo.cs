@@ -55,7 +55,7 @@ namespace Chess.Data
             string sql = "INSERT INTO Games (UserID, GameMoves, Modifiers, UserPlayedAs, BotRating, Result, [Date], EloDelta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             var gameMoves = string.Join("|", newGame.GameMoves);
-            var modifiers = newGame.Modifiers != null ? string.Join("|", newGame.Modifiers.Select(m => m.ToString())) : string.Empty;
+            var modifiers = newGame.Modifiers != null ? string.Join("|", newGame.Modifiers) : string.Empty;
 
             // a lot of formatting because of the parsing, and having 2 different game-modes with requirements and null fields
             await DbConnectionProvider.ExecuteCommandAsync(sql,

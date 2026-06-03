@@ -22,6 +22,7 @@ namespace Chess.ViewModel
             base.Dispose();
         }
 
+        // refreshes the UI (the if should be true, it's just safe-proofing)
         private void NavigationStore_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(_navigationStore.CurrentViewModel))

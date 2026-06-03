@@ -24,7 +24,6 @@ namespace Chess.ViewModel
             _modifierStore = modifierStore;
             _userStore = userStore;
 
-            _selectedModifiers = new ObservableCollection<ActiveModifier>();
             ShowModifierInfoCommand = new RelayCommand(o => ShowModifierInfo(o));
             StartModifiedGameCommand = new RelayCommand(o => StartModifiedGame(), o => !HasErrors && SelectedModifiers.Count > 0 && _userStore.IsLoggedIn);
             ToggleModifierCommand = new RelayCommand(o => ToggleModifier(o));
@@ -32,18 +31,9 @@ namespace Chess.ViewModel
             ValidateModifiers();
         }
 
-        private ObservableCollection<ActiveModifier> _selectedModifiers { get; set; }
-        public ObservableCollection<ActiveModifier> SelectedModifiers
-        {
-            get => _selectedModifiers;
-            set
-            {
-                _selectedModifiers = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<ActiveModifier> SelectedModifiers { get; } = new ObservableCollection<ActiveModifier>();
 
-        public int ModifierCount => _selectedModifiers.Count;
+        public int ModifierCount => SelectedModifiers.Count;
 
         public ICommand ShowModifierInfoCommand { get; }
         public ICommand StartModifiedGameCommand { get; }
@@ -109,7 +99,6 @@ namespace Chess.ViewModel
                 AddError("Move Multiplier and Poof Cannot Be Selected Together.", nameof(SelectedModifiers));
             }
 
-            OnPropertyChanged(nameof(SelectedModifiers));
             OnPropertyChanged(nameof(StartModifiedGameCommand));
         }
 

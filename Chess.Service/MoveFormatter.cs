@@ -63,7 +63,7 @@ namespace Chess.Service
             return new NormalMove(fromPosition, toPosition);
         }
 
-        public static Move StringToMove(Board board, string move)
+        public static (Move, Position) StringToMove(Board board, string move)
         {
             string startSquare = move.Substring(0, 2);
             string targetSquare = move.Substring(4, 2);
@@ -71,40 +71,48 @@ namespace Chess.Service
             var fromPosition = new Position(int.Parse(startSquare[0].ToString()), int.Parse(startSquare[1].ToString()));
             var toPosition = new Position(int.Parse(targetSquare[0].ToString()), int.Parse(targetSquare[1].ToString()));
 
+            Position poofedPos = null;
             var pieceType = board[fromPosition].Type;
 
-            if ("qrnb".Contains(move.ElementAtOrDefault(6)))
+            if (move.Contains('#'))
             {
-                char lastLetter = move.ElementAt(6);
-                return GetPromotionMove(fromPosition, toPosition, lastLetter);
+                string[] moveParts = move.Split('#');
+                move = moveParts[0];
+                poofedPos = new Position(int.Parse(moveParts[1][0].ToString()), int.Parse(moveParts[1][1].ToString()));
+            }
+
+            if (move.Contains("="))
+            {
+                char lastLetter = move.Last();
+                return (GetPromotionMove(fromPosition, toPosition, lastLetter), poofedPos);
             }
 
             if (pieceType == PieceType.Pawn
                 && board.IsEmptySquare(toPosition) && startSquare[0] != targetSquare[0])
             {
-                return new EnPassant(fromPosition, toPosition);
+                return (new EnPassant(fromPosition, toPosition), poofedPos);
             }
 
             if (pieceType == PieceType.Pawn
                 && Math.Abs(targetSquare[1] - startSquare[1]) == 2)
             {
-                return new DoublePawnPush(fromPosition, toPosition);
+                return (new DoublePawnPush(fromPosition, toPosition), poofedPos);
             }
 
             if (pieceType == PieceType.King)
             {
                 if (startSquare[0] + 2 == targetSquare[0])
                 {
-                    return new Castling(MoveType.CastlingKing, fromPosition);
+                    return (new Castling(MoveType.CastlingKing, fromPosition), poofedPos);
                 }
 
                 if (startSquare[0] - 2 == targetSquare[0])
                 {
-                    return new Castling(MoveType.CastlingQueen, fromPosition);
+                    return (new Castling(MoveType.CastlingQueen, fromPosition), poofedPos);
                 }
             }
             
-            return new NormalMove(fromPosition, toPosition);
+            return (new NormalMove(fromPosition, toPosition), poofedPos);
         }
 
         private static PawnPromotion GetPromotionMove(Position fromPosition, Position toPosition, char lastLetter)

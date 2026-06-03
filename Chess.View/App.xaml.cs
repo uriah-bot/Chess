@@ -43,8 +43,6 @@ namespace Chess.View
             var windowService = _serviceProvider.GetRequiredService<IWindowService>();
             var navService = _serviceProvider.GetRequiredService<INavigationService>();
 
-            //windowService.SwitchWindow<AppBaseViewModel>();
-            //navService.NavigateTo<GameViewModel>();
             navService.NavigateTo<LoginViewModel>();
             windowService.SwitchWindow<MainViewModel>();
         }

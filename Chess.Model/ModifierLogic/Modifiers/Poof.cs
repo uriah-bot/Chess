@@ -51,6 +51,8 @@
             int posIndex = rnd.Next(playerPiecePositions.Count());
             Position positionToPoof = playerPiecePositions[posIndex];
 
+            _game.LastPoofedPiece = positionToPoof;
+            
             _game.Board[positionToPoof] = null;
         }
 

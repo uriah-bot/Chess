@@ -155,12 +155,12 @@
 
                                     <StackPanel
                                         Grid.Column="1"
-                                        Margin="10,0,0,0"
+                                        Margin="5,0,0,0"
                                         VerticalAlignment="Center">
                                         <TextBlock
                                             FontWeight="SemiBold"
                                             Foreground="White"
-                                            Text="{Binding AIName}" />
+                                            Text="{Binding SpecialFeature}" />
                                         <TextBlock
                                             FontSize="12"
                                             Foreground="Gray"

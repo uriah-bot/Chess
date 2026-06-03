@@ -1,6 +1,5 @@
 ﻿using Chess.Model;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Chess.ViewModel
 {
@@ -23,8 +22,8 @@ namespace Chess.ViewModel
             }
         }
 
-        private Brush _highlightBrush = Brushes.Transparent;
-        public Brush HighlightBrush
+        private string _highlightBrush = "Transparent";
+        public string HighlightBrush
         {
             get => _highlightBrush;
             set
@@ -34,8 +33,8 @@ namespace Chess.ViewModel
             }
         }
 
-        private Brush _overlayBrush = Brushes.Transparent;
-        public Brush OverlayBrush
+        private string _overlayBrush = "Transparent";
+        public string OverlayBrush
         {
             get => _overlayBrush;
             set

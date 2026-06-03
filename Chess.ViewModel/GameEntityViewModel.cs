@@ -8,9 +8,8 @@ namespace Chess.ViewModel
     {
         public ICommand ReplayCommand { get; }
 
-        public List<Move> Moves { get; }
         public string GameMode { get; }
-        public string AIName { get; }
+        public string SpecialFeature { get; } // AIName or Modifiers
         public string EloDelta { get; }
         public string Result { get; }
         public string Date { get; }
@@ -32,7 +31,7 @@ namespace Chess.ViewModel
         public GameEntityViewModel(GameEntity game, Action replayAction)
         {
             GameMode = game.BotRating == null ? "Friendly Battle" : "Player vs AI";
-            AIName = game.BotRating == null ? string.Join(", ", game.Modifiers.Select(m => m != ModifierType.Empty ? m.ToString() : string.Empty)) : "Stockfish (" + game.BotRating.ToString() + ")";
+            SpecialFeature = game.BotRating == null ? string.Join(", ", game.Modifiers.Select(m => m != ModifierType.Empty ? m.ToString() : string.Empty)) : "Stockfish (" + game.BotRating.ToString() + ")";
             UserColor = game.BotRating == null ? "White" : game.UserPlayedAs.ToString();
             EloDelta = game.EloDelta.HasValue && game.EloDelta >= 0 ? $"+{game.EloDelta}" : game.EloDelta.ToString();
             Result = game.BotRating == null ? "" : game.Result.ToString();

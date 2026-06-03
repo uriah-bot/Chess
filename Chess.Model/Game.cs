@@ -31,6 +31,7 @@
         public delegate void BoardSetupHandler(Board board);
         public event BoardSetupHandler OnBoardSetup;
         public int HalfMoves { get; private set; } = 0; // modifiers
+        public Position LastPoofedPiece { get; set; } = null; // modifiers
         private readonly List<IModifier> ActiveModifiers = new List<IModifier>();
         public event Action<string, string> OnModifierDataUpdated;
 
@@ -99,6 +100,7 @@
 
         public void MakeMove(Move move)
         {
+            LastPoofedPiece = null;
             Board.SetPawnSkippedPosition(CurrentPlayer, null);
             bool captureOrPawnMove = move.ExecuteMove(Board);
             HalfMoves++;

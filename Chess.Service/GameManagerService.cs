@@ -63,11 +63,6 @@ namespace Chess.ViewModel.ViewModelHelper
 
         public async Task EndGameAsync(UserEntity user, bool shouldCleanup)
         {
-            if (shouldCleanup)
-            {
-                Cleanup();
-            }
-
             GameEntity currentGame = new GameEntity
             {
                 UserId = user.Id,
@@ -90,6 +85,11 @@ namespace Chess.ViewModel.ViewModelHelper
             }
 
             await _gameService.SaveGameAsync(currentGame);
+
+            if (shouldCleanup)
+            {
+                Cleanup();
+            }
         }
 
         public void CalculateEloChange()
@@ -117,7 +117,8 @@ namespace Chess.ViewModel.ViewModelHelper
         public void MoveHuman(Move move)
         {
             Game.MakeMove(move);
-            Moves.Enqueue(MoveFormatter.MoveToString(move));
+            string poofedInfo = Game.LastPoofedPiece != null ? "#" + Game.LastPoofedPiece.Row.ToString() + Game.LastPoofedPiece.Column.ToString() : "";
+            Moves.Enqueue(MoveFormatter.MoveToString(move) + poofedInfo);
             IsBoardReactive = Mode == GameMode.Classical ? !IsBoardReactive : IsBoardReactive;
         }
 

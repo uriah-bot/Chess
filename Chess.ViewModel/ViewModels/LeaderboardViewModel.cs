@@ -13,7 +13,7 @@ namespace Chess.ViewModel
         public ICommand SortCommand { get; private set; }
 
         public List<int> PlayerCountOptions { get; } = new List<int> { 10, 50, 100, 200, 500 };
-        private ObservableCollection<LeaderboardEntry> _users;
+        public ObservableCollection<LeaderboardEntry> _users;
         public ObservableCollection<LeaderboardEntry> Users
         {
             get => _users;
