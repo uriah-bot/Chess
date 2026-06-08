@@ -6,9 +6,12 @@ namespace Chess.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private readonly INavigationStore _navigationStore;
-        public MainViewModel(INavigationStore navigationStore)
+        private readonly IDecorStore _decorStore;
+
+        public MainViewModel(INavigationStore navigationStore, IDecorStore decorStore)
         {
             _navigationStore = navigationStore;
+            _decorStore = decorStore;
 
             _navigationStore.PropertyChanged += NavigationStore_PropertyChanged;
         }
@@ -30,5 +33,9 @@ namespace Chess.ViewModel
                 OnPropertyChanged(nameof(CurrentViewModel));
             }
         }
+
+        public Uri MusicUri => _decorStore.CurrentSong ?? null;
+
+        public double Volume => _decorStore.CurrentVolume;
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess.Model
+﻿namespace Chess.Model
 {
     public class DoublePawnPush : Move
     {
@@ -13,6 +7,12 @@ namespace Chess.Model
         public override Position FromPosition { get; }
 
         public override Position ToPosition { get; }
+
+        public override Piece CapturedPiece
+        {
+            get => null;
+            set { }
+        }
 
         public readonly Position skippedPosition;
 

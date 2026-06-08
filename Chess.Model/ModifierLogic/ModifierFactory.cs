@@ -11,9 +11,9 @@
                 ModifierType.KingPromotion => new KingPromotion(),
                 ModifierType.TimeLimit => new TimeLimit(param),
                 ModifierType.MoveMultiplier => new MoveMultiplier(param),
-                //ModifierType.FogOfWar => new FogOfWar(),
+                ModifierType.ZombieChess => new ZombieChess(),
                 ModifierType.Poof => new Poof(param),
-                //ModifierType.Wormholes => new Wormholes(),
+                ModifierType.Wormholes => new Wormholes(param),
                 _ => null
             };
         }

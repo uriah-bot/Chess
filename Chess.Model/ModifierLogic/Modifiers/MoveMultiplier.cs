@@ -1,5 +1,8 @@
 ﻿namespace Chess.Model
 {
+    /// <summary>
+    /// this class makes 50 move rule false. not much to do about it tho.
+    /// </summary>
     public class MoveMultiplier : IModifier
     {
         private readonly int Multiplier;
@@ -8,14 +11,7 @@
 
         public MoveMultiplier(int? param)
         {
-            if (param != null)
-            {
-                Multiplier = param.Value;
-            }
-            else
-            {
-                Multiplier = AppConstants.MOVE_MULTIPLIER_DEFAULT_MULTIPLIER;
-            }
+            Multiplier = param ?? AppConstants.MOVE_MULTIPLIER_DEFAULT_MULTIPLIER;
         }
 
         public void Apply(Game game)

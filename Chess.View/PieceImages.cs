@@ -26,6 +26,8 @@ namespace Chess.View
             { PieceType.King, LoadImage("/Assets/Default/black_king.png") }
         };
 
+        public readonly static ImageSource Wormhole = LoadImage("/Assets/Default/wormhole.png");
+
         private static ImageSource LoadImage(string path)
         {
             return new BitmapImage(new Uri(path, UriKind.Relative));

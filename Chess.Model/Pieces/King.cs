@@ -15,6 +15,7 @@
             DirectionVector.DownLeft,
             DirectionVector.DownRight
         };
+
         public King(PlayerColor color)
         {
             Color = color;

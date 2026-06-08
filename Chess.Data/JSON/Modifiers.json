@@ -1,12 +1,12 @@
 ﻿{
-  "FogOfWar": {
-    "Name": "Fog Of War",
-    "IconName": "\uE753",
-    "IconHexColor": "#888888",
-    "FontFamilyName": "Segoe Fluent Icons",
+  "ZombieChess": {
+    "Name": "Zombie Chess",
+    "IconName": "\uD83E\uDDDF",
+    "IconHexColor": "#00E676",
+    "FontFamilyName": "Segoe UI Emoji",
     "Type": "Environmental",
     "Duration": "Throughout all game",
-    "Description": "Hides pieces that are not in the direct line of sight.",
+    "Description": "Turns captured pieces into your own.",
     "IsDynamic": false,
     "DynamicItems": []
   },
@@ -33,7 +33,7 @@
     "FontFamilyName": "Cambria Math",
     "Type": "Player Boosters",
     "Duration": "Throughout all game",
-    "Description": "Each Player gets x moves in a row.",
+    "Description": "Each Player gets x moves in a row unless opponent is checked.",
     "IsDynamic": true,
     "DynamicItems": [
       "2",
@@ -49,7 +49,7 @@
     "FontFamilyName": "Segoe Fluent Icons",
     "Type": "Environmental",
     "Duration": "Throughout all game",
-    "Description": "Creates x connected portals on random empty squares.",
+    "Description": "Creates x, connected portals on random empty squares. You'll have to figure out which are connected on your own.",
     "IsDynamic": true,
     "DynamicItems": [
       "2",

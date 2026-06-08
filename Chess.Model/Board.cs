@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess.Model
+﻿namespace Chess.Model
 {
     public class Board
     {
@@ -46,7 +39,7 @@ namespace Chess.Model
             return board;
         }
 
-        // cant initialize inverse because logic is hardcoded for logicPieces to be on a regular position
+        // cant initialize inverse because logic is hardcoded for Piece to be on a "regular position"
         // must flip only in UI when black pieces are chosen
 
         private void AddStartPieces()
@@ -95,6 +88,22 @@ namespace Chess.Model
                     Position position = new Position(row, col);
 
                     if (!IsEmptySquare(position))
+                    {
+                        yield return position;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<Position> GetEmptyPositions()
+        {
+            for (int row = 0; row < 8; row++)
+            {
+                for (int col = 0; col < 8; col++)
+                {
+                    Position position = new Position(row, col);
+
+                    if (IsEmptySquare(position))
                     {
                         yield return position;
                     }

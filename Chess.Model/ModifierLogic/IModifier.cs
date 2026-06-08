@@ -6,7 +6,7 @@
         KingPromotion,
         Wormholes,
         Poof,
-        FogOfWar,
+        ZombieChess,
         MoveMultiplier,
         TimeLimit,
     }

@@ -1,5 +1,4 @@
 ﻿using Chess.Model;
-using Chess.ViewModel.Stores;
 using System.Windows.Input;
 
 namespace Chess.ViewModel
@@ -37,7 +36,7 @@ namespace Chess.ViewModel
             Result = game.BotRating == null ? "" : game.Result.ToString();
             Date = game.DatePlayed.ToString("dd/MM/yyyy");
 
-            ReplayCommand = new RelayCommand(o => replayAction());
+            ReplayCommand = new RelayCommand(o => replayAction(), o => !game.Modifiers.Contains(ModifierType.ZombieChess) && !game.Modifiers.Contains(ModifierType.Wormholes));
         }
     }
 }

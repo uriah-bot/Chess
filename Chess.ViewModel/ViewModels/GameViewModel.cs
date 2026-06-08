@@ -204,9 +204,20 @@ namespace Chess.ViewModel
 
         private void UpdateBoardVisuals()
         {
+            var wormholeSquares = Enumerable.Empty<Position>();
+            if (_gameManager.Mode == GameMode.Modified && _gameManager.Modifiers.Any(m => m.Modifier == ModifierType.Wormholes))
+            {
+                wormholeSquares = _gameManager.Game.PortalPositions;
+            }
+
             foreach (var square in Squares)
             {
                 square.Piece = CurrentRenderedBoard[square.Position.Row, square.Position.Column];
+
+                if (wormholeSquares.Any() && wormholeSquares.Contains(square.Position))
+                {
+                    square.Wormhole = new Wormholes.Wormhole(square.Position);
+                }
 
                 if (_markedSquares.Contains(square.Position))
                 {
@@ -268,6 +279,7 @@ namespace Chess.ViewModel
 				OnPropertyChanged(nameof(BlackUserTimerText));
 			}
 		}
+		public bool ShouldActivateRadio => !_userStore.CurrentUser?.Settings?.StopRadioOnMatches ?? false;
 
 		private void TimersUpdated(string key, string value)
 		{

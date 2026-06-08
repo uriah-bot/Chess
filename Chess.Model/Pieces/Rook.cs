@@ -11,10 +11,12 @@
             DirectionVector.Left,
             DirectionVector.Right
         };
+
         public Rook(PlayerColor color)
         {
             Color = color;
         }
+
         public override Piece Copy()
         {
             Rook Copy = new Rook(Color);

@@ -8,7 +8,6 @@ namespace Chess.ViewModel
 {
     public class StatsViewModel : ViewModelBase
     {
-        // TODO: ADD A STORE FOR GAME HISTORY IN MEMORY
         private readonly IUserStore _userStore;
         private readonly IGameService _gameService;
         private readonly IWindowService _windowService;

@@ -90,13 +90,13 @@ namespace Chess.ViewModel
             {
                 AddError("Must Choose At Least One Modifier.", nameof(SelectedModifiers));
             }
-            if (SelectedModifiers.Any(m => m.Modifier == ModifierType.Wormholes) && SelectedModifiers.Any(m => m.Modifier == ModifierType.FogOfWar))
+            if (SelectedModifiers.Any(m => m.Modifier == ModifierType.Poof) && SelectedModifiers.Any(m => m.Modifier == ModifierType.ZombieChess))
             {
-                AddError("Quantum Chess and Fog of War Cannot Be Selected Together.", nameof(SelectedModifiers));
+                AddError("POOF! and Zombie Chess Cannot Be Selected Together.", nameof(SelectedModifiers));
             }
             if (SelectedModifiers.Any(m => m.Modifier == ModifierType.MoveMultiplier) && SelectedModifiers.Any(m => m.Modifier == ModifierType.Poof))
             {
-                AddError("Move Multiplier and Poof Cannot Be Selected Together.", nameof(SelectedModifiers));
+                AddError("Move Multiplier and POOF! Cannot Be Selected Together.", nameof(SelectedModifiers));
             }
 
             OnPropertyChanged(nameof(StartModifiedGameCommand));

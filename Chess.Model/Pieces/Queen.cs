@@ -15,10 +15,12 @@
             DirectionVector.DownRight,
             DirectionVector.DownLeft,
         };
+
         public Queen(PlayerColor color)
         {
             Color = color;
         }
+
         public override Piece Copy()
         {
             Queen Copy = new Queen(Color);

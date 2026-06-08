@@ -13,6 +13,11 @@ namespace Chess.View.Converters
                 return Images.GetImage(piece); ;
             }
 
+            if (value is Wormholes.Wormhole wormhole)
+            {
+                return Images.Wormhole;
+            }
+
             return null;
         }
 

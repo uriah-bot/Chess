@@ -5,6 +5,7 @@
         public abstract MoveType Type { get; }
         public abstract Position FromPosition { get; }
         public abstract Position ToPosition { get; }
+        public abstract Piece CapturedPiece { get; set; }
         public abstract bool ExecuteMove(Board board);
 
         public virtual bool IsLegalMove(Board board)

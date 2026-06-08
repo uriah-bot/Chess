@@ -14,6 +14,8 @@ namespace Chess.Model
 
         public override Position ToPosition { get; } // the skipped position
 
+        public override Piece CapturedPiece { get; set; }
+
         private readonly Position capturePosition; // the position the pawn is in after a double-push
 
         public EnPassant(Position fromPosition, Position toPosition)
@@ -26,6 +28,7 @@ namespace Chess.Model
         public override bool ExecuteMove(Board board)
         {
             new NormalMove(FromPosition, ToPosition).ExecuteMove(board);
+            CapturedPiece = board[capturePosition];
             board[capturePosition] = null;
 
             return true;

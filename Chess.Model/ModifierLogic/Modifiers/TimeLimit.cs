@@ -6,22 +6,14 @@ namespace Chess.Model
     public class TimeLimit : IModifier
     {
         private Game _game;
-        private int Time;
+        private readonly int Time;
         private TimeSpan WhiteTime;
         private TimeSpan BlackTime;
-        public Dictionary<PlayerColor, Timer> Timers { get; private set; } = new Dictionary<PlayerColor, Timer>();
+        public Dictionary<PlayerColor, Timer> Timers = new Dictionary<PlayerColor, Timer>();
 
         public TimeLimit(int? param)
         {
-            if (param != null)
-            {
-                Time = param.Value;
-            }
-            else
-            {
-                Time = AppConstants.TIME_LIMIT_DEFAULT_TIME;
-            }
-
+            Time = param ?? AppConstants.WORMHOLES_DEFAULT_PORTALS;
             WhiteTime = TimeSpan.FromMinutes(Time);
             BlackTime = TimeSpan.FromMinutes(Time);
         }

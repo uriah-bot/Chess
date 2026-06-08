@@ -152,26 +152,26 @@
                     </Border>
                     <Border Style="{StaticResource ModifierCard}">
                         <Grid>
-                            <Button CommandParameter="FogOfWar" Style="{StaticResource InfoBtn}" />
+                            <Button CommandParameter="ZombieChess" Style="{StaticResource InfoBtn}" />
                             <StackPanel Margin="20" VerticalAlignment="Center">
                                 <TextBlock
                                     Margin="0,0,0,15"
                                     HorizontalAlignment="Center"
-                                    FontFamily="Segoe MDL2 Assets"
+                                    FontFamily="Segoe UI Emoji"
                                     FontSize="48"
-                                    Foreground="#888888"
-                                    Text="&#xE753;" />
+                                    Foreground="#00E676"
+                                    Text="&#x1F9DF;" />
                                 <TextBlock
                                     Margin="0,0,0,10"
                                     HorizontalAlignment="Center"
                                     FontSize="20"
                                     FontWeight="Bold"
                                     Foreground="White"
-                                    Text="Fog of War" />
+                                    Text="Zombie Chess" />
                                 <TextBlock
                                     FontSize="13"
                                     Foreground="#AAAAAA"
-                                    Text="Enemy pieces are invisible unless they are within 2 squares of your pieces."
+                                    Text="Captured pieces turn to the opponent's side!"
                                     TextAlignment="Center"
                                     TextWrapping="Wrap" />
                             </StackPanel>
@@ -180,7 +180,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
-                                CommandParameter="FogOfWar"
+                                CommandParameter="ZombieChess"
                                 Content="Select"
                                 Foreground="White" />
                         </Grid>
@@ -206,7 +206,7 @@
                                 <TextBlock
                                     FontSize="13"
                                     Foreground="#AAAAAA"
-                                    Text="Two connected wormholes spawn on the board. Any piece can step into one and emerge from the other."
+                                    Text="Randomly connected wormholes spawn. Where does each go? Nobody knows!"
                                     TextAlignment="Center"
                                     TextWrapping="Wrap" />
                             </StackPanel>

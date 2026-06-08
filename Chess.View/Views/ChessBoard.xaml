@@ -39,13 +39,18 @@
                     <DataTemplate>
                         <Grid Background="{Binding HighlightBrush, Converter={StaticResource StringToBrush}}">
 
-                            <Image RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Piece, Converter={StaticResource PieceToImage}}" />
+                            <Image
+                                Panel.ZIndex="1"
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                Source="{Binding Piece, Converter={StaticResource PieceToImage}}" />
+
+                            <Image RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Wormhole, Converter={StaticResource PieceToImage}}" />
 
                             <TextBlock
                                 Margin="1"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Panel.ZIndex="1"
+                                Panel.ZIndex="2"
                                 FontSize="14"
                                 Text="{Binding Coordinate}" />
 
@@ -59,7 +64,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Canvas x:Name="DrawingCanvas" IsHitTestVisible="False" />
         </Grid>
 
         <Border Grid.Row="0" Visibility="{Binding IsClassicalGame, Converter={StaticResource BoolToVis}}">

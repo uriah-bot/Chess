@@ -12,9 +12,20 @@
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <ContentControl
-        x:Name="MainContentArea"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        Content="{Binding CurrentViewModel}" />
+    <Grid Style="{x:Null}">
+        <ContentControl
+            x:Name="MainContentArea"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Content="{Binding CurrentViewModel}" />
+        <MediaElement
+            x:Name="Radio"
+            Loaded="Radio_Loaded"
+            LoadedBehavior="Manual"
+            MediaEnded="Radio_MediaEnded"
+            Source="{Binding MusicUri}"
+            UnloadedBehavior="Stop"
+            Visibility="Collapsed"
+            Volume="{Binding Volume}" />
+    </Grid>
 </Window>

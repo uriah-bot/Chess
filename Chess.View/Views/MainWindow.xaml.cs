@@ -1,9 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using Chess.Model;
+﻿using Chess.ViewModel;
+using System.Windows;
 
 namespace Chess.View
 {
@@ -12,12 +8,22 @@ namespace Chess.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        //private ChessBoard _ChessBoard;
         public MainWindow()
         {
             InitializeComponent();
-            //_ChessBoard = new ChessBoard();
-            //MainContentArea.Content = _ChessBoard;
+        }
+
+        private void Radio_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            Radio.Position = TimeSpan.Zero;
+        }
+
+        private void Radio_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel vm && vm.CurrentViewModel is GameViewModel gvm && gvm.ShouldActivateRadio)
+            {
+                Radio.Play();
+            }
         }
     }
 }

@@ -4,18 +4,11 @@
     {
         private Game _game; // so Result can be set
         private readonly Random rnd = new Random();
-        private int PoofCycle;
+        private readonly int PoofCycle;
         
         public Poof(int? param)
         {
-            if (param != null)
-            {
-                PoofCycle = param.Value;
-            }
-            else
-            {
-                PoofCycle = AppConstants.POOF_DEFAULT_MOVES;
-            }
+            PoofCycle = param ?? AppConstants.POOF_DEFAULT_MOVES;
         }
 
         public void Apply(Game game)

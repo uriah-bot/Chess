@@ -11,10 +11,12 @@
             DirectionVector.DownRight,
             DirectionVector.DownLeft,
         };
+
         public Bishop(PlayerColor color)
         {
             Color = color;
         }
+
         public override Piece Copy()
         {
             Bishop Copy = new Bishop(Color);

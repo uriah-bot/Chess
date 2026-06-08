@@ -22,6 +22,8 @@ namespace Chess.ViewModel
             }
         }
 
+        public Wormholes.Wormhole Wormhole { get; set; }
+
         private string _highlightBrush = "Transparent";
         public string HighlightBrush
         {
