@@ -24,7 +24,6 @@
     <None Remove="Assets\Default\white_pawn.png" />
     <None Remove="Assets\Default\white_queen.png" />
     <None Remove="Assets\Default\white_rook.png" />
-    <None Remove="Assets\Default\wormhole.png" />
     <None Remove="Assets\icon.ico" />
     <None Remove="Assets\Music\DefaultMusic.mp3" />
     <None Remove="Assets\Music\Metallica - The Unforgiven.mp3" />
@@ -64,7 +63,6 @@
     <Resource Include="Assets\Default\white_pawn.png" />
     <Resource Include="Assets\Default\white_queen.png" />
     <Resource Include="Assets\Default\white_rook.png" />
-    <Resource Include="Assets\Default\wormhole.png" />
     <Resource Include="Assets\icon.ico" />
   </ItemGroup>
 

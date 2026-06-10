@@ -13,7 +13,6 @@
                 ModifierType.MoveMultiplier => new MoveMultiplier(param),
                 ModifierType.ZombieChess => new ZombieChess(),
                 ModifierType.Poof => new Poof(param),
-                ModifierType.Wormholes => new Wormholes(param),
                 _ => null
             };
         }

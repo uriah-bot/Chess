@@ -33,10 +33,6 @@
         public int HalfMoves { get; private set; } = 0; // modifiers
         public Position LastPoofedPiece { get; set; } = null; // modifiers
 
-        public delegate IEnumerable<Move> LegalMovesCalculatedHandler(Position position, IEnumerable<Move> legalMoves);
-        public event LegalMovesCalculatedHandler OnLegalMovesCalculated;
-        public IEnumerable<Position> PortalPositions => ActiveModifiers.OfType<Wormholes>().FirstOrDefault()?.PortalPositions ?? Enumerable.Empty<Position>();
-
         private readonly List<IModifier> ActiveModifiers = new List<IModifier>();
         public event Action<string, string> OnModifierDataUpdated;
 
@@ -100,8 +96,7 @@
 
             Piece piece = Board[position];
             IEnumerable<Move> potentialMoves = piece.GetMoves(position, Board);
-            potentialMoves = potentialMoves.Where(move => move.IsLegalMove(Board));
-            return OnLegalMovesCalculated?.Invoke(position, potentialMoves);
+            return potentialMoves = potentialMoves.Where(move => move.IsLegalMove(Board));
         }
 
         public void MakeMove(Move move)

@@ -51,7 +51,6 @@ namespace Chess.ViewModel
                         ModifierType.Poof => AppConstants.POOF_DEFAULT_MOVES.ToString(),
                         ModifierType.TimeLimit => AppConstants.TIME_LIMIT_DEFAULT_TIME.ToString(),
                         ModifierType.MoveMultiplier => AppConstants.MOVE_MULTIPLIER_DEFAULT_MULTIPLIER.ToString(),
-                        ModifierType.Wormholes => AppConstants.WORMHOLES_DEFAULT_PORTALS.ToString(),
                         _ => null,
                     }
                 };

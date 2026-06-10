@@ -187,41 +187,6 @@
                     </Border>
                     <Border Style="{StaticResource ModifierCard}">
                         <Grid>
-                            <Button CommandParameter="Wormholes" Style="{StaticResource InfoBtn}" />
-                            <StackPanel Margin="20" VerticalAlignment="Center">
-                                <TextBlock
-                                    Margin="0,0,0,15"
-                                    HorizontalAlignment="Center"
-                                    FontFamily="Segoe MDL2 Assets"
-                                    FontSize="48"
-                                    Foreground="#00A8FF"
-                                    Text="&#xE895;" />
-                                <TextBlock
-                                    Margin="0,0,0,10"
-                                    HorizontalAlignment="Center"
-                                    FontSize="20"
-                                    FontWeight="Bold"
-                                    Foreground="White"
-                                    Text="Quantum Chess" />
-                                <TextBlock
-                                    FontSize="13"
-                                    Foreground="#AAAAAA"
-                                    Text="Randomly connected wormholes spawn. Where does each go? Nobody knows!"
-                                    TextAlignment="Center"
-                                    TextWrapping="Wrap" />
-                            </StackPanel>
-                            <CheckBox
-                                Margin="0,0,0,20"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding ToggleModifierCommand, ValidatesOnNotifyDataErrors=True}"
-                                CommandParameter="Wormholes"
-                                Content="Select"
-                                Foreground="White" />
-                        </Grid>
-                    </Border>
-                    <Border Style="{StaticResource ModifierCard}">
-                        <Grid>
                             <Button CommandParameter="MoveMultiplier" Style="{StaticResource InfoBtn}" />
                             <StackPanel Margin="20" VerticalAlignment="Center">
                                 <TextBlock

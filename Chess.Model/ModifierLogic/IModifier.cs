@@ -4,7 +4,6 @@
     {
         Empty,
         KingPromotion,
-        Wormholes,
         Poof,
         ZombieChess,
         MoveMultiplier,

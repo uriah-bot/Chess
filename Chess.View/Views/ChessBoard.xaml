@@ -44,8 +44,6 @@
                                 RenderOptions.BitmapScalingMode="HighQuality"
                                 Source="{Binding Piece, Converter={StaticResource PieceToImage}}" />
 
-                            <Image RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Wormhole, Converter={StaticResource PieceToImage}}" />
-
                             <TextBlock
                                 Margin="1"
                                 HorizontalAlignment="Left"

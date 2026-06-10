@@ -88,25 +88,25 @@ namespace Chess.Service
             }
 
             if (pieceType == PieceType.Pawn
-                && board.IsEmptySquare(toPosition) && startSquare[0] != targetSquare[0])
+                && board.IsEmptySquare(toPosition) && fromPosition.Column != toPosition.Column)
             {
                 return (new EnPassant(fromPosition, toPosition), poofedPos);
             }
 
             if (pieceType == PieceType.Pawn
-                && Math.Abs(targetSquare[1] - startSquare[1]) == 2)
+                && Math.Abs(toPosition.Row - fromPosition.Row) == 2)
             {
                 return (new DoublePawnPush(fromPosition, toPosition), poofedPos);
             }
 
             if (pieceType == PieceType.King)
             {
-                if (startSquare[0] + 2 == targetSquare[0])
+                if (fromPosition.Column + 2 == toPosition.Column)
                 {
                     return (new Castling(MoveType.CastlingKing, fromPosition), poofedPos);
                 }
 
-                if (startSquare[0] - 2 == targetSquare[0])
+                if (fromPosition.Column - 2 == toPosition.Column)
                 {
                     return (new Castling(MoveType.CastlingQueen, fromPosition), poofedPos);
                 }
